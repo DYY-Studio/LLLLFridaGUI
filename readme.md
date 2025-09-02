@@ -41,6 +41,8 @@
 
 # 环境配置
 ## 桌面端
+> 从Release下载完整包可略过这两步直接运行
+
 1. 在桌面设备（Windows, Linux, macOS）上安装Python 3.10+   
 2. 安装Frida
    - `pip install frida frida-tools`
