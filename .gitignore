@@ -6,3 +6,7 @@ frida/.gitignore
 archive-details.json
 archive.json
 pyside_app_demo.app
+.venv
+deployment
+*.exe
+*.app

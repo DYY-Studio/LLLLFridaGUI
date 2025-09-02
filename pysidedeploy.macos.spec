@@ -16,12 +16,12 @@ exec_directory = .
 project_file = 
 
 # application icon
-icon = D:\Work\PythonProjects\LLLLFridaGUI\.venv\Lib\site-packages\PySide6\scripts\deploy_lib\pyside_icon.ico
+icon = /opt/homebrew/Caskroom/miniconda/base/lib/python3.13/site-packages/PySide6/scripts/deploy_lib/pyside_icon.icns
 
 [python]
 
 # python path
-python_path = D:\Work\PythonProjects\LLLLFridaGUI\.venv\Scripts\python.exe
+python_path = /opt/homebrew/Caskroom/miniconda/base/bin/python
 
 # python packages to install
 packages = Nuitka==2.7.11
@@ -40,7 +40,7 @@ qml_files =
 excluded_qml_plugins = 
 
 # qt modules used. comma separated
-modules = Core,Gui,Widgets
+modules = Core,DBus,Gui,Widgets
 
 # qt plugins used by the application. only relevant for desktop deployment
 # for qt plugins used in android application see [android][plugins]
