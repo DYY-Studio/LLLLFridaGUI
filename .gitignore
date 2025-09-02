@@ -10,4 +10,6 @@ pyside_app_demo.app
 deployment
 *.exe
 *.app
+*.zip
+*.7z
 LLLLToolGUI.dist
