@@ -1,0 +1,8 @@
+__pycache__
+config.json
+frida/node_modules
+frida/.gitignore
+.DS_Store
+archive-details.json
+archive.json
+pyside_app_demo.app

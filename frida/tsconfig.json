@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "lib": [ "es2022", "DOM" ],
+      "rootDir": "./src",
+      "outDir": "./dist",
+      "experimentalDecorators": true,
+      "module": "nodenext",
+      "allowJs": false,
+      "noEmit": false,
+      "esModuleInterop": false,
+      "moduleResolution": "nodenext",
+      "strict": true,
+      "sourceMap": true
+    },
+    "files": [ "./src/index.ts" ]
+}
