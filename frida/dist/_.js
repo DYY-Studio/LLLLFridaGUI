@@ -1,5 +1,5 @@
 📦
-147841 /src/index.js
+147875 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3321,15 +3321,16 @@ globalThis.Il2Cpp = Il2Cpp2;
 // src/index.ts
 var globalConfig = {
   "MagicaClothSimulationFrequency": 120,
+  "MagicaClothSimulationCountPerFrame": 5,
   "LowQualityLongSide": 1920,
   "MediumQualityLongSide": 2880,
   "HighQualityLongSide": 3840,
   "MaximumFPS": 60,
-  "OrientationModify": true,
-  "ForceRotate": true,
+  "OrientationModify": false,
+  "ForceRotate": false,
   "RemoveImgCover": false,
   "AntiAliasing": 8,
-  "ModifyWithToFes": true,
+  "ModifyWithToFes": false,
   "LocalizeArchive": false,
   "TargetClientVersion": "",
   "TargetResVersion": ""
@@ -3368,12 +3369,12 @@ Il2Cpp.perform(() => {
   const Core = Il2Cpp.domain.assembly("Core");
   const AssemblyCSharp = Il2Cpp.domain.assembly("Assembly-CSharp");
   MagicaManager.method("SetSimulationFrequency").implementation = function(frequency) {
-    console.log(`\u3010SetSimulationFrequency\u3011${frequency}, modify to 120`);
+    console.log(`\u3010SetSimulationFrequency\u3011${frequency}, modify to ${globalConfig["MagicaClothSimulationFrequency"]}`);
     return this.method("SetSimulationFrequency").invoke(globalConfig["MagicaClothSimulationFrequency"]);
   };
   MagicaManager.method("SetMaxSimulationCountPerFrame").implementation = function(count) {
-    console.log(`\u3010SetMaxSimulationCountPerFrame\u3011${count}, modify to 5`);
-    return this.method("SetMaxSimulationCountPerFrame").invoke(5);
+    console.log(`\u3010SetMaxSimulationCountPerFrame\u3011${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`);
+    return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame);
   };
   const Global = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
   const SaveDataStorage = Global.method("get_SaveData").invoke();
@@ -3621,7 +3622,6 @@ Il2Cpp.perform(() => {
   const GetFesArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetFesArchiveDataResponse");
   const globalClass = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
   globalClass.method("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function(serverResver) {
-    console.log("serverResver:", serverResver, globalConfig["TargetResVersion"]);
     var result = true;
     if (globalConfig["TargetResVersion"]) {
       result = this.method("TryUpdatedRequestedResourceVersion").invoke(Il2Cpp.string(globalConfig["TargetResVersion"]));
@@ -3665,7 +3665,6 @@ Il2Cpp.perform(() => {
         }
       }
     }
-    console.log(path, postBody, queryParams);
     return this.method("CallApiAsync").invoke(path, method, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken);
   };
   var fesCameraCache = {
@@ -3778,7 +3777,6 @@ Il2Cpp.perform(() => {
       result.method("set_CameraType").invoke(fesCameraCache.CameraType);
       result.method("set_FocusCharacterId").invoke(fesCameraCache.FocusCharacterId);
     }
-    console.log(result);
     return result;
   };
   Core.image.class("Hailstorm.Catalog").method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").implementation = function(manifest, stream) {
