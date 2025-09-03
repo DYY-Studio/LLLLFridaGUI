@@ -5,6 +5,16 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtWidgets import QMessageBox
 from typing import Optional
 
+logger = logging.getLogger("MainLogger")
+logger.setLevel(logging.INFO)
+
+
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+console_handler.setFormatter(logging.Formatter('[%(asctime)s][%(levelname)s] %(message)s'))
+logger.addHandler(console_handler)
+
 app = QtWidgets.QApplication(sys.argv)
 
 COMPILE_WHEN_START = False # DEBUG专用，启动时需要等待NPM进行编译
@@ -17,7 +27,7 @@ def exceptionHandle(exc_type, exc_value, exc_traceback):
 
     tb_str = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
 
-    logging.exception("Uncaught exception:", tb_str)
+    logger.exception("Uncaught exception:", tb_str)
 
     # 弹出消息框
     crushMsgBox = QtWidgets.QMessageBox()
@@ -62,7 +72,7 @@ if COMPILE_WHEN_START:
     progressDialog = QtWidgets.QProgressDialog()
     def npmCanceled():
         if npmProcess.state() != QtCore.QProcess.ProcessState.NotRunning:
-            logging.info("npm install canceled")
+            logger.info("npm install canceled")
             npmProcess.terminate()
             npmProcess.kill()
             progressDialog.close()
@@ -78,7 +88,7 @@ if COMPILE_WHEN_START:
     def npmFinished(exitCode, exitStatus):
         if exitStatus == QtCore.QProcess.ExitStatus.NormalExit and exitCode == 0:
             progressDialog.close()
-            logging.info("npm install finished")
+            logger.info("npm install finished")
             npmProcess.finished.disconnect()
             runBuildArguments = ["run", "build"]
             npmProcess.setArguments(runBuildArguments)
@@ -92,7 +102,7 @@ if COMPILE_WHEN_START:
             msgBox.exec()
             sys.exit(1)
 
-    logging.info("Please wait for npm install")
+    logger.info("Please wait for npm install")
     installArguments = ['install', '--verbose', '--registry', 'https://mirrors.cloud.tencent.com/npm/']
     npmProcess.setArguments(installArguments)
     npmProcess.finished.connect(npmFinished)
@@ -125,7 +135,7 @@ def onChangeConnectMethod(idx: int):
         for d in devices:
             ui.connectDeviceComboBox.addItem(f'{d.name} ({d.id})', d)
     except:
-        toolBarLabel.setText('Error: Failed to get devices')
+        logger.error('Failed to get devices')
         ui.connectDeviceComboBox.clear()
         devices = None
 
@@ -273,7 +283,7 @@ def onAttach():
 
     def doAttach():
         ui.attachBtn.setEnabled(False)
-        toolBarLabel.setText("Attaching, please wait...")
+        logger.info("Attaching, please wait...")
         QtCore.QMetaObject.invokeMethod(
             fridaWorker, 
             "attach", 
@@ -415,7 +425,12 @@ def messageHandle(msg: str):
         cursor.select(cursor.SelectionType.BlockUnderCursor)
         cursor.removeSelectedText()
         cursor.deleteChar()
-    ui.logPlainTextEdit.appendPlainText(datetime.datetime.now().strftime("[%Y/%m/%d %H:%M:%S] ") + msg)
+    ui.logPlainTextEdit.appendPlainText(msg)
+
+    if ui.autoScrollLogCheckBox.isChecked():
+        scrollBar = ui.logPlainTextEdit.verticalScrollBar()
+        if scrollBar.value() != scrollBar.maximum():
+            scrollBar.setValue(scrollBar.maximum())
 
 class RequestWorker(QtCore.QObject):
     finished = QtCore.Signal(requests.Response)
@@ -516,7 +531,7 @@ class RequestReceiver(QtCore.QObject):
         if res.status_code == 200:
             with open(os.path.realpath(fileName), mode = 'w', encoding = 'utf-8') as f:
                 f.write(res.text)
-                toolBarLabel.setText(f'{fileName} done')
+                logger.info(f'{fileName} done')
             if fileName == 'archive-details.json':
                 ARCHIVE_DETAILS = res.json()
                 doMakeRequest(ARCHIVE_LIST_URLS[0])
@@ -535,15 +550,26 @@ class RequestReceiver(QtCore.QObject):
                     idx = urls.index(res.url)
                     if idx < len(urls) - 1:
                         doMakeRequest(urls[idx + 1])
-                        toolBarLabel.setText(f'{fileName} failed, retrying...')
+                        logger.info(f'{fileName} failed, retrying...')
                     else:
                         QtCore.QTimer.singleShot(5000, doGetResVersion)
-                        toolBarLabel.setText(f'{fileName} failed')
+                        logger.info(f'{fileName} failed')
 
 requestReceiver = RequestReceiver()
 requestWorker.finished.connect(requestReceiver.requestFinished)
 
-doMakeRequest(ARCHIVE_DETAILS_URLS[0])
+class LogEmitter(QtCore.QObject):
+    log_signal = QtCore.Signal(str)
+
+class QtLogHandler(logging.Handler):
+    def __init__(self):
+        super().__init__()
+        self.emitter = LogEmitter()
+
+    def emit(self, record):
+        msg = self.format(record)
+        toolBarLabel.setText(msg)
+        self.emitter.log_signal.emit(msg)
 
 CFG_PATH = os.path.join(PROGRAM_DIR, 'config.json')
 
@@ -570,9 +596,23 @@ if __name__ == '__main__':
     ui.attachBtn.clicked.connect(onAttach)
     ui.closeBtn.clicked.connect(onDetach)
 
-    fridaWorker.log_sig.connect(messageHandle)
-    fridaWorker.status_sig.connect(messageHandle)
-    fridaWorker.error_sig.connect(messageHandle)
+    guiLogHandler = QtLogHandler()
+    guiLogHandler.setFormatter(
+        logging.Formatter(fmt='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
+    )
+    guiLogHandler.setLevel(logging.INFO)
+    guiLogHandler.emitter.log_signal.connect(messageHandle)
+    logger.addHandler(guiLogHandler)
+
+    doMakeRequest(ARCHIVE_DETAILS_URLS[0])
+
+    def fridaInfoMsg(msg):
+        logger.info(msg)
+    def fridaErrorMsg(msg):
+        logger.error(msg)
+    fridaWorker.log_sig.connect(fridaInfoMsg)
+    fridaWorker.status_sig.connect(fridaInfoMsg)
+    fridaWorker.error_sig.connect(fridaErrorMsg)
 
     fridaWorker.connected_sig.connect(onAttachResult)
 

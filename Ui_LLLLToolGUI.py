@@ -353,11 +353,6 @@ class Ui_L4ToolMW(object):
         self.tab.setObjectName(u"tab")
         self.gridLayout_8 = QGridLayout(self.tab)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
-        self.label_6 = QLabel(self.tab)
-        self.label_6.setObjectName(u"label_6")
-
-        self.gridLayout_8.addWidget(self.label_6, 0, 0, 1, 1)
-
         self.logMaxSpinBox = QSpinBox(self.tab)
         self.logMaxSpinBox.setObjectName(u"logMaxSpinBox")
         self.logMaxSpinBox.setMinimum(100)
@@ -367,11 +362,21 @@ class Ui_L4ToolMW(object):
 
         self.gridLayout_8.addWidget(self.logMaxSpinBox, 0, 1, 1, 1)
 
+        self.label_6 = QLabel(self.tab)
+        self.label_6.setObjectName(u"label_6")
+
+        self.gridLayout_8.addWidget(self.label_6, 0, 0, 1, 1)
+
+        self.autoScrollLogCheckBox = QCheckBox(self.tab)
+        self.autoScrollLogCheckBox.setObjectName(u"autoScrollLogCheckBox")
+
+        self.gridLayout_8.addWidget(self.autoScrollLogCheckBox, 0, 2, 1, 1)
+
         self.logPlainTextEdit = QPlainTextEdit(self.tab)
         self.logPlainTextEdit.setObjectName(u"logPlainTextEdit")
         self.logPlainTextEdit.setReadOnly(True)
 
-        self.gridLayout_8.addWidget(self.logPlainTextEdit, 1, 0, 1, 2)
+        self.gridLayout_8.addWidget(self.logPlainTextEdit, 1, 0, 1, 3)
 
         self.tabWidget.addTab(self.tab, "")
 
@@ -519,8 +524,9 @@ class Ui_L4ToolMW(object):
 #endif // QT_CONFIG(tooltip)
         self.label_9.setText(QCoreApplication.translate("L4ToolMW", u"LLLL\u6240\u5728\u8bbe\u5907\u7684\u64cd\u4f5c\u7cfb\u7edf", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancePage), QCoreApplication.translate("L4ToolMW", u"\u9ad8\u7ea7", None))
-        self.label_6.setText(QCoreApplication.translate("L4ToolMW", u"Log\u7f13\u5b58\u884c\u6570", None))
         self.logMaxSpinBox.setSuffix(QCoreApplication.translate("L4ToolMW", u" \u884c", None))
+        self.label_6.setText(QCoreApplication.translate("L4ToolMW", u"Log\u7f13\u5b58\u884c\u6570", None))
+        self.autoScrollLogCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u6eda\u52a8", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("L4ToolMW", u"Log", None))
         self.toolBar.setWindowTitle(QCoreApplication.translate("L4ToolMW", u"toolBar", None))
     # retranslateUi
