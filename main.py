@@ -444,7 +444,7 @@ class RequestWorker(QtCore.QObject):
     def get(self, url: str):
         self.finished.emit(requests.get(url))
 
-requestThread = QtCore.QThread()
+requestThread = QtCore.QThread(app)
 requestWorker = RequestWorker()
 requestWorker.moveToThread(requestThread)
 requestThread.start()
@@ -644,5 +644,5 @@ if __name__ == '__main__':
         mainWindow.show()
 
     app.aboutToQuit.connect(onAppExit)
-    
+
     sys.exit(app.exec())
