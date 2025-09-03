@@ -8,8 +8,6 @@ from typing import Optional
 logger = logging.getLogger("MainLogger")
 logger.setLevel(logging.INFO)
 
-
-
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(logging.Formatter('[%(asctime)s][%(levelname)s] %(message)s'))
@@ -418,7 +416,9 @@ def resolutionInputCheck(text: str):
             QMessageBox.warning(mainWindow, 'Warning', 'Please input a valid resolution!\nThe resolution must be <number>x<number>')
 
 def messageHandle(msg: str):
-    toolBarLabel.setText(msg)
+    toolBarLabel.setText(
+        toolBarLabel.fontMetrics().elidedText(msg, QtCore.Qt.TextElideMode.ElideRight, toolBarLabel.width())
+    )
     cursor: QtGui.QTextCursor = ui.logPlainTextEdit.textCursor()
     while ui.logPlainTextEdit.blockCount() > ui.logMaxSpinBox.value():
         cursor.movePosition(cursor.MoveOperation.Start)
@@ -579,6 +579,7 @@ if __name__ == '__main__':
     ui = Ui_L4ToolMW()
     ui.setupUi(mainWindow)
     toolBarLabel = QtWidgets.QLabel("Not connected")
+    toolBarLabel.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
     ui.toolBar.addWidget(toolBarLabel)
 
     ui.checkBoxGroup.setEnabled(False)
