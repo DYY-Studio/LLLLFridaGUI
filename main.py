@@ -9,6 +9,28 @@ app = QtWidgets.QApplication(sys.argv)
 
 COMPILE_WHEN_START = False # DEBUG专用，启动时需要等待NPM进行编译
 
+def exceptionHandle(exc_type, exc_value, exc_traceback):
+    """全局异常处理函数"""
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    tb_str = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+
+    logging.exception("Uncaught exception:", tb_str)
+
+    # 弹出消息框
+    crushMsgBox = QtWidgets.QMessageBox()
+    crushMsgBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+    crushMsgBox.setWindowTitle("错误")
+    crushMsgBox.setText("程序发生未处理的异常")
+    crushMsgBox.setDetailedText(tb_str)
+    crushMsgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+    crushMsgBox.exec()
+
+if __name__ == "__main__":
+    sys.excepthook = exceptionHandle
+
 PROGRAM_DIR = os.path.dirname(os.path.realpath(sys.argv[0]))
 if not os.access(PROGRAM_DIR, os.W_OK):
     QMessageBox.critical(None, 'Error', 'Program directory is not writable.\nPlease run the program as administrator.\nOr move the program to a writable directory.')
