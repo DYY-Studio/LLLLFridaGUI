@@ -46,7 +46,7 @@ if not os.access(PROGRAM_DIR, os.W_OK):
 
 FRIDA_DIR = os.path.join(PROGRAM_DIR, 'frida')
 FRIDA_SCRIPT = os.path.join(FRIDA_DIR, 'dist', '_.js')
-npmProcess = QtCore.QProcess()
+npmProcess = QtCore.QProcess(app)
 
 if COMPILE_WHEN_START:
     NPM_PROGRAM = shutil.which('npm')
@@ -272,7 +272,7 @@ class FridaWorker(QtCore.QObject):
             self.error_sig.emit(f"Crash info: {crash}")
 
 
-fridaThread = QtCore.QThread()
+fridaThread = QtCore.QThread(app)
 fridaWorker = FridaWorker()
 fridaWorker.moveToThread(fridaThread)
 fridaThread.start()
@@ -571,6 +571,21 @@ class QtLogHandler(logging.Handler):
         toolBarLabel.setText(msg)
         self.emitter.log_signal.emit(msg)
 
+def onAppExit():
+    requestThread.quit()
+    if not requestThread.wait(5):
+        requestThread.terminate()
+    fridaThread.quit()
+    if not fridaThread.wait(5):
+        fridaThread.terminate()
+    if npmProcess.state() != QtCore.QProcess.ProcessState.NotRunning:
+        npmProcess.terminate()
+        if not fridaThread.wait(5):
+            npmProcess.kill()
+
+    with open(CFG_PATH, mode='w', encoding='utf-8') as f:
+        f.write(generateCfg())
+
 CFG_PATH = os.path.join(PROGRAM_DIR, 'config.json')
 
 if __name__ == '__main__':
@@ -628,20 +643,8 @@ if __name__ == '__main__':
     if not COMPILE_WHEN_START:
         mainWindow.show()
 
-    exitCode = app.exec() 
-    
-    requestThread.quit()
-    if not requestThread.wait(5):
-        requestThread.terminate()
-    fridaThread.quit()
-    if not fridaThread.wait(5):
-        fridaThread.terminate()
-    if npmProcess.state() != QtCore.QProcess.ProcessState.NotRunning:
-        npmProcess.terminate()
-        if not fridaThread.wait(5):
-            npmProcess.kill()
+    app.aboutToQuit.connect(onAppExit)
 
-    with open(CFG_PATH, mode='w', encoding='utf-8') as f:
-        f.write(generateCfg())
+    exitCode = app.exec() 
 
     sys.exit(exitCode)
