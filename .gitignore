@@ -5,6 +5,8 @@ frida/.gitignore
 .DS_Store
 archive-details.json
 archive.json
+client-res-ios.json
+client-res.json
 pyside_app_demo.app
 .venv
 deployment

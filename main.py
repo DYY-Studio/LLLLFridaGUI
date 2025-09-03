@@ -130,8 +130,9 @@ def onChangeConnectMethod(idx: int):
                 devices = None
                 ui.connectDeviceComboBox.setEditable(True)
         ui.connectDeviceComboBox.clear()
-        for d in devices:
-            ui.connectDeviceComboBox.addItem(f'{d.name} ({d.id})', d)
+        if devices:
+            for d in devices:
+                ui.connectDeviceComboBox.addItem(f'{d.name} ({d.id})', d)
     except:
         logger.error('Failed to get devices')
         ui.connectDeviceComboBox.clear()
