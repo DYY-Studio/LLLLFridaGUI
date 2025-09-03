@@ -25,7 +25,7 @@ class Ui_L4ToolMW(object):
     def setupUi(self, L4ToolMW):
         if not L4ToolMW.objectName():
             L4ToolMW.setObjectName(u"L4ToolMW")
-        L4ToolMW.resize(470, 507)
+        L4ToolMW.resize(470, 529)
         self.centralwidget = QWidget(L4ToolMW)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -136,21 +136,19 @@ class Ui_L4ToolMW(object):
         self.changableGroup.setObjectName(u"changableGroup")
         self.gridLayout_4 = QGridLayout(self.changableGroup)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.label_5 = QLabel(self.changableGroup)
+        self.label_5.setObjectName(u"label_5")
+        sizePolicy1.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_4.addWidget(self.label_5, 3, 0, 1, 1)
+
         self.label_4 = QLabel(self.changableGroup)
         self.label_4.setObjectName(u"label_4")
         sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
         self.label_4.setSizePolicy(sizePolicy1)
 
         self.gridLayout_4.addWidget(self.label_4, 2, 0, 1, 1)
-
-        self.simulationFrequencySpinBox = QSpinBox(self.changableGroup)
-        self.simulationFrequencySpinBox.setObjectName(u"simulationFrequencySpinBox")
-        self.simulationFrequencySpinBox.setMinimum(30)
-        self.simulationFrequencySpinBox.setMaximum(150)
-        self.simulationFrequencySpinBox.setSingleStep(5)
-        self.simulationFrequencySpinBox.setValue(120)
-
-        self.gridLayout_4.addWidget(self.simulationFrequencySpinBox, 3, 1, 1, 1)
 
         self.antiAliasComboBox = QComboBox(self.changableGroup)
         self.antiAliasComboBox.addItem("")
@@ -160,6 +158,15 @@ class Ui_L4ToolMW(object):
         self.antiAliasComboBox.setObjectName(u"antiAliasComboBox")
 
         self.gridLayout_4.addWidget(self.antiAliasComboBox, 2, 1, 1, 1)
+
+        self.maxFPSSpinBox = QSpinBox(self.changableGroup)
+        self.maxFPSSpinBox.setObjectName(u"maxFPSSpinBox")
+        self.maxFPSSpinBox.setMinimum(10)
+        self.maxFPSSpinBox.setMaximum(1000)
+        self.maxFPSSpinBox.setSingleStep(10)
+        self.maxFPSSpinBox.setValue(60)
+
+        self.gridLayout_4.addWidget(self.maxFPSSpinBox, 1, 1, 1, 1)
 
         self.groupBox_5 = QGroupBox(self.changableGroup)
         self.groupBox_5.setObjectName(u"groupBox_5")
@@ -234,13 +241,6 @@ class Ui_L4ToolMW(object):
 
         self.gridLayout_4.addWidget(self.groupBox_5, 0, 0, 1, 2)
 
-        self.label_5 = QLabel(self.changableGroup)
-        self.label_5.setObjectName(u"label_5")
-        sizePolicy1.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy1)
-
-        self.gridLayout_4.addWidget(self.label_5, 3, 0, 1, 1)
-
         self.label_10 = QLabel(self.changableGroup)
         self.label_10.setObjectName(u"label_10")
         sizePolicy1.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
@@ -248,14 +248,28 @@ class Ui_L4ToolMW(object):
 
         self.gridLayout_4.addWidget(self.label_10, 1, 0, 1, 1)
 
-        self.maxFPSSpinBox = QSpinBox(self.changableGroup)
-        self.maxFPSSpinBox.setObjectName(u"maxFPSSpinBox")
-        self.maxFPSSpinBox.setMinimum(10)
-        self.maxFPSSpinBox.setMaximum(1000)
-        self.maxFPSSpinBox.setSingleStep(10)
-        self.maxFPSSpinBox.setValue(60)
+        self.simulationFrequencySpinBox = QSpinBox(self.changableGroup)
+        self.simulationFrequencySpinBox.setObjectName(u"simulationFrequencySpinBox")
+        self.simulationFrequencySpinBox.setMinimum(30)
+        self.simulationFrequencySpinBox.setMaximum(150)
+        self.simulationFrequencySpinBox.setSingleStep(5)
+        self.simulationFrequencySpinBox.setValue(120)
 
-        self.gridLayout_4.addWidget(self.maxFPSSpinBox, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.simulationFrequencySpinBox, 3, 1, 1, 1)
+
+        self.label_11 = QLabel(self.changableGroup)
+        self.label_11.setObjectName(u"label_11")
+
+        self.gridLayout_4.addWidget(self.label_11, 4, 0, 1, 1)
+
+        self.simulationCountPerFrameSpinBox = QSpinBox(self.changableGroup)
+        self.simulationCountPerFrameSpinBox.setObjectName(u"simulationCountPerFrameSpinBox")
+        self.simulationCountPerFrameSpinBox.setMinimum(1)
+        self.simulationCountPerFrameSpinBox.setMaximum(5)
+        self.simulationCountPerFrameSpinBox.setSingleStep(1)
+        self.simulationCountPerFrameSpinBox.setValue(5)
+
+        self.gridLayout_4.addWidget(self.simulationCountPerFrameSpinBox, 4, 1, 1, 1)
 
 
         self.gridLayout_2.addWidget(self.changableGroup, 2, 0, 3, 1)
@@ -448,15 +462,16 @@ class Ui_L4ToolMW(object):
 #endif // QT_CONFIG(tooltip)
         self.closeBtn.setText(QCoreApplication.translate("L4ToolMW", u"\u65ad\u5f00", None))
         self.changableGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u53ef\u8c03\u529f\u80fd", None))
+        self.label_5.setText(QCoreApplication.translate("L4ToolMW", u"\u7269\u7406\u6a21\u62df\u9891\u7387", None))
         self.label_4.setText(QCoreApplication.translate("L4ToolMW", u"\u6297\u952f\u9f7f\u5f3a\u5ea6", None))
-#if QT_CONFIG(tooltip)
-        self.simulationFrequencySpinBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u8bbe\u7f6e\u5e03\u6599\u6a21\u62df\u9891\u7387</span></p><p>\u5b98\u65b9\u63a8\u8350\u503c\u4e3a90\uff0c\u5e94\u7528\u9ed8\u8ba4\u4e3a50</p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
         self.antiAliasComboBox.setItemText(0, QCoreApplication.translate("L4ToolMW", u"\u7981\u7528", None))
         self.antiAliasComboBox.setItemText(1, QCoreApplication.translate("L4ToolMW", u"2x", None))
         self.antiAliasComboBox.setItemText(2, QCoreApplication.translate("L4ToolMW", u"4x", None))
         self.antiAliasComboBox.setItemText(3, QCoreApplication.translate("L4ToolMW", u"8x", None))
 
+#if QT_CONFIG(tooltip)
+        self.maxFPSSpinBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u8bbe\u7f6e\u6574\u4e2a\u7a0b\u5e8f\u7684\u6700\u9ad8\u5e27\u7387</span></p><p>\u5982\u679c\u8bbe\u7f6e\u8d85\u8fc7\u5237\u65b0\u7387\uff0c\u5e94\u7528\u65f6\u4f1a\u88ab\u8c03\u4f4e\u81f3\u5237\u65b0\u7387</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.groupBox_5.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u624b\u52a8\u63a7\u5236Fes\u00d7LIVE\u4e0eWith\u00d7MEETS\u7684\u6e32\u67d3\u5206\u8fa8\u7387</span></p><p>\u4fee\u6539\u540e\u9700\u8981\u5207\u6362\u753b\u9762\u8d28\u91cf\u6863\u4f4d\u624d\u80fd\u751f\u6548</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
@@ -494,10 +509,13 @@ class Ui_L4ToolMW(object):
         self.highResolutionComboBox.setItemText(7, QCoreApplication.translate("L4ToolMW", u"3200x1800", None))
         self.highResolutionComboBox.setItemText(8, QCoreApplication.translate("L4ToolMW", u"3840x2160", None))
 
-        self.label_5.setText(QCoreApplication.translate("L4ToolMW", u"\u7269\u7406\u6a21\u62df\u9891\u7387", None))
         self.label_10.setText(QCoreApplication.translate("L4ToolMW", u"\u6700\u9ad8\u5e27\u7387", None))
 #if QT_CONFIG(tooltip)
-        self.maxFPSSpinBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u8bbe\u7f6e\u6574\u4e2a\u7a0b\u5e8f\u7684\u6700\u9ad8\u5e27\u7387</span></p><p>\u5982\u679c\u8bbe\u7f6e\u8d85\u8fc7\u5237\u65b0\u7387\uff0c\u5e94\u7528\u65f6\u4f1a\u88ab\u8c03\u4f4e\u81f3\u5237\u65b0\u7387</p></body></html>", None))
+        self.simulationFrequencySpinBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u8bbe\u7f6e\u5e03\u6599\u6a21\u62df\u9891\u7387</span></p><p>\u5b98\u65b9\u63a8\u8350\u503c\u4e3a90\uff0c\u5e94\u7528\u9ed8\u8ba4\u4e3a50</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_11.setText(QCoreApplication.translate("L4ToolMW", u"\u7269\u7406\u6a21\u62df\u6bcf\u5e27", None))
+#if QT_CONFIG(tooltip)
+        self.simulationCountPerFrameSpinBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u8bbe\u7f6e\u6bcf\u5e27\u5e03\u6599\u6a21\u62df\u6b21\u6570</span></p><p>\u5b98\u65b9\u63a8\u8350\u503c\u4e3a3\uff0c\u5e94\u7528\u9ed8\u8ba4\u4e3a5</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.attachBtn.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p>\u9644\u52a0Frida\u5230LLLL\u8fdb\u7a0b</p></body></html>", None))

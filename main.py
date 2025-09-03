@@ -333,6 +333,7 @@ def readCfg(cfgPath: str):
         with open(cfgPath, mode="r", encoding="utf-8") as f:
             cfg: dict[str, str] = json.load(f)
             ui.simulationFrequencySpinBox.setValue(cfg.get("MagicaClothSimulationFrequency", 120))
+            ui.simulationCountPerFrameSpinBox.setValue(cfg.get("MagicaClothSimulationCountPerFrame", 5))
             ui.maxFPSSpinBox.setValue(cfg.get("MaximumFPS", 60))
             ui.blockRotationCheckBox.setChecked(cfg.get("OrientationModify", False))
             ui.forceRotateCheckBox.setChecked(cfg.get("ForceRotate", False))
@@ -371,6 +372,7 @@ def generateCfg():
 
     return json.dumps({
         "MagicaClothSimulationFrequency": ui.simulationFrequencySpinBox.value(),
+        "MagicaClothSimulationCountPerFrame": ui.simulationCountPerFrameSpinBox.value(),
         "LowQualityLongSide": LQLongSide,
         "MediumQualityLongSide": MQLongSide,
         "HighQualityLongSide": HQLongSide,
@@ -637,6 +639,8 @@ if __name__ == '__main__':
     ui.highResolutionComboBox.editTextChanged.connect(resolutionInputCheck)
 
     ui.getResVersionsBtn.clicked.connect(doGetResVersion)
+
+    ui.updateArchiveDetailsBtn.clicked.connect(doUpdateArchiveDetails)
 
     if os.path.exists(CFG_PATH): readCfg(CFG_PATH)
 

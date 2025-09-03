@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>470</width>
-    <height>507</height>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -214,6 +214,19 @@
            <string>可调功能</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>物理模拟频率</string>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_4">
              <property name="sizePolicy">
@@ -224,25 +237,6 @@
              </property>
              <property name="text">
               <string>抗锯齿强度</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QSpinBox" name="simulationFrequencySpinBox">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;设置布料模拟频率&lt;/span&gt;&lt;/p&gt;&lt;p&gt;官方推荐值为90，应用默认为50&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="minimum">
-              <number>30</number>
-             </property>
-             <property name="maximum">
-              <number>150</number>
-             </property>
-             <property name="singleStep">
-              <number>5</number>
-             </property>
-             <property name="value">
-              <number>120</number>
              </property>
             </widget>
            </item>
@@ -271,6 +265,25 @@
                <string>8x</string>
               </property>
              </item>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="maxFPSSpinBox">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;设置整个程序的最高帧率&lt;/span&gt;&lt;/p&gt;&lt;p&gt;如果设置超过刷新率，应用时会被调低至刷新率&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>10</number>
+             </property>
+             <property name="maximum">
+              <number>1000</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>60</number>
+             </property>
             </widget>
            </item>
            <item row="0" column="0" colspan="2">
@@ -489,19 +502,6 @@
              </layout>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>物理模拟频率</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_10">
              <property name="sizePolicy">
@@ -515,22 +515,48 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="maxFPSSpinBox">
+           <item row="3" column="1">
+            <widget class="QSpinBox" name="simulationFrequencySpinBox">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;设置整个程序的最高帧率&lt;/span&gt;&lt;/p&gt;&lt;p&gt;如果设置超过刷新率，应用时会被调低至刷新率&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;设置布料模拟频率&lt;/span&gt;&lt;/p&gt;&lt;p&gt;官方推荐值为90，应用默认为50&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <number>10</number>
+              <number>30</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>150</number>
              </property>
              <property name="singleStep">
-              <number>10</number>
+              <number>5</number>
              </property>
              <property name="value">
-              <number>60</number>
+              <number>120</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>物理模拟每帧</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QSpinBox" name="simulationCountPerFrameSpinBox">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;设置每帧布料模拟次数&lt;/span&gt;&lt;/p&gt;&lt;p&gt;官方推荐值为3，应用默认为5&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>5</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>5</number>
              </property>
             </widget>
            </item>

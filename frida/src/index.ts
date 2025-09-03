@@ -2,6 +2,7 @@ import "frida-il2cpp-bridge";
 
 let globalConfig = {
     "MagicaClothSimulationFrequency": 120,
+    "MagicaClothSimulationCountPerFrame": 5,
     "LowQualityLongSide": 1920,
     "MediumQualityLongSide": 2880,
     "HighQualityLongSide": 3840,
@@ -63,12 +64,12 @@ Il2Cpp.perform(() => {
 
     // 修改MagicaClothV2的模拟频率
     MagicaManager.method("SetSimulationFrequency").implementation = function (frequency) {
-        console.log(`【SetSimulationFrequency】${frequency}, modify to 120`)
+        console.log(`【SetSimulationFrequency】${frequency}, modify to ${globalConfig["MagicaClothSimulationFrequency"]}`)
         return this.method("SetSimulationFrequency").invoke(globalConfig["MagicaClothSimulationFrequency"])
     }
     MagicaManager.method("SetMaxSimulationCountPerFrame").implementation = function (count) {
-        console.log(`【SetMaxSimulationCountPerFrame】${count}, modify to 5`)
-        return this.method("SetMaxSimulationCountPerFrame").invoke(5)
+        console.log(`【SetMaxSimulationCountPerFrame】${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`)
+        return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame)
     }
 
     const Global = AssemblyCSharp.image.class("Global").method("get_Instance").invoke() as Il2Cpp.Object
