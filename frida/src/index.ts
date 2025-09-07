@@ -268,16 +268,16 @@ Il2Cpp.perform(() => {
     /**
      *  这是为了便于我录制全身Focus而将Focus向下旋转9.0
      */ 
-    AssemblyCSharp.image.class("School.LiveMain.IdolFrontCraneCamera").method("CalculateDefaultLocalRotation").implementation = function () {
-        const result = this.method("CalculateDefaultLocalRotation").invoke() as Il2Cpp.Object
+    // AssemblyCSharp.image.class("School.LiveMain.IdolFrontCraneCamera").method("CalculateDefaultLocalRotation").implementation = function () {
+    //     const result = this.method("CalculateDefaultLocalRotation").invoke() as Il2Cpp.Object
 
-        const current = result.handle.add(0x00).readFloat()
-        if (current > 9.0) {
-            result.handle.add(0x00).writeFloat(current - 9.0)
-        }
+    //     const current = result.handle.add(0x00).readFloat()
+    //     if (current > 9.0) {
+    //         result.handle.add(0x00).writeFloat(current - 9.0)
+    //     }
 
-        return result
-    }
+    //     return result
+    // }
     
     /**
      * 调整Focus，解除其移动和旋转限制，扩展FOV可调范围，提高灵敏度
@@ -408,36 +408,6 @@ Il2Cpp.perform(() => {
         this.method("<Awake>b__9_0").invoke(objValue)
     }
 
-    // 修改Archive列表的Live数据
-    const LiveInfo =  AssemblyCSharp.image.class("Org.OpenAPITools.Model.LiveInfo")
-    // LiveInfo.method("set_LiveType").implementation = function(liveType) {
-    //     var numLiveType = (liveType as Il2Cpp.ValueType).field<number>("value__").value
-    //     if (globalConfig['ModifyWithToFes']) {
-    //         numLiveType = 1
-    //     }
-    //     this.method("set_LiveType").invoke(numLiveType)
-    // }
-
-    // LiveInfo.method("set_HasExtraAdmission").implementation = function(has) {
-    //     this.method("set_HasExtraAdmission").invoke(true)
-    // }
-
-    // LiveInfo.method("set_EarnedStarCount").implementation = function(star) {
-    //     this.method("set_EarnedStarCount").invoke(4)
-    // }
-
-    // LiveInfo.method("set_IsScheduledStartTimeVisible").implementation = function(isVisible) {
-    //     this.method("set_IsScheduledStartTimeVisible").invoke(true)
-    // }
-
-    // LiveInfo.method("set_TicketRank").implementation = function (ticketRank) {
-    //     var numTicketRank = (ticketRank as Il2Cpp.ValueType).field<number>("value__").value
-    //     if (globalConfig.ModifyWithToFes || globalConfig.LocalizeArchive) {
-    //         numTicketRank = 6
-    //     }
-    //     this.method("set_TicketRank").invoke(numTicketRank)
-    // }
-
     // Archive修改相关结构
     type LiveChapter = {
         is_available: boolean,
@@ -510,6 +480,7 @@ Il2Cpp.perform(() => {
         TimelineUnixtime: number
     }
 
+    // 从CallAPIAsync截获请求数据，修改头部伪装客户端版本，修改路径在Fes×LIVE启动With×MEETS时请求With×MEETS数据
     AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("CallApiAsync").implementation = function (
         path, method, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken
     ){
@@ -569,6 +540,7 @@ Il2Cpp.perform(() => {
         FocusCharacterId: 0
     }
 
+    // 从序列化函数下手，将Fes启动With时的镜头设置请求统一设置为请求25/08/29 Fes×LIVE
     AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("Serialize").implementation = function (obj) {
         const objObj = obj as Il2Cpp.Object
         if (globalConfig.ModifyWithToFes && objObj.class.fullName == "Org.OpenAPITools.Model.SetFesCameraRequest") {
@@ -585,6 +557,7 @@ Il2Cpp.perform(() => {
         return this.method("Serialize").invoke(objObj)
     }
 
+    // 从反序列化函数下手，伪造返回的客户端版本值，将Fes启动With时的各个请求还原为Fes×LIVE类型
     AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("Deserialize").implementation = function (response, returnType) {
         const objResponse = response as Il2Cpp.Object
         if (globalConfig.TargetResVersion) {
@@ -670,8 +643,6 @@ Il2Cpp.perform(() => {
                     listCameraType
                 );
                 [1, 2, 3, 4].forEach(i => {
-                    // const objCameraType = cameraType.new()
-                    // objCameraType.field<number>("value__").value = i
                     listCameraType.method("Add").invoke(i)
                 })
             }
@@ -698,6 +669,7 @@ Il2Cpp.perform(() => {
         return result
     }
     
+    // 在执行Parse时伪造Unity应用版本，执行结束时释放，以保证没有别的兼容性问题
     Core.image.class("Hailstorm.Catalog").method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").implementation = function (manifest, stream) {
   
         if (globalConfig["TargetClientVersion"]) {
