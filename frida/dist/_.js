@@ -1,5 +1,5 @@
 📦
-147875 /src/index.js
+149540 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3325,6 +3325,9 @@ var globalConfig = {
   "LowQualityLongSide": 1920,
   "MediumQualityLongSide": 2880,
   "HighQualityLongSide": 3840,
+  "LowQualityAdvFactor": 1,
+  "MediumQualityAdvFactor": 1.5,
+  "HighQualityAdvFactor": 2,
   "MaximumFPS": 60,
   "OrientationModify": false,
   "ForceRotate": false,
@@ -3333,7 +3336,10 @@ var globalConfig = {
   "ModifyWithToFes": false,
   "LocalizeArchive": false,
   "TargetClientVersion": "",
-  "TargetResVersion": ""
+  "TargetResVersion": "",
+  "NovelSingleCharDisplayTime": 0.03,
+  "NovelTextAnimationSpeedFactor": 1.3,
+  "AutoNovelAuto": false
 };
 var hasloaded = false;
 rpc.exports = {
@@ -3387,9 +3393,8 @@ Il2Cpp.perform(() => {
         if (!result) {
           const objFile = file;
           const name = objFile.method("get_Name").invoke();
-          const directoryManager2 = this.field("directoryManager").value;
           const downloadStatus = this.field("downloadStatus").value;
-          const path = directoryManager2.method("GetLocalFullPathFromFileName").invoke(name);
+          const path = this.field("directoryManager").value.method("GetLocalFullPathFromFileName").invoke(name);
           const fileExists = Il2Cpp.corlib.class("System.IO.File").method("Exists").invoke(path);
           if (fileExists) {
             downloadStatus.method("set_Item").invoke(file, 2);
@@ -3404,8 +3409,7 @@ Il2Cpp.perform(() => {
   }
   function getSize(quality = -1, isLongSide = 1) {
     if (quality == -1) {
-      const RenderTextureQuality = SaveDataStorage.method("get_RenderTextureQuality").invoke();
-      quality = RenderTextureQuality.field("value__").value;
+      quality = SaveDataStorage.method("get_RenderTextureQuality").invoke().field("value__").value;
     }
     var size = 0;
     switch (quality) {
@@ -3500,14 +3504,6 @@ Il2Cpp.perform(() => {
     }
     return this.method(".ctor").invoke(camera, targetTexture, setting, cameraType);
   };
-  AssemblyCSharp.image.class("School.LiveMain.IdolFrontCraneCamera").method("CalculateDefaultLocalRotation").implementation = function() {
-    const result = this.method("CalculateDefaultLocalRotation").invoke();
-    const current = result.handle.add(0).readFloat();
-    if (current > 9) {
-      result.handle.add(0).writeFloat(current - 9);
-    }
-    return result;
-  };
   AssemblyCSharp.image.class("School.LiveMain.IdolTargetingCamera").method(".ctor").implementation = function(camera, targetTexture, setting) {
     const objCameraSetting = setting;
     objCameraSetting.handle.add(36).writeFloat(1e5);
@@ -3542,7 +3538,18 @@ Il2Cpp.perform(() => {
     if (!RenderTexture.isNull()) {
       const RenderTextureHeight = RenderTexture.method("get_height").invoke();
       const RenderTextureWidth = RenderTexture.method("get_width").invoke();
-      const factor = Math.floor(1 + 0.5 * quality);
+      var factor = 1;
+      switch (quality) {
+        case 0:
+          factor = globalConfig.LowQualityAdvFactor;
+          break;
+        case 1:
+          factor = globalConfig.MediumQualityAdvFactor;
+          break;
+        case 2:
+          factor = globalConfig.HighQualityAdvFactor;
+          break;
+      }
       RenderTexture.method("set_width").invoke(Math.floor(RenderTextureWidth * factor));
       RenderTexture.method("set_height").invoke(Math.floor(RenderTextureHeight * factor));
       RenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
@@ -3589,7 +3596,20 @@ Il2Cpp.perform(() => {
     }
     this.method("<Awake>b__9_0").invoke(objValue);
   };
-  const LiveInfo = AssemblyCSharp.image.class("Org.OpenAPITools.Model.LiveInfo");
+  Core.image.class("Inspix.Character.FootShadow.FootShadowManipulator").method("<SetupObserveProperty>b__15_0").implementation = function(value) {
+    const objValue = value;
+    if (globalConfig.RemoveImgCover) {
+      objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
+    }
+    this.method("<SetupObserveProperty>b__15_0").invoke(objValue);
+  };
+  Core.image.class("Inspix.Character.CharacterVisibleReceiver").method("<SetupReceiveActions>b__9_0").implementation = function(value) {
+    const objValue = value;
+    if (globalConfig.RemoveImgCover) {
+      objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
+    }
+    this.method("<SetupReceiveActions>b__9_0").invoke(objValue);
+  };
   var archiveData = {
     archive_url: "",
     live_type: 3,
@@ -3787,6 +3807,23 @@ Il2Cpp.perform(() => {
     }
     const result = this.method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").invoke(manifest, stream);
     UnityApplication.method("get_version").revert();
+    return result;
+  };
+  AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function(skipReturn, skipLine, timesec, seekbar) {
+    this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar);
+    if (globalConfig.AutoNovelAuto)
+      this.method("NovelAutoSpeed").invoke(1);
+  };
+  AssemblyCSharp.image.class("School.Story.NovelView").method("AddTextAsync").implementation = function(text, rubis, durationSec, shouldTapWait, addNewLine) {
+    const result = this.method("AddTextAsync").invoke(text, rubis, durationSec, shouldTapWait, addNewLine);
+    this.field("textAnimation").value.handle.add(40).writeFloat(globalConfig.NovelTextAnimationSpeedFactor);
+    return result;
+  };
+  AssemblyCSharp.image.class("Tecotec.AddNovelTextCommand").method("GetDisplayTime").implementation = function(mnemonic) {
+    var result = this.method("GetDisplayTime").invoke(mnemonic);
+    if (!this.method("HasVoice").invoke(mnemonic)) {
+      return result * (globalConfig.NovelSingleCharDisplayTime / 0.03);
+    }
     return result;
   };
   console.log("successfully hook");

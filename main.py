@@ -167,6 +167,7 @@ class FridaWorker(QtCore.QObject):
             for p in self._device.enumerate_processes():
                 if p.name in ('リンクラ', 'com.oddno.lovelive', 'Link!Like!LoveLive!'):
                     pid = p.pid
+                    break
             
             if pid is None:
                 raise RuntimeError(f"Process not found")
@@ -348,6 +349,15 @@ def readCfg(cfgPath: str):
             ui.targetResVersionLineEdit.setText(cfg.get("TargetResVersion", ""))
             ui.versionLabel.setText(cfg.get("TargetClientVersion", ""))
 
+            ui.advStoryLowSpinBox.setValue(cfg.get("LowQualityAdvFactor", 1.0))
+            ui.advStoryMediumSpinBox.setValue(cfg.get("MediumQualityAdvFactor", 1.5))
+            ui.advStoryHighSpinBox.setValue(cfg.get("HighQualityAdvFactor", 2.0))
+
+            ui.textOnlyCharTimeDSpinBox.setValue(cfg.get("NovelSingleCharDisplayTime", 0.03))
+            ui.textAnimationSpeedDSpinBox.setValue(cfg.get("NovelTextAnimationSpeedFactor", 1.0))
+
+            ui.autoModeEnterCheckbox.setChecked(cfg.get("AutoNovelAuto", False))
+
     except Exception as e:
         QMessageBox.warning(mainWindow, "Error", f"Failed to read config.json")
 
@@ -377,6 +387,9 @@ def generateCfg():
         "LowQualityLongSide": LQLongSide,
         "MediumQualityLongSide": MQLongSide,
         "HighQualityLongSide": HQLongSide,
+        "LowQualityAdvFactor": ui.advStoryLowSpinBox.value(),
+        "MediumQualityAdvFactor": ui.advStoryMediumSpinBox.value(),
+        "HighQualityAdvFactor": ui.advStoryHighSpinBox.value(),
         "MaximumFPS": ui.maxFPSSpinBox.value(),
         "OrientationModify": ui.blockRotationCheckBox.isChecked(),
         "ForceRotate": ui.forceRotateCheckBox.isChecked(),
@@ -386,6 +399,9 @@ def generateCfg():
         "LocalizeArchive": ui.replaceArchiveLocalCheckBox.isChecked(),
         "TargetResVersion": "" if not ui.replaceOldResCheckBox.isChecked() or not ui.targetResVersionLineEdit.text().strip() else ui.targetResVersionLineEdit.text().strip(),
         "TargetClientVersion": "" if not ui.replaceOldResCheckBox.isChecked() or not ui.versionLabel.text().strip() else ui.versionLabel.text().strip(),
+        "NovelSingleCharDisplayTime": ui.textOnlyCharTimeDSpinBox.value(),
+        "NovelTextAnimationSpeedFactor": ui.textAnimationSpeedDSpinBox.value(),
+        "AutoNovelAuto": ui.autoModeEnterCheckbox.isChecked(),
     })
 
 def onApplyCfg():

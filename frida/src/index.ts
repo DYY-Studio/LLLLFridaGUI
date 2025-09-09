@@ -6,6 +6,9 @@ let globalConfig = {
     "LowQualityLongSide": 1920,
     "MediumQualityLongSide": 2880,
     "HighQualityLongSide": 3840,
+    "LowQualityAdvFactor": 1.0,
+    "MediumQualityAdvFactor": 1.5,
+    "HighQualityAdvFactor": 2.0,
     "MaximumFPS": 60,
     "OrientationModify": false,
     "ForceRotate": false,
@@ -15,6 +18,9 @@ let globalConfig = {
     "LocalizeArchive": false,
     "TargetClientVersion": "",
     "TargetResVersion": "",
+    "NovelSingleCharDisplayTime": 0.03,
+    "NovelTextAnimationSpeedFactor": 1.3,
+    "AutoNovelAuto": false,
 }
 
 var hasloaded = false
@@ -103,9 +109,8 @@ Il2Cpp.perform(() => {
                 if (!result) {
                     const objFile = file as Il2Cpp.Object
                     const name = objFile.method("get_Name").invoke() as Il2Cpp.String
-                    const directoryManager = this.field("directoryManager").value as Il2Cpp.Object
                     const downloadStatus = this.field("downloadStatus").value as Il2Cpp.Object
-                    const path = directoryManager.method("GetLocalFullPathFromFileName").invoke(name) as Il2Cpp.String
+                    const path = this.field<Il2Cpp.Object>("directoryManager").value.method<Il2Cpp.String>("GetLocalFullPathFromFileName").invoke(name)
 
                     const fileExists = Il2Cpp.corlib.class("System.IO.File").method("Exists").invoke(path) as boolean
                     if (fileExists) {
@@ -129,8 +134,7 @@ Il2Cpp.perform(() => {
      */
     function getSize(quality: number = -1, isLongSide: number = 1) {
         if (quality == -1) {
-            const RenderTextureQuality = SaveDataStorage.method("get_RenderTextureQuality").invoke() as Il2Cpp.ValueType
-            quality = RenderTextureQuality.field<number>("value__").value
+            quality = SaveDataStorage.method<Il2Cpp.ValueType>("get_RenderTextureQuality").invoke().field<number>("value__").value
         }
         
         var size = 0
@@ -175,7 +179,7 @@ Il2Cpp.perform(() => {
         AssemblyCSharp.image.class("School.LiveMain.SchoolResolution").method("GetResolution").implementation = function (quality, orientation) {
             const _liveAreaResolutions = SchoolResolution.field("_liveAreaResolutions").value as Il2Cpp.Object
             const numQuality = (quality as Il2Cpp.ValueType).field<number>("value__").value
-            const longSide = (_liveAreaResolutions.method("get_Item").invoke(numQuality) as Il2Cpp.Object).field<number>("_longSide").value
+            const longSide = _liveAreaResolutions.method<Il2Cpp.Object>("get_Item").invoke(numQuality).field<number>("_longSide").value
 
             if (getSize(numQuality, 1) != longSide) {
                 setResolutions(_liveAreaResolutions)
@@ -323,8 +327,6 @@ Il2Cpp.perform(() => {
      * 从CreateRenderTextureDescriptor入手，修改StoryCamera对应的RenderTexture
      * 
      * 渲染分辨率直接使用LiveStream的质量设置
-     * 
-     * 低：1.0x / 中：1.5x / 高：2.0x
      */
     UniversalRenderPipeline.method("CreateRenderTextureDescriptor").implementation = function (camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture) {
         const objCamera = camera as Il2Cpp.Object
@@ -339,7 +341,18 @@ Il2Cpp.perform(() => {
             const RenderTextureHeight = RenderTexture.method("get_height").invoke() as number
             const RenderTextureWidth = RenderTexture.method("get_width").invoke() as number
 
-            const factor = Math.floor(1 + 0.5 * quality)
+            var factor = 1.0
+            switch (quality) {
+                case 0:
+                    factor = globalConfig.LowQualityAdvFactor
+                    break
+                case 1:
+                    factor = globalConfig.MediumQualityAdvFactor
+                    break
+                case 2:
+                    factor = globalConfig.HighQualityAdvFactor
+                    break
+            }
 
             RenderTexture.method("set_width").invoke(Math.floor(RenderTextureWidth * factor))
             RenderTexture.method("set_height").invoke(Math.floor(RenderTextureHeight * factor))
@@ -406,6 +419,34 @@ Il2Cpp.perform(() => {
             )
         }
         this.method("<Awake>b__9_0").invoke(objValue)
+    }
+
+    /**
+     * 隐藏遮挡图像的同时，强制可视化角色阴影
+     */
+    Core.image.class("Inspix.Character.FootShadow.FootShadowManipulator").method("<SetupObserveProperty>b__15_0").implementation = function (value) {
+        const objValue = value as Il2Cpp.Object
+        if (globalConfig.RemoveImgCover) {
+            objValue.method(".ctor").invoke(
+                true,
+                objValue.field<number>('SyncTime').value
+            )
+        }
+        this.method("<SetupObserveProperty>b__15_0").invoke(objValue)
+    }
+
+    /**
+     * 隐藏遮挡图像的同时，强制可视化角色模型
+     */
+    Core.image.class("Inspix.Character.CharacterVisibleReceiver").method("<SetupReceiveActions>b__9_0").implementation = function (value) {
+        const objValue = value as Il2Cpp.Object
+        if (globalConfig.RemoveImgCover) {
+            objValue.method(".ctor").invoke(
+                true,
+                objValue.field<number>('SyncTime').value
+            )
+        }
+        this.method("<SetupReceiveActions>b__9_0").invoke(objValue)
     }
 
     // Archive修改相关结构
@@ -480,7 +521,9 @@ Il2Cpp.perform(() => {
         TimelineUnixtime: number
     }
 
-    // 从CallAPIAsync截获请求数据，修改头部伪装客户端版本，修改路径在Fes×LIVE启动With×MEETS时请求With×MEETS数据
+    /**
+     * 从CallAPIAsync截获请求数据，修改头部伪装客户端版本，修改路径在Fes×LIVE启动With×MEETS时请求With×MEETS数据
+     */
     AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("CallApiAsync").implementation = function (
         path, method, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken
     ){
@@ -682,6 +725,29 @@ Il2Cpp.perform(() => {
 
         UnityApplication.method("get_version").revert()
 
+        return result
+    }
+
+    AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function (skipReturn, skipLine, timesec, seekbar) {
+        this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar)
+        if (globalConfig.AutoNovelAuto) this.method("NovelAutoSpeed").invoke(1)
+    }
+
+    AssemblyCSharp.image.class("School.Story.NovelView").method("AddTextAsync").implementation = function (
+        text, rubis, durationSec, shouldTapWait, addNewLine
+    ) {
+        const result = this.method("AddTextAsync").invoke(text, rubis, durationSec, shouldTapWait, addNewLine)
+        this.field<Il2Cpp.Object>("textAnimation").value.handle.add(0x28).writeFloat(
+            globalConfig.NovelTextAnimationSpeedFactor
+        )
+        return result
+    }
+
+    AssemblyCSharp.image.class("Tecotec.AddNovelTextCommand").method("GetDisplayTime").implementation = function (mnemonic) {
+        var result = this.method<number>("GetDisplayTime").invoke(mnemonic) 
+        if (!this.method<boolean>("HasVoice").invoke(mnemonic)) {
+            return result * (globalConfig.NovelSingleCharDisplayTime / 0.03)
+        }
         return result
     }
 
