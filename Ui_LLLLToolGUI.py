@@ -18,8 +18,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
     QDoubleSpinBox, QGridLayout, QGroupBox, QHeaderView,
     QLabel, QLineEdit, QMainWindow, QPlainTextEdit,
-    QPushButton, QSizePolicy, QSpinBox, QTabWidget,
-    QTableView, QToolBar, QWidget)
+    QPushButton, QScrollArea, QSizePolicy, QSpinBox,
+    QTabWidget, QTableView, QToolBar, QWidget)
 
 class Ui_L4ToolMW(object):
     def setupUi(self, L4ToolMW):
@@ -42,11 +42,11 @@ class Ui_L4ToolMW(object):
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.fridaPage = QWidget()
-        self.fridaPage.setObjectName(u"fridaPage")
-        self.gridLayout_2 = QGridLayout(self.fridaPage)
+        self.mainPage = QWidget()
+        self.mainPage.setObjectName(u"mainPage")
+        self.gridLayout_2 = QGridLayout(self.mainPage)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.checkBoxGroup = QGroupBox(self.fridaPage)
+        self.checkBoxGroup = QGroupBox(self.mainPage)
         self.checkBoxGroup.setObjectName(u"checkBoxGroup")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
@@ -92,7 +92,7 @@ class Ui_L4ToolMW(object):
 
         self.gridLayout_2.addWidget(self.checkBoxGroup, 1, 0, 1, 2)
 
-        self.changableGroup = QGroupBox(self.fridaPage)
+        self.changableGroup = QGroupBox(self.mainPage)
         self.changableGroup.setObjectName(u"changableGroup")
         self.gridLayout_4 = QGridLayout(self.changableGroup)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
@@ -292,12 +292,26 @@ class Ui_L4ToolMW(object):
 
         self.gridLayout_2.addWidget(self.changableGroup, 2, 0, 3, 2)
 
-        self.tabWidget.addTab(self.fridaPage, "")
-        self.tab_2 = QWidget()
-        self.tab_2.setObjectName(u"tab_2")
-        self.gridLayout_13 = QGridLayout(self.tab_2)
+        self.tabWidget.addTab(self.mainPage, "")
+        self.extendPage = QWidget()
+        self.extendPage.setObjectName(u"extendPage")
+        self.gridLayout_13 = QGridLayout(self.extendPage)
         self.gridLayout_13.setObjectName(u"gridLayout_13")
-        self.groupBox_3 = QGroupBox(self.tab_2)
+        self.scrollArea = QScrollArea(self.extendPage)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 469, 261))
+        self.gridLayout_16 = QGridLayout(self.scrollAreaWidgetContents)
+        self.gridLayout_16.setObjectName(u"gridLayout_16")
+        self.groupBox_6 = QGroupBox(self.scrollAreaWidgetContents)
+        self.groupBox_6.setObjectName(u"groupBox_6")
+        sizePolicy1.setHeightForWidth(self.groupBox_6.sizePolicy().hasHeightForWidth())
+        self.groupBox_6.setSizePolicy(sizePolicy1)
+        self.gridLayout_11 = QGridLayout(self.groupBox_6)
+        self.gridLayout_11.setObjectName(u"gridLayout_11")
+        self.groupBox_3 = QGroupBox(self.groupBox_6)
         self.groupBox_3.setObjectName(u"groupBox_3")
         sizePolicy1.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
         self.groupBox_3.setSizePolicy(sizePolicy1)
@@ -327,6 +341,7 @@ class Ui_L4ToolMW(object):
         self.textOnlyCharTimeDSpinBox = QDoubleSpinBox(self.groupBox_3)
         self.textOnlyCharTimeDSpinBox.setObjectName(u"textOnlyCharTimeDSpinBox")
         self.textOnlyCharTimeDSpinBox.setMinimum(0.030000000000000)
+        self.textOnlyCharTimeDSpinBox.setSingleStep(0.010000000000000)
         self.textOnlyCharTimeDSpinBox.setValue(0.030000000000000)
 
         self.gridLayout_14.addWidget(self.textOnlyCharTimeDSpinBox, 0, 3, 1, 1)
@@ -337,9 +352,28 @@ class Ui_L4ToolMW(object):
         self.gridLayout_14.addWidget(self.autoModeEnterCheckbox, 1, 0, 1, 2)
 
 
-        self.gridLayout_13.addWidget(self.groupBox_3, 0, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.groupBox_3, 1, 0, 1, 1)
 
-        self.tabWidget.addTab(self.tab_2, "")
+        self.groupBox_7 = QGroupBox(self.groupBox_6)
+        self.groupBox_7.setObjectName(u"groupBox_7")
+        self.gridLayout_15 = QGridLayout(self.groupBox_7)
+        self.gridLayout_15.setObjectName(u"gridLayout_15")
+        self.autoCloseSubtitleCheckBox = QCheckBox(self.groupBox_7)
+        self.autoCloseSubtitleCheckBox.setObjectName(u"autoCloseSubtitleCheckBox")
+
+        self.gridLayout_15.addWidget(self.autoCloseSubtitleCheckBox, 0, 0, 1, 1)
+
+
+        self.gridLayout_11.addWidget(self.groupBox_7, 0, 0, 1, 1)
+
+
+        self.gridLayout_16.addWidget(self.groupBox_6, 0, 0, 1, 1)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.gridLayout_13.addWidget(self.scrollArea, 0, 0, 1, 1)
+
+        self.tabWidget.addTab(self.extendPage, "")
         self.advancePage = QWidget()
         self.advancePage.setObjectName(u"advancePage")
         self.gridLayout_7 = QGridLayout(self.advancePage)
@@ -414,11 +448,11 @@ class Ui_L4ToolMW(object):
         self.gridLayout_7.addWidget(self.groupBox_2, 1, 0, 3, 2)
 
         self.tabWidget.addTab(self.advancePage, "")
-        self.tab = QWidget()
-        self.tab.setObjectName(u"tab")
-        self.gridLayout_8 = QGridLayout(self.tab)
+        self.logPage = QWidget()
+        self.logPage.setObjectName(u"logPage")
+        self.gridLayout_8 = QGridLayout(self.logPage)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
-        self.logMaxSpinBox = QSpinBox(self.tab)
+        self.logMaxSpinBox = QSpinBox(self.logPage)
         self.logMaxSpinBox.setObjectName(u"logMaxSpinBox")
         self.logMaxSpinBox.setMinimum(100)
         self.logMaxSpinBox.setMaximum(50000)
@@ -427,23 +461,23 @@ class Ui_L4ToolMW(object):
 
         self.gridLayout_8.addWidget(self.logMaxSpinBox, 0, 1, 1, 1)
 
-        self.label_6 = QLabel(self.tab)
+        self.label_6 = QLabel(self.logPage)
         self.label_6.setObjectName(u"label_6")
 
         self.gridLayout_8.addWidget(self.label_6, 0, 0, 1, 1)
 
-        self.autoScrollLogCheckBox = QCheckBox(self.tab)
+        self.autoScrollLogCheckBox = QCheckBox(self.logPage)
         self.autoScrollLogCheckBox.setObjectName(u"autoScrollLogCheckBox")
 
         self.gridLayout_8.addWidget(self.autoScrollLogCheckBox, 0, 2, 1, 1)
 
-        self.logPlainTextEdit = QPlainTextEdit(self.tab)
+        self.logPlainTextEdit = QPlainTextEdit(self.logPage)
         self.logPlainTextEdit.setObjectName(u"logPlainTextEdit")
         self.logPlainTextEdit.setReadOnly(True)
 
         self.gridLayout_8.addWidget(self.logPlainTextEdit, 1, 0, 1, 3)
 
-        self.tabWidget.addTab(self.tab, "")
+        self.tabWidget.addTab(self.logPage, "")
 
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 4)
 
@@ -548,7 +582,7 @@ class Ui_L4ToolMW(object):
         self.updateArchiveDetailsBtn.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u624b\u52a8\u4ece\u9879\u76ee\u5e93\u4e0b\u8f7dArchive\u6570\u636e</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.updateArchiveDetailsBtn.setText(QCoreApplication.translate("L4ToolMW", u"\u624b\u52a8\u5237\u65b0Archive\u6570\u636e", None))
-        self.changableGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u53ef\u8c03\u529f\u80fd", None))
+        self.changableGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u8d28\u91cf\u9009\u9879", None))
         self.antiAliasComboBox.setItemText(0, QCoreApplication.translate("L4ToolMW", u"\u7981\u7528", None))
         self.antiAliasComboBox.setItemText(1, QCoreApplication.translate("L4ToolMW", u"2x", None))
         self.antiAliasComboBox.setItemText(2, QCoreApplication.translate("L4ToolMW", u"4x", None))
@@ -614,14 +648,17 @@ class Ui_L4ToolMW(object):
         self.label_17.setText(QCoreApplication.translate("L4ToolMW", u"\u4f4e", None))
         self.label_16.setText(QCoreApplication.translate("L4ToolMW", u"\u4e2d", None))
         self.label_15.setText(QCoreApplication.translate("L4ToolMW", u"\u9ad8", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.fridaPage), QCoreApplication.translate("L4ToolMW", u"\u4e3b\u8981\u529f\u80fd", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.mainPage), QCoreApplication.translate("L4ToolMW", u"\u4e3b\u8981\u529f\u80fd", None))
+        self.groupBox_6.setTitle(QCoreApplication.translate("L4ToolMW", u"\u6d3b\u52a8\u8bb0\u5f55\u6269\u5c55", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("L4ToolMW", u"\u89c6\u89c9\u5c0f\u8bf4\u6a21\u5f0f", None))
         self.textAnimationSpeedDSpinBox.setSuffix(QCoreApplication.translate("L4ToolMW", u"x", None))
         self.label_19.setText(QCoreApplication.translate("L4ToolMW", u"\u7eaf\u6587\u672c\u5355\u5b57\u65f6\u957f", None))
         self.label_18.setText(QCoreApplication.translate("L4ToolMW", u"\u6587\u672c\u52a8\u753b\u901f\u5ea6", None))
         self.textOnlyCharTimeDSpinBox.setSuffix(QCoreApplication.translate("L4ToolMW", u"\u79d2", None))
         self.autoModeEnterCheckbox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u542f\u7528Auto\uff08\u901f\u5ea61\uff09", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("L4ToolMW", u"\u5176\u4ed6\u8c03\u6574", None))
+        self.groupBox_7.setTitle(QCoreApplication.translate("L4ToolMW", u"\u6807\u51c6\u6a21\u5f0f", None))
+        self.autoCloseSubtitleCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u8fdb\u5165\u81ea\u52a8\u5173\u95ed\u5b57\u5e55", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.extendPage), QCoreApplication.translate("L4ToolMW", u"\u5176\u4ed6\u8c03\u6574", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("L4ToolMW", u"\u529f\u80fd\u9009\u9879", None))
 #if QT_CONFIG(tooltip)
         self.replaceOldResCheckBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u4fee\u6539\u54cd\u5e94\u548c\u8bf7\u6c42\u4f7fLLLL\u8fd0\u884c\u5728\u66f4\u4f4e\u7248\u672c\u4e0b</span></p><p>\u4ee5\u4fbf\u64ad\u653e\u65e7Fes\u00d7LIVE\u548c\u4f7f\u7528\u4f4e\u7248\u672c\u5ba2\u6237\u7aef</p><p><span style=\" font-weight:700;\">\u9700\u8981\u5148\u4ece\u5386\u53f2\u8d44\u6e90\u6587\u4ef6\u5217\u8868\u4e2d\u9009\u4e2d\u4e00\u4e2a\u7248\u672c</span></p></body></html>", None))
@@ -641,7 +678,7 @@ class Ui_L4ToolMW(object):
         self.logMaxSpinBox.setSuffix(QCoreApplication.translate("L4ToolMW", u" \u884c", None))
         self.label_6.setText(QCoreApplication.translate("L4ToolMW", u"Log\u7f13\u5b58\u884c\u6570", None))
         self.autoScrollLogCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u6eda\u52a8", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("L4ToolMW", u"Log", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.logPage), QCoreApplication.translate("L4ToolMW", u"Log", None))
         self.basicGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"Frida\u914d\u7f6e", None))
 #if QT_CONFIG(tooltip)
         self.connectDeviceComboBox.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u9009\u62e9\u8fd0\u884cLLLL\u7684\u8bbe\u5907</span></p><p><span style=\" font-weight:700;\">LOCAL, USB\u548cREMOTE</span>\u4f1a\u81ea\u52a8\u5217\u51fa\uff0c\u5982\u679c\u6ca1\u6709\u5217\u51fa\u8bf7\u5207\u6362\u8fde\u63a5\u65b9\u5f0f\u5237\u65b0\u5217\u8868</p><p>\u5982\u679c\u8fd8\u662f\u6ca1\u6709\uff0c\u8bf7\u4f7f\u7528HOST\u624b\u52a8\u8fde\u63a5</p></body></html>", None))

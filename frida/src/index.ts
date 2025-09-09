@@ -21,6 +21,7 @@ let globalConfig = {
     "NovelSingleCharDisplayTime": 0.03,
     "NovelTextAnimationSpeedFactor": 1.3,
     "AutoNovelAuto": false,
+    "AutoCloseSubtitle": false,
 }
 
 var hasloaded = false
@@ -730,7 +731,18 @@ Il2Cpp.perform(() => {
 
     AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function (skipReturn, skipLine, timesec, seekbar) {
         this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar)
-        if (globalConfig.AutoNovelAuto) this.method("NovelAutoSpeed").invoke(1)
+        const isNovelView = 
+            AssemblyCSharp.image.class("Tecotec.StoryUIManager").method<Il2Cpp.Object>("get_Instance").invoke()
+            .field<Il2Cpp.Object>("transitionWindow").value
+            .method<Il2Cpp.Object>("get_NovelView").invoke()
+            .method<boolean>("get_IsNovelMode").invoke();
+        if (isNovelView && globalConfig.AutoNovelAuto) {
+            this.method("NovelAutoSpeed").invoke(1)
+        }
+        else if (!isNovelView && globalConfig.AutoCloseSubtitle) {
+            const isSubtitle = this.field<Il2Cpp.Object>("menu").value.field<boolean>("isSubtitle").value
+            if (isSubtitle) this.method("OnClickSwitchSubtitle").invoke()
+        }
     }
 
     AssemblyCSharp.image.class("School.Story.NovelView").method("AddTextAsync").implementation = function (

@@ -1,5 +1,5 @@
 📦
-149540 /src/index.js
+150022 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3339,7 +3339,8 @@ var globalConfig = {
   "TargetResVersion": "",
   "NovelSingleCharDisplayTime": 0.03,
   "NovelTextAnimationSpeedFactor": 1.3,
-  "AutoNovelAuto": false
+  "AutoNovelAuto": false,
+  "AutoCloseSubtitle": false
 };
 var hasloaded = false;
 rpc.exports = {
@@ -3811,8 +3812,14 @@ Il2Cpp.perform(() => {
   };
   AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function(skipReturn, skipLine, timesec, seekbar) {
     this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar);
-    if (globalConfig.AutoNovelAuto)
+    const isNovelView = AssemblyCSharp.image.class("Tecotec.StoryUIManager").method("get_Instance").invoke().field("transitionWindow").value.method("get_NovelView").invoke().method("get_IsNovelMode").invoke();
+    if (isNovelView && globalConfig.AutoNovelAuto) {
       this.method("NovelAutoSpeed").invoke(1);
+    } else if (!isNovelView && globalConfig.AutoCloseSubtitle) {
+      const isSubtitle = this.field("menu").value.field("isSubtitle").value;
+      if (isSubtitle)
+        this.method("OnClickSwitchSubtitle").invoke();
+    }
   };
   AssemblyCSharp.image.class("School.Story.NovelView").method("AddTextAsync").implementation = function(text, rubis, durationSec, shouldTapWait, addNewLine) {
     const result = this.method("AddTextAsync").invoke(text, rubis, durationSec, shouldTapWait, addNewLine);

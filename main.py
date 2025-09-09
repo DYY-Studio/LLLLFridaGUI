@@ -357,6 +357,7 @@ def readCfg(cfgPath: str):
             ui.textAnimationSpeedDSpinBox.setValue(cfg.get("NovelTextAnimationSpeedFactor", 1.0))
 
             ui.autoModeEnterCheckbox.setChecked(cfg.get("AutoNovelAuto", False))
+            ui.autoCloseSubtitleCheckBox.setChecked(cfg.get("AutoCloseSubtitle", False))
 
     except Exception as e:
         QMessageBox.warning(mainWindow, "Error", f"Failed to read config.json")
@@ -402,6 +403,7 @@ def generateCfg():
         "NovelSingleCharDisplayTime": ui.textOnlyCharTimeDSpinBox.value(),
         "NovelTextAnimationSpeedFactor": ui.textAnimationSpeedDSpinBox.value(),
         "AutoNovelAuto": ui.autoModeEnterCheckbox.isChecked(),
+        "AutoCloseSubtitle": ui.autoCloseSubtitleCheckBox.isChecked(),
     })
 
 def onApplyCfg():
@@ -414,14 +416,16 @@ def onApplyCfg():
 
 def onAttachResult(ok: bool):
     if ok:
-        ui.checkBoxGroup.setEnabled(True)
-        ui.changableGroup.setEnabled(True)
+        ui.mainPage.setEnabled(True)
+        ui.extendPage.setEnabled(True)
+        ui.basicGroup.setEnabled(False)
         ui.applyCfgBtn.setEnabled(True)
         ui.closeBtn.setEnabled(True)
         onApplyCfg()
     else:
-        ui.checkBoxGroup.setEnabled(False)
-        ui.changableGroup.setEnabled(False)
+        ui.mainPage.setEnabled(False)
+        ui.extendPage.setEnabled(False)
+        ui.basicGroup.setEnabled(True)
         ui.applyCfgBtn.setEnabled(False)
         ui.closeBtn.setEnabled(False)
         ui.attachBtn.setEnabled(True)
@@ -616,8 +620,8 @@ if __name__ == '__main__':
     toolBarLabel.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
     ui.toolBar.addWidget(toolBarLabel)
 
-    ui.checkBoxGroup.setEnabled(False)
-    ui.changableGroup.setEnabled(False)
+    ui.mainPage.setEnabled(False)
+    ui.extendPage.setEnabled(False)
     ui.applyCfgBtn.setEnabled(False)
     ui.closeBtn.setEnabled(False)
     for d in frida.enumerate_devices():
