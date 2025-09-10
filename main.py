@@ -414,15 +414,15 @@ def onApplyCfg():
 
 def onAttachResult(ok: bool):
     if ok:
-        ui.mainPage.setEnabled(True)
-        ui.extendPage.setEnabled(True)
+        # ui.mainPage.setEnabled(True)
+        # ui.extendPage.setEnabled(True)
         ui.basicGroup.setEnabled(False)
         ui.applyCfgBtn.setEnabled(True)
         ui.closeBtn.setEnabled(True)
         onApplyCfg()
     else:
-        ui.mainPage.setEnabled(False)
-        ui.extendPage.setEnabled(False)
+        # ui.mainPage.setEnabled(False)
+        # ui.extendPage.setEnabled(False)
         ui.basicGroup.setEnabled(True)
         ui.applyCfgBtn.setEnabled(False)
         ui.closeBtn.setEnabled(False)
@@ -618,8 +618,8 @@ if __name__ == '__main__':
     toolBarLabel.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
     ui.toolBar.addWidget(toolBarLabel)
 
-    ui.mainPage.setEnabled(False)
-    ui.extendPage.setEnabled(False)
+    # ui.mainPage.setEnabled(False)
+    # ui.extendPage.setEnabled(False)
     ui.applyCfgBtn.setEnabled(False)
     ui.closeBtn.setEnabled(False)
     for d in frida.enumerate_devices():
