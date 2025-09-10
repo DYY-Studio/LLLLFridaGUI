@@ -116,23 +116,21 @@ def onChangeConnectMethod(idx: int):
         match idx:
             case 0: # REMOTE
                 devices = [d for d in allDevices if d.type == 'remote']
-                ui.connectDeviceComboBox.setEditable(False)
             case 1: # HOST
                 devices = None
-                ui.connectDeviceComboBox.setEditable(True)
             case 2: # USB
                 devices = [d for d in allDevices if d.type == 'usb']
-                ui.connectDeviceComboBox.setEditable(False)
             case 3: # LOCAL
                 devices = [d for d in allDevices if d.type == 'local']
-                ui.connectDeviceComboBox.setEditable(False)
             case 4: # DEVICE_ID
                 devices = None
-                ui.connectDeviceComboBox.setEditable(True)
         ui.connectDeviceComboBox.clear()
         if devices:
+            ui.connectDeviceComboBox.setEditable(False)
             for d in devices:
                 ui.connectDeviceComboBox.addItem(f'{d.name} ({d.id})', d)
+        else:
+            ui.connectDeviceComboBox.setEditable(True)
     except:
         logger.error('Failed to get devices')
         ui.connectDeviceComboBox.clear()
