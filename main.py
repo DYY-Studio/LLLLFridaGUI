@@ -15,7 +15,7 @@ logger.addHandler(console_handler)
 
 app = QtWidgets.QApplication(sys.argv)
 
-COMPILE_WHEN_START = True # DEBUG专用，启动时需要等待NPM进行编译
+COMPILE_WHEN_START = False # DEBUG专用，启动时需要等待NPM进行编译
 
 class MainMessageBox(QtCore.QObject):
     def __init__(self, parent=None):
