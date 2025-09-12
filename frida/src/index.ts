@@ -22,6 +22,9 @@ let globalConfig = {
     "NovelTextAnimationSpeedFactor": 1.3,
     "AutoNovelAuto": false,
     "AutoCloseSubtitle": false,
+    "ProxyUrl": "",
+    "ProxyUsername": "",
+    "ProxyPassword": "",
 }
 
 var hasloaded = false
@@ -35,6 +38,9 @@ rpc.exports = {
         const UnityEngineCoreModule = Il2Cpp.domain.assembly("UnityEngine.CoreModule")
         const UnityScreen = UnityEngineCoreModule.image.class("UnityEngine.Screen")
         const UnityApplication = UnityEngineCoreModule.image.class("UnityEngine.Application")
+        const EmptyString = Il2Cpp.corlib.class("System.String").field<Il2Cpp.String>("Empty").value
+        const AssemblyCSharp = Il2Cpp.domain.assembly("Assembly-CSharp")
+        const SystemDll = Il2Cpp.domain.assembly("System")
         UnityApplication.method("set_targetFrameRate").invoke(
             Math.min((UnityScreen.method("get_currentResolution").invoke() as Il2Cpp.Object).method("get_refreshRate").invoke() as number, globalConfig["MaximumFPS"])
         )
@@ -45,6 +51,28 @@ rpc.exports = {
             UnityScreen.method("set_orientation").invoke(5)
             UnityScreen.method("set_orientation").invoke(4)
         }
+
+        const apiClient = AssemblyCSharp.image.class("Org.OpenAPITools.Client.Configuration")
+            .method<Il2Cpp.Object>("get_Default").invoke()
+            .method<Il2Cpp.Object>("get_ApiClient").invoke()
+            .method<Il2Cpp.Object>("get_RestClient").invoke();
+        const proxyUri = SystemDll.image.class("System.Uri").new()
+        proxyUri.method(".ctor").overload("System.String").invoke(
+            Il2Cpp.string(globalConfig.ProxyUrl)
+        )
+        const networkCredential = SystemDll.image.class("System.Net.NetworkCredential").new()
+        networkCredential.method(".ctor").overload("System.String", "System.String").invoke(
+            globalConfig.ProxyUsername?Il2Cpp.string(globalConfig.ProxyUsername):EmptyString,
+            globalConfig.ProxyPassword?Il2Cpp.string(globalConfig.ProxyPassword):EmptyString
+        )
+        const webProxy = SystemDll.image.class("System.Net.WebProxy").new()
+        webProxy.method(".ctor").overload(proxyUri.class, "System.Boolean", "System.String[]", networkCredential.class).invoke(
+            proxyUri,
+            true,
+            Il2Cpp.array(Il2Cpp.corlib.class("System.String"), 0),
+            networkCredential
+        )
+        apiClient.method("set_Proxy").invoke(webProxy)
     },
     getconfig: () => globalConfig
 }
@@ -81,6 +109,8 @@ Il2Cpp.perform(() => {
 
     const Global = AssemblyCSharp.image.class("Global").method("get_Instance").invoke() as Il2Cpp.Object
     const SaveDataStorage = Global.method("get_SaveData").invoke() as Il2Cpp.Object
+
+    const EmptyString = Il2Cpp.corlib.class("System.String").field<Il2Cpp.String>("Empty").value
 
     if (Core.image.tryClass("Alstromeria.ArchiveLiveDataStream") != null) {
         
@@ -415,7 +445,7 @@ Il2Cpp.perform(() => {
         const objValue = value as Il2Cpp.Object
         if (globalConfig["RemoveImgCover"]) {
             objValue.method(".ctor").invoke(
-                Il2Cpp.corlib.class("System.String").field<Il2Cpp.String>("Empty").value,
+                EmptyString,
                 objValue.field<number>('SyncTime').value
             )
         }
@@ -546,7 +576,7 @@ Il2Cpp.perform(() => {
                 else if (strPath.endsWith("get_fes_timeline_data")) {
                     path = Il2Cpp.string("/v1/archive/withlive_info")
                     const body = JSON.parse((postBody as Il2Cpp.String).content??"{}") as fesTimelineDataRequestBody
-                    postBody = Il2Cpp.corlib.class("System.String").field<Il2Cpp.String>("Empty").value
+                    postBody = EmptyString
 
                     const params = queryParams as Il2Cpp.Object
                     const classStr = Il2Cpp.corlib.class("System.String")
@@ -665,7 +695,7 @@ Il2Cpp.perform(() => {
 
                     objData.method("set_ContentCode").invoke(999)
                     if (result.class.fullName == GetWithArchiveDataResponse.fullName) {
-                        objData.method("set_VideoUrl").invoke(Il2Cpp.string(""))
+                        objData.method("set_VideoUrl").invoke(EmptyString)
                     }
                 }
             }

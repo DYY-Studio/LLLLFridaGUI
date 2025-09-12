@@ -302,7 +302,7 @@ class Ui_L4ToolMW(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 469, 261))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 452, 282))
         self.gridLayout_16 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_16.setObjectName(u"gridLayout_16")
         self.groupBox_6 = QGroupBox(self.scrollAreaWidgetContents)
@@ -367,7 +367,45 @@ class Ui_L4ToolMW(object):
         self.gridLayout_11.addWidget(self.groupBox_7, 0, 0, 1, 1)
 
 
-        self.gridLayout_16.addWidget(self.groupBox_6, 0, 0, 1, 1)
+        self.gridLayout_16.addWidget(self.groupBox_6, 1, 0, 1, 1)
+
+        self.proxyGroup = QGroupBox(self.scrollAreaWidgetContents)
+        self.proxyGroup.setObjectName(u"proxyGroup")
+        self.gridLayout_17 = QGridLayout(self.proxyGroup)
+        self.gridLayout_17.setObjectName(u"gridLayout_17")
+        self.proxyUserLineEdit = QLineEdit(self.proxyGroup)
+        self.proxyUserLineEdit.setObjectName(u"proxyUserLineEdit")
+
+        self.gridLayout_17.addWidget(self.proxyUserLineEdit, 1, 1, 1, 1)
+
+        self.label_12 = QLabel(self.proxyGroup)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout_17.addWidget(self.label_12, 0, 0, 1, 1)
+
+        self.label_14 = QLabel(self.proxyGroup)
+        self.label_14.setObjectName(u"label_14")
+
+        self.gridLayout_17.addWidget(self.label_14, 1, 2, 1, 1)
+
+        self.label_13 = QLabel(self.proxyGroup)
+        self.label_13.setObjectName(u"label_13")
+
+        self.gridLayout_17.addWidget(self.label_13, 1, 0, 1, 1)
+
+        self.proxyPasswordLineEdit = QLineEdit(self.proxyGroup)
+        self.proxyPasswordLineEdit.setObjectName(u"proxyPasswordLineEdit")
+        self.proxyPasswordLineEdit.setEchoMode(QLineEdit.Password)
+
+        self.gridLayout_17.addWidget(self.proxyPasswordLineEdit, 1, 3, 1, 1)
+
+        self.httpProxyLineEdit = QLineEdit(self.proxyGroup)
+        self.httpProxyLineEdit.setObjectName(u"httpProxyLineEdit")
+
+        self.gridLayout_17.addWidget(self.httpProxyLineEdit, 0, 1, 1, 3)
+
+
+        self.gridLayout_16.addWidget(self.proxyGroup, 0, 0, 1, 1)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
@@ -657,7 +695,15 @@ class Ui_L4ToolMW(object):
         self.textOnlyCharTimeDSpinBox.setSuffix(QCoreApplication.translate("L4ToolMW", u"\u79d2", None))
         self.autoModeEnterCheckbox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u542f\u7528Auto\uff08\u901f\u5ea61\uff09", None))
         self.groupBox_7.setTitle(QCoreApplication.translate("L4ToolMW", u"\u6807\u51c6\u6a21\u5f0f", None))
-        self.autoCloseSubtitleCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u8fdb\u5165\u81ea\u52a8\u5173\u95ed\u5b57\u5e55", None))
+        self.autoCloseSubtitleCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u5173\u95ed\u5b57\u5e55", None))
+        self.proxyGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u8bbe\u7f6eLLLL\u4ee3\u7406\uff08\u4ec5HTTP/HTTPS\uff0c\u5bf9\u76f4\u64ad\u6d41\u65e0\u6548\uff09", None))
+        self.proxyUserLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Username (\u6ca1\u6709\u53ef\u7a7a\uff09", None))
+        self.label_12.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u5730\u5740", None))
+        self.label_14.setText(QCoreApplication.translate("L4ToolMW", u"\u5bc6\u7801", None))
+        self.label_13.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u7528\u6237\u540d", None))
+        self.proxyPasswordLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Password\uff08\u6ca1\u6709\u53ef\u7a7a\uff09", None))
+        self.httpProxyLineEdit.setInputMask("")
+        self.httpProxyLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"http(s)://<host>:<port>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.extendPage), QCoreApplication.translate("L4ToolMW", u"\u5176\u4ed6\u8c03\u6574", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("L4ToolMW", u"\u529f\u80fd\u9009\u9879", None))
 #if QT_CONFIG(tooltip)

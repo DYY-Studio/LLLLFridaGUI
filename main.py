@@ -15,7 +15,59 @@ logger.addHandler(console_handler)
 
 app = QtWidgets.QApplication(sys.argv)
 
-COMPILE_WHEN_START = False # DEBUG专用，启动时需要等待NPM进行编译
+COMPILE_WHEN_START = True # DEBUG专用，启动时需要等待NPM进行编译
+
+class MainMessageBox(QtCore.QObject):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+    @QtCore.Slot(str, str)
+    def warning(self, title: str, text: str):
+        QMessageBox.warning(None, title, text)
+
+    @QtCore.Slot(str, str)
+    def info(self, title: str, text: str):
+        QMessageBox.information(None, title, text)
+
+    @QtCore.Slot(str, str, str)
+    def error(self, title: str, text: str, detailedText: str): 
+        crashMsgBox = QtWidgets.QMessageBox()
+        crashMsgBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+        crashMsgBox.setWindowTitle("错误")
+        crashMsgBox.setText("程序发生未处理的异常")
+        crashMsgBox.setDetailedText(detailedText)
+        crashMsgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        crashMsgBox.exec()
+
+mainMsgBox = MainMessageBox()
+
+def infoMsgBox(title: str, text: str):
+    QtCore.QMetaObject.invokeMethod(
+        mainMsgBox,
+        "info",
+        QtCore.Qt.ConnectionType.QueuedConnection,
+        QtCore.Q_ARG(str, title),
+        QtCore.Q_ARG(str, text),
+    )
+
+def warningMsgBox(title: str, text: str):
+    QtCore.QMetaObject.invokeMethod(
+        mainMsgBox,
+        "warning",
+        QtCore.Qt.ConnectionType.QueuedConnection,
+        QtCore.Q_ARG(str, title),
+        QtCore.Q_ARG(str, text),
+    )
+
+def errorMsgBox(title: str, text: str, detailedText: str): 
+    QtCore.QMetaObject.invokeMethod(
+        mainMsgBox,
+        "error",
+        QtCore.Qt.ConnectionType.QueuedConnection,
+        QtCore.Q_ARG(str, title),
+        QtCore.Q_ARG(str, text),
+        QtCore.Q_ARG(str, detailedText),
+    )
 
 def exceptionHandle(exc_type, exc_value, exc_traceback):
     """全局异常处理函数"""
@@ -28,13 +80,7 @@ def exceptionHandle(exc_type, exc_value, exc_traceback):
     logger.exception("Uncaught exception:", tb_str)
 
     # 弹出消息框
-    crushMsgBox = QtWidgets.QMessageBox()
-    crushMsgBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-    crushMsgBox.setWindowTitle("错误")
-    crushMsgBox.setText("程序发生未处理的异常")
-    crushMsgBox.setDetailedText(tb_str)
-    crushMsgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-    crushMsgBox.exec()
+    errorMsgBox("Uncaught exception", "An unhandled exception occurred", tb_str)
 
 if __name__ == "__main__":
     sys.excepthook = exceptionHandle
@@ -93,11 +139,7 @@ if COMPILE_WHEN_START:
             npmProcess.start()
             mainWindow.show()
         else:
-            msgBox = QMessageBox()
-            msgBox.setWindowTitle("Error")
-            msgBox.setText("NPM Installation Error")
-            msgBox.setDetailedText(npmProcess.readAll().data().decode())
-            msgBox.exec()
+            errorMsgBox("Error", "NPM Installation Error", npmProcess.readAll().data().decode())
             sys.exit(1)
 
     logger.info("Please wait for npm install")
@@ -139,7 +181,7 @@ def onChangeConnectMethod(idx: int):
 def onChangeConnectDevice(idx: int):
     device: frida.core.Device = ui.connectDeviceComboBox.itemData(idx)
     if device and device.is_lost:
-        QMessageBox.warning(mainWindow, 'Warning', f'Device \"{device.name} ({device.id})\" is lost.')
+        warningMsgBox('Warning', f'Device \"{device.name} ({device.id})\" is lost.')
         ui.connectDeviceComboBox.removeItem(idx)
 
 class FridaWorker(QtCore.QObject):
@@ -292,10 +334,10 @@ def onAttach():
     if ui.connectMethodComboBox.currentIndex() in (0, 2, 3):
         device = ui.connectDeviceComboBox.itemData(ui.connectDeviceComboBox.currentIndex())
         if not isinstance(device, frida.core.Device):
-            QMessageBox.warning(mainWindow, 'Warning', 'Please select a device.')
+            warningMsgBox('Warning', 'Please select a device.')
             return
         elif device.is_lost:
-            QMessageBox.warning(mainWindow, 'Warning', f'Device \"{device.name} ({device.id})\" is lost.')
+            warningMsgBox('Warning', f'Device \"{device.name} ({device.id})\" is lost.')
             ui.connectDeviceComboBox.removeItem(ui.connectDeviceComboBox.currentIndex())
             return
         else:
@@ -306,7 +348,7 @@ def onAttach():
             if device.id == deviceID:
                 doAttach()
                 return
-        QMessageBox.warning(mainWindow, "Error", f"Device \"{deviceID}\" not found")
+        warningMsgBox("Error", f"Device \"{deviceID}\" not found")
     elif ui.connectMethodComboBox.currentIndex() == 1:
         host = ui.connectDeviceComboBox.currentText()
         if host:
@@ -314,9 +356,9 @@ def onAttach():
                 device = frida.get_device_manager().add_remote_device(host)
                 doAttach()
             except Exception as e:
-                QMessageBox.warning(mainWindow, "Error", f"Failed to connect to {host}: {e}")
+                warningMsgBox("Error", f"Failed to connect to {host}: {e}")
         else:
-            QMessageBox.warning(mainWindow, "Error", "Please select a device")
+            warningMsgBox("Error", "Please select a device")
 
 def onDetach():
     QtCore.QMetaObject.invokeMethod(
@@ -357,8 +399,12 @@ def readCfg(cfgPath: str):
             ui.autoModeEnterCheckbox.setChecked(cfg.get("AutoNovelAuto", False))
             ui.autoCloseSubtitleCheckBox.setChecked(cfg.get("AutoCloseSubtitle", False))
 
+            ui.httpProxyLineEdit.setText(cfg.get("ProxyUrl", ""))
+            ui.proxyUserLineEdit.setText(cfg.get("ProxyUsername", ""))
+            ui.proxyPasswordLineEdit.setText(cfg.get("ProxyPassword", ""))
+
     except Exception as e:
-        QMessageBox.warning(mainWindow, "Error", f"Failed to read config.json")
+        warningMsgBox("Error", f"Failed to read config.json")
 
 def generateCfg():
 
@@ -402,9 +448,29 @@ def generateCfg():
         "NovelTextAnimationSpeedFactor": ui.textAnimationSpeedDSpinBox.value(),
         "AutoNovelAuto": ui.autoModeEnterCheckbox.isChecked(),
         "AutoCloseSubtitle": ui.autoCloseSubtitleCheckBox.isChecked(),
+        "ProxyUrl": ui.httpProxyLineEdit.text().strip(),
+        "ProxyUsername": ui.proxyUserLineEdit.text().strip() if ui.httpProxyLineEdit.text().strip() else "",
+        "ProxyPassword": ui.proxyPasswordLineEdit.text().strip() if ui.httpProxyLineEdit.text().strip() else "",
     })
 
+CONNECT_TEST_URL = 'https://www.gstatic.com/generate_204'
+
+
 def onApplyCfg():
+
+    def checkProxyUrl(proxyUrl: str) -> bool:
+        parsedUrl = urlparse(proxyUrl)
+        if not all([parsedUrl.scheme, parsedUrl.netloc]):
+            warningMsgBox("Invaild Proxy URL", "Please input a valid proxy URL")
+            logger.warning("Invalid Proxy URL")
+            return False
+        return True
+
+    proxyUrl = ui.httpProxyLineEdit.text().strip()
+
+    if proxyUrl:
+        if not checkProxyUrl(proxyUrl):
+            return
 
     QtCore.QMetaObject.invokeMethod(
         fridaWorker,
@@ -430,11 +496,11 @@ def onAttachResult(ok: bool):
 
 def resolutionInputCheck(text: str):
     if text.strip() and len(text.split('x')) == 1 and not text.isdigit():
-        QMessageBox.warning(mainWindow, 'Warning', 'Please input a valid resolution!\nThe resolution must be <number>x<number>')
+        warningMsgBox('Warning', 'Please input a valid resolution!\nThe resolution must be <number>x<number>')
     for s in text.split('x'):
         s = s.strip()
         if s and not s.isdigit():
-            QMessageBox.warning(mainWindow, 'Warning', 'Please input a valid resolution!\nThe resolution must be <number>x<number>')
+            warningMsgBox('Warning', 'Please input a valid resolution!\nThe resolution must be <number>x<number>')
 
 def messageHandle(msg: str):
     toolBarLabel.setText(
@@ -454,6 +520,7 @@ def messageHandle(msg: str):
             scrollBar.setValue(scrollBar.maximum())
 
 class RequestWorker(QtCore.QObject):
+    session: requests.Session
     finished = QtCore.Signal(requests.Response)
 
     def __init__(self):
@@ -461,9 +528,9 @@ class RequestWorker(QtCore.QObject):
         self.session = requests.Session()
         self.session.mount('https://', adapters.HTTPAdapter(max_retries=5))
 
-    @QtCore.Slot(str)
-    def get(self, url: str):
-        self.finished.emit(requests.get(url))
+    @QtCore.Slot(str, str)
+    def get(self, url: str, proxyJson: str = "{}"):
+        self.finished.emit(self.session.get(url, proxies=json.loads(proxyJson)))
 
 requestThread = QtCore.QThread(app)
 requestWorker = RequestWorker()
@@ -490,11 +557,12 @@ CLINET_IOS_LIST_URLS = [
     'https://raw.githubusercontent.com/DYY-Studio/linkura-live-data/main/data/client-res-ios.json'
 ]
 
-def doMakeRequest(url: str):
+def doMakeRequest(url: str, proxy: dict[str, str] = {}):
     QtCore.QMetaObject.invokeMethod(
         requestWorker,
         'get',
-        QtCore.Q_ARG(str, url),
+        val0=QtCore.Q_ARG(str, url),
+        val1=QtCore.Q_ARG(str, json.dumps(proxy))
     )
 
 def onResVersionSelectionChanged(selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection):
@@ -561,20 +629,31 @@ class RequestReceiver(QtCore.QObject):
                 ui.updateArchiveDetailsBtn.setEnabled(True)
                 ui.openWithInFesModeCheckBox.setEnabled(True)
                 ui.replaceArchiveLocalCheckBox.setEnabled(True) 
+            elif res.url == CONNECT_TEST_URL:
+                logger.info(f'Proxy Test Success')
+                ui.proxyGroup.setEnabled(True)
+                QtCore.QMetaObject.invokeMethod(
+                    fridaWorker,
+                    "set_config_json",
+                    QtCore.Qt.ConnectionType.QueuedConnection, 
+                    QtCore.Q_ARG(str, generateCfg()))
             else:
                 ui.getResVersionsBtn.setEnabled(True)
                 doReadResVersions()
                 ui.deviceOSComboBox.setEnabled(True)
         else:
-            for urls in urlslist:
-                if res.url in urls:
-                    idx = urls.index(res.url)
-                    if idx < len(urls) - 1:
-                        doMakeRequest(urls[idx + 1])
-                        logger.info(f'{fileName} failed, retrying...')
-                    else:
-                        QtCore.QTimer.singleShot(5000, doGetResVersion)
-                        logger.info(f'{fileName} failed')
+            if res.url == CONNECT_TEST_URL:
+                warningMsgBox('Proxy Test Failed', f'Please check your proxy settings.\nHTTP Error {res.status_code}')
+            else:
+                for urls in urlslist:
+                    if res.url in urls:
+                        idx = urls.index(res.url)
+                        if idx < len(urls) - 1:
+                            doMakeRequest(urls[idx + 1])
+                            logger.info(f'{fileName} failed, retrying...')
+                        else:
+                            QtCore.QTimer.singleShot(5000, doGetResVersion)
+                            logger.info(f'{fileName} failed')
 
 requestReceiver = RequestReceiver()
 requestWorker.finished.connect(requestReceiver.requestFinished)

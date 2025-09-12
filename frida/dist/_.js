@@ -1,5 +1,5 @@
 📦
-150022 /src/index.js
+151323 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3340,7 +3340,10 @@ var globalConfig = {
   "NovelSingleCharDisplayTime": 0.03,
   "NovelTextAnimationSpeedFactor": 1.3,
   "AutoNovelAuto": false,
-  "AutoCloseSubtitle": false
+  "AutoCloseSubtitle": false,
+  "ProxyUrl": "",
+  "ProxyUsername": "",
+  "ProxyPassword": ""
 };
 var hasloaded = false;
 rpc.exports = {
@@ -3352,6 +3355,9 @@ rpc.exports = {
     const UnityEngineCoreModule = Il2Cpp.domain.assembly("UnityEngine.CoreModule");
     const UnityScreen = UnityEngineCoreModule.image.class("UnityEngine.Screen");
     const UnityApplication = UnityEngineCoreModule.image.class("UnityEngine.Application");
+    const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
+    const AssemblyCSharp = Il2Cpp.domain.assembly("Assembly-CSharp");
+    const SystemDll = Il2Cpp.domain.assembly("System");
     UnityApplication.method("set_targetFrameRate").invoke(Math.min(UnityScreen.method("get_currentResolution").invoke().method("get_refreshRate").invoke(), globalConfig["MaximumFPS"]));
     const UnityQualitySettings = UnityEngineCoreModule.image.class("UnityEngine.QualitySettings");
     UnityQualitySettings.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
@@ -3359,6 +3365,14 @@ rpc.exports = {
       UnityScreen.method("set_orientation").invoke(5);
       UnityScreen.method("set_orientation").invoke(4);
     }
+    const apiClient = AssemblyCSharp.image.class("Org.OpenAPITools.Client.Configuration").method("get_Default").invoke().method("get_ApiClient").invoke().method("get_RestClient").invoke();
+    const proxyUri = SystemDll.image.class("System.Uri").new();
+    proxyUri.method(".ctor").overload("System.String").invoke(Il2Cpp.string(globalConfig.ProxyUrl));
+    const networkCredential = SystemDll.image.class("System.Net.NetworkCredential").new();
+    networkCredential.method(".ctor").overload("System.String", "System.String").invoke(globalConfig.ProxyUsername ? Il2Cpp.string(globalConfig.ProxyUsername) : EmptyString, globalConfig.ProxyPassword ? Il2Cpp.string(globalConfig.ProxyPassword) : EmptyString);
+    const webProxy = SystemDll.image.class("System.Net.WebProxy").new();
+    webProxy.method(".ctor").overload(proxyUri.class, "System.Boolean", "System.String[]", networkCredential.class).invoke(proxyUri, true, Il2Cpp.array(Il2Cpp.corlib.class("System.String"), 0), networkCredential);
+    apiClient.method("set_Proxy").invoke(webProxy);
   },
   getconfig: () => globalConfig
 };
@@ -3385,6 +3399,7 @@ Il2Cpp.perform(() => {
   };
   const Global = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
   const SaveDataStorage = Global.method("get_SaveData").invoke();
+  const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
   if (Core.image.tryClass("Alstromeria.ArchiveLiveDataStream") != null) {
     Core.image.class("Alstromeria.ArchiveLiveDataStream").method(".ctor").implementation = function(directoryManager, downloader, fileSystem) {
       const objDownloader = downloader;
@@ -3593,7 +3608,7 @@ Il2Cpp.perform(() => {
   Core.image.class("Inspix.CoverImageCommandReceiver").method("<Awake>b__9_0").implementation = function(value) {
     const objValue = value;
     if (globalConfig["RemoveImgCover"]) {
-      objValue.method(".ctor").invoke(Il2Cpp.corlib.class("System.String").field("Empty").value, objValue.field("SyncTime").value);
+      objValue.method(".ctor").invoke(EmptyString, objValue.field("SyncTime").value);
     }
     this.method("<Awake>b__9_0").invoke(objValue);
   };
@@ -3666,7 +3681,7 @@ Il2Cpp.perform(() => {
         } else if (strPath.endsWith("get_fes_timeline_data")) {
           path = Il2Cpp.string("/v1/archive/withlive_info");
           const body = JSON.parse(postBody.content ?? "{}");
-          postBody = Il2Cpp.corlib.class("System.String").field("Empty").value;
+          postBody = EmptyString;
           const params = queryParams;
           const classStr = Il2Cpp.corlib.class("System.String");
           const kvPair = Il2Cpp.corlib.class("System.Collections.Generic.KeyValuePair`2").inflate(classStr, classStr);
@@ -3759,7 +3774,7 @@ Il2Cpp.perform(() => {
           }
           objData.method("set_ContentCode").invoke(999);
           if (result.class.fullName == GetWithArchiveDataResponse.fullName) {
-            objData.method("set_VideoUrl").invoke(Il2Cpp.string(""));
+            objData.method("set_VideoUrl").invoke(EmptyString);
           }
         }
       }
