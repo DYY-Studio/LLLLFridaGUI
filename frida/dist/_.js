@@ -1,5 +1,5 @@
 📦
-151323 /src/index.js
+151378 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3365,14 +3365,16 @@ rpc.exports = {
       UnityScreen.method("set_orientation").invoke(5);
       UnityScreen.method("set_orientation").invoke(4);
     }
-    const apiClient = AssemblyCSharp.image.class("Org.OpenAPITools.Client.Configuration").method("get_Default").invoke().method("get_ApiClient").invoke().method("get_RestClient").invoke();
-    const proxyUri = SystemDll.image.class("System.Uri").new();
-    proxyUri.method(".ctor").overload("System.String").invoke(Il2Cpp.string(globalConfig.ProxyUrl));
-    const networkCredential = SystemDll.image.class("System.Net.NetworkCredential").new();
-    networkCredential.method(".ctor").overload("System.String", "System.String").invoke(globalConfig.ProxyUsername ? Il2Cpp.string(globalConfig.ProxyUsername) : EmptyString, globalConfig.ProxyPassword ? Il2Cpp.string(globalConfig.ProxyPassword) : EmptyString);
-    const webProxy = SystemDll.image.class("System.Net.WebProxy").new();
-    webProxy.method(".ctor").overload(proxyUri.class, "System.Boolean", "System.String[]", networkCredential.class).invoke(proxyUri, true, Il2Cpp.array(Il2Cpp.corlib.class("System.String"), 0), networkCredential);
-    apiClient.method("set_Proxy").invoke(webProxy);
+    if (globalConfig.ProxyUrl) {
+      const apiClient = AssemblyCSharp.image.class("Org.OpenAPITools.Client.Configuration").method("get_Default").invoke().method("get_ApiClient").invoke().method("get_RestClient").invoke();
+      const proxyUri = SystemDll.image.class("System.Uri").new();
+      proxyUri.method(".ctor").overload("System.String").invoke(Il2Cpp.string(globalConfig.ProxyUrl));
+      const networkCredential = SystemDll.image.class("System.Net.NetworkCredential").new();
+      networkCredential.method(".ctor").overload("System.String", "System.String").invoke(globalConfig.ProxyUsername ? Il2Cpp.string(globalConfig.ProxyUsername) : EmptyString, globalConfig.ProxyPassword ? Il2Cpp.string(globalConfig.ProxyPassword) : EmptyString);
+      const webProxy = SystemDll.image.class("System.Net.WebProxy").new();
+      webProxy.method(".ctor").overload(proxyUri.class, "System.Boolean", "System.String[]", networkCredential.class).invoke(proxyUri, true, Il2Cpp.array(Il2Cpp.corlib.class("System.String"), 0), networkCredential);
+      apiClient.method("set_Proxy").invoke(webProxy);
+    }
   },
   getconfig: () => globalConfig
 };
