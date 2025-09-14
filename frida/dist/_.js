@@ -1,5 +1,5 @@
 📦
-151123 /src/index.js
+151175 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3343,7 +3343,8 @@ var globalConfig = {
   "AutoCloseSubtitle": false,
   "ProxyUrl": "",
   "ProxyUsername": "",
-  "ProxyPassword": ""
+  "ProxyPassword": "",
+  "EnableProxy": false
 };
 var hasloaded = false;
 rpc.exports = {
@@ -3365,7 +3366,7 @@ rpc.exports = {
       UnityScreen.method("set_orientation").invoke(5);
       UnityScreen.method("set_orientation").invoke(4);
     }
-    if (globalConfig.ProxyUrl) {
+    if (globalConfig.EnableProxy && globalConfig.ProxyUrl) {
       const apiClient = AssemblyCSharp.image.class("Org.OpenAPITools.Client.Configuration").method("get_Default").invoke().method("get_ApiClient").invoke().method("get_RestClient").invoke();
       const proxyUri = SystemDll.image.class("System.Uri").new();
       proxyUri.method(".ctor").overload("System.String").invoke(Il2Cpp.string(globalConfig.ProxyUrl));
