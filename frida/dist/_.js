@@ -1,5 +1,5 @@
 📦
-151378 /src/index.js
+151123 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3399,8 +3399,9 @@ Il2Cpp.perform(() => {
     console.log(`\u3010SetMaxSimulationCountPerFrame\u3011${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`);
     return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame);
   };
-  const Global = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
-  const SaveDataStorage = Global.method("get_SaveData").invoke();
+  function get_SaveData() {
+    return AssemblyCSharp.image.class("Global").method("get_Instance").invoke().method("get_SaveData").invoke();
+  }
   const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
   if (Core.image.tryClass("Alstromeria.ArchiveLiveDataStream") != null) {
     Core.image.class("Alstromeria.ArchiveLiveDataStream").method(".ctor").implementation = function(directoryManager, downloader, fileSystem) {
@@ -3427,7 +3428,7 @@ Il2Cpp.perform(() => {
   }
   function getSize(quality = -1, isLongSide = 1) {
     if (quality == -1) {
-      quality = SaveDataStorage.method("get_RenderTextureQuality").invoke().field("value__").value;
+      quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
     }
     var size = 0;
     switch (quality) {
@@ -3472,17 +3473,17 @@ Il2Cpp.perform(() => {
   var alphaModified = false;
   AlphaBlendCamera.method("UpdateAlpha").implementation = function(newAlpha) {
     const alpha = newAlpha;
-    const RenderTextureQuality = SaveDataStorage.method("get_RenderTextureQuality").invoke();
+    const RenderTextureQuality = get_SaveData().method("get_RenderTextureQuality").invoke();
     const quality = RenderTextureQuality.field("value__").value;
     if (alpha > 0 && alpha < 1) {
       if (!alphaModified && quality > 0) {
         alphaModified = true;
-        SaveDataStorage.method("set_RenderTextureQuality").invoke(quality - 1);
+        get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1);
       }
     } else if (alphaModified) {
       alphaModified = false;
       if (quality < 2)
-        SaveDataStorage.method("set_RenderTextureQuality").invoke(quality + 1);
+        get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1);
     }
     this.method("UpdateAlpha").invoke(newAlpha);
   };
@@ -3551,7 +3552,7 @@ Il2Cpp.perform(() => {
     if (!objCamera.toString().startsWith("StoryCamera")) {
       return this.method("CreateRenderTextureDescriptor").invoke(camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture);
     }
-    const quality = SaveDataStorage.method("get_RenderTextureQuality").invoke().field("value__").value;
+    const quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
     const RenderTexture = objCamera.method("get_targetTexture").invoke();
     if (!RenderTexture.isNull()) {
       const RenderTextureHeight = RenderTexture.method("get_height").invoke();
@@ -3829,10 +3830,10 @@ Il2Cpp.perform(() => {
   };
   AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function(skipReturn, skipLine, timesec, seekbar) {
     this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar);
-    const isNovelView = AssemblyCSharp.image.class("Tecotec.StoryUIManager").method("get_Instance").invoke().field("transitionWindow").value.method("get_NovelView").invoke().method("get_IsNovelMode").invoke();
-    if (isNovelView && globalConfig.AutoNovelAuto) {
+    if (globalConfig.AutoNovelAuto) {
       this.method("NovelAutoSpeed").invoke(1);
-    } else if (!isNovelView && globalConfig.AutoCloseSubtitle) {
+    }
+    if (globalConfig.AutoCloseSubtitle) {
       const isSubtitle = this.field("menu").value.field("isSubtitle").value;
       if (isSubtitle)
         this.method("OnClickSwitchSubtitle").invoke();

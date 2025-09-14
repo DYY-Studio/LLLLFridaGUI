@@ -109,8 +109,10 @@ Il2Cpp.perform(() => {
         return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame)
     }
 
-    const Global = AssemblyCSharp.image.class("Global").method("get_Instance").invoke() as Il2Cpp.Object
-    const SaveDataStorage = Global.method("get_SaveData").invoke() as Il2Cpp.Object
+    
+    function get_SaveData() {
+        return AssemblyCSharp.image.class("Global").method<Il2Cpp.Object>("get_Instance").invoke().method<Il2Cpp.Object>("get_SaveData").invoke() 
+    }
 
     const EmptyString = Il2Cpp.corlib.class("System.String").field<Il2Cpp.String>("Empty").value
 
@@ -167,7 +169,7 @@ Il2Cpp.perform(() => {
      */
     function getSize(quality: number = -1, isLongSide: number = 1) {
         if (quality == -1) {
-            quality = SaveDataStorage.method<Il2Cpp.ValueType>("get_RenderTextureQuality").invoke().field<number>("value__").value
+            quality = get_SaveData().method<Il2Cpp.ValueType>("get_RenderTextureQuality").invoke().field<number>("value__").value
         }
         
         var size = 0
@@ -235,18 +237,18 @@ Il2Cpp.perform(() => {
     */
     AlphaBlendCamera.method("UpdateAlpha").implementation = function (newAlpha) {
         const alpha = newAlpha as number
-        const RenderTextureQuality = SaveDataStorage.method("get_RenderTextureQuality").invoke() as Il2Cpp.ValueType
+        const RenderTextureQuality = get_SaveData().method("get_RenderTextureQuality").invoke() as Il2Cpp.ValueType
         const quality = RenderTextureQuality.field<number>("value__").value
 
         if (alpha > 0 && alpha < 1) {
             if (!alphaModified && quality > 0) {
                 alphaModified = true
-                SaveDataStorage.method("set_RenderTextureQuality").invoke(quality - 1)
+                get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1)
             }
         }
         else if (alphaModified) {
             alphaModified = false
-            if (quality < 2) SaveDataStorage.method("set_RenderTextureQuality").invoke(quality + 1)
+            if (quality < 2) get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1)
         }
         this.method("UpdateAlpha").invoke(newAlpha)
     }
@@ -367,7 +369,7 @@ Il2Cpp.perform(() => {
         if (!objCamera.toString().startsWith("StoryCamera")) {
             return this.method("CreateRenderTextureDescriptor").invoke(camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture)
         }
-        const quality = (SaveDataStorage.method("get_RenderTextureQuality").invoke() as Il2Cpp.ValueType).field<number>("value__").value
+        const quality = (get_SaveData().method("get_RenderTextureQuality").invoke() as Il2Cpp.ValueType).field<number>("value__").value
 
         const RenderTexture = objCamera.method("get_targetTexture").invoke() as Il2Cpp.Object
         if  (!RenderTexture.isNull()) {
@@ -763,15 +765,10 @@ Il2Cpp.perform(() => {
 
     AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function (skipReturn, skipLine, timesec, seekbar) {
         this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar)
-        const isNovelView = 
-            AssemblyCSharp.image.class("Tecotec.StoryUIManager").method<Il2Cpp.Object>("get_Instance").invoke()
-            .field<Il2Cpp.Object>("transitionWindow").value
-            .method<Il2Cpp.Object>("get_NovelView").invoke()
-            .method<boolean>("get_IsNovelMode").invoke();
-        if (isNovelView && globalConfig.AutoNovelAuto) {
+        if (globalConfig.AutoNovelAuto) {
             this.method("NovelAutoSpeed").invoke(1)
         }
-        else if (!isNovelView && globalConfig.AutoCloseSubtitle) {
+        if (globalConfig.AutoCloseSubtitle) {
             const isSubtitle = this.field<Il2Cpp.Object>("menu").value.field<boolean>("isSubtitle").value
             if (isSubtitle) this.method("OnClickSwitchSubtitle").invoke()
         }
