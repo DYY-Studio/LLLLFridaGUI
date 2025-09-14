@@ -25,6 +25,7 @@ let globalConfig = {
     "ProxyUrl": "",
     "ProxyUsername": "",
     "ProxyPassword": "",
+    "EnableProxy": false
 }
 
 var hasloaded = false
@@ -52,7 +53,7 @@ rpc.exports = {
             UnityScreen.method("set_orientation").invoke(4)
         }
 
-        if (globalConfig.ProxyUrl) {
+        if (globalConfig.EnableProxy && globalConfig.ProxyUrl) {
             const apiClient = AssemblyCSharp.image.class("Org.OpenAPITools.Client.Configuration")
             .method<Il2Cpp.Object>("get_Default").invoke()
             .method<Il2Cpp.Object>("get_ApiClient").invoke()

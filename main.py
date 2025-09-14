@@ -403,6 +403,8 @@ def readCfg(cfgPath: str):
             ui.proxyUserLineEdit.setText(cfg.get("ProxyUsername", ""))
             ui.proxyPasswordLineEdit.setText(cfg.get("ProxyPassword", ""))
 
+            ui.enableProxyCheckBox.setChecked(cfg.get("EnableProxy", False))
+
     except Exception as e:
         warningMsgBox("Error", f"Failed to read config.json")
 

@@ -302,7 +302,7 @@ class Ui_L4ToolMW(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 452, 282))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 452, 308))
         self.gridLayout_16 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_16.setObjectName(u"gridLayout_16")
         self.groupBox_6 = QGroupBox(self.scrollAreaWidgetContents)
@@ -376,33 +376,38 @@ class Ui_L4ToolMW(object):
         self.proxyUserLineEdit = QLineEdit(self.proxyGroup)
         self.proxyUserLineEdit.setObjectName(u"proxyUserLineEdit")
 
-        self.gridLayout_17.addWidget(self.proxyUserLineEdit, 1, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.proxyUserLineEdit, 2, 1, 1, 1)
+
+        self.httpProxyLineEdit = QLineEdit(self.proxyGroup)
+        self.httpProxyLineEdit.setObjectName(u"httpProxyLineEdit")
+
+        self.gridLayout_17.addWidget(self.httpProxyLineEdit, 1, 1, 1, 3)
 
         self.label_12 = QLabel(self.proxyGroup)
         self.label_12.setObjectName(u"label_12")
 
-        self.gridLayout_17.addWidget(self.label_12, 0, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.label_12, 1, 0, 1, 1)
 
         self.label_14 = QLabel(self.proxyGroup)
         self.label_14.setObjectName(u"label_14")
 
-        self.gridLayout_17.addWidget(self.label_14, 1, 2, 1, 1)
-
-        self.label_13 = QLabel(self.proxyGroup)
-        self.label_13.setObjectName(u"label_13")
-
-        self.gridLayout_17.addWidget(self.label_13, 1, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.label_14, 2, 2, 1, 1)
 
         self.proxyPasswordLineEdit = QLineEdit(self.proxyGroup)
         self.proxyPasswordLineEdit.setObjectName(u"proxyPasswordLineEdit")
         self.proxyPasswordLineEdit.setEchoMode(QLineEdit.Password)
 
-        self.gridLayout_17.addWidget(self.proxyPasswordLineEdit, 1, 3, 1, 1)
+        self.gridLayout_17.addWidget(self.proxyPasswordLineEdit, 2, 3, 1, 1)
 
-        self.httpProxyLineEdit = QLineEdit(self.proxyGroup)
-        self.httpProxyLineEdit.setObjectName(u"httpProxyLineEdit")
+        self.label_13 = QLabel(self.proxyGroup)
+        self.label_13.setObjectName(u"label_13")
 
-        self.gridLayout_17.addWidget(self.httpProxyLineEdit, 0, 1, 1, 3)
+        self.gridLayout_17.addWidget(self.label_13, 2, 0, 1, 1)
+
+        self.enableProxyCheckBox = QCheckBox(self.proxyGroup)
+        self.enableProxyCheckBox.setObjectName(u"enableProxyCheckBox")
+
+        self.gridLayout_17.addWidget(self.enableProxyCheckBox, 0, 0, 1, 1)
 
 
         self.gridLayout_16.addWidget(self.proxyGroup, 0, 0, 1, 1)
@@ -696,14 +701,18 @@ class Ui_L4ToolMW(object):
         self.autoModeEnterCheckbox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u542f\u7528Auto\uff08\u901f\u5ea61\uff09", None))
         self.groupBox_7.setTitle(QCoreApplication.translate("L4ToolMW", u"\u6807\u51c6\u6a21\u5f0f", None))
         self.autoCloseSubtitleCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u81ea\u52a8\u5173\u95ed\u5b57\u5e55", None))
+#if QT_CONFIG(tooltip)
+        self.proxyGroup.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u4e3aLLLL\u8bbe\u7f6e\u4ee3\u7406</span></p><p>\u5141\u8bb8macOS\u4e0d\u542f\u7528ClashX\u589e\u5f3a\u6a21\u5f0f\u4ee3\u7406\u8bbf\u95eeLLLL</p><p>iOS/Android\u672a\u6d4b\u8bd5</p><p><br/></p><p><span style=\" font-weight:700;\">\u5bf9TCP Socket\u76f4\u64ad\u65e0\u6548</span></p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
         self.proxyGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u8bbe\u7f6eLLLL\u4ee3\u7406\uff08\u4ec5HTTP/HTTPS\uff0c\u5bf9\u76f4\u64ad\u6d41\u65e0\u6548\uff09", None))
         self.proxyUserLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Username (\u6ca1\u6709\u53ef\u7a7a\uff09", None))
-        self.label_12.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u5730\u5740", None))
-        self.label_14.setText(QCoreApplication.translate("L4ToolMW", u"\u5bc6\u7801", None))
-        self.label_13.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u7528\u6237\u540d", None))
-        self.proxyPasswordLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Password\uff08\u6ca1\u6709\u53ef\u7a7a\uff09", None))
         self.httpProxyLineEdit.setInputMask("")
         self.httpProxyLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"http(s)://<host>:<port>", None))
+        self.label_12.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u5730\u5740", None))
+        self.label_14.setText(QCoreApplication.translate("L4ToolMW", u"\u5bc6\u7801", None))
+        self.proxyPasswordLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Password\uff08\u6ca1\u6709\u53ef\u7a7a\uff09", None))
+        self.label_13.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u7528\u6237\u540d", None))
+        self.enableProxyCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u542f\u7528", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.extendPage), QCoreApplication.translate("L4ToolMW", u"\u5176\u4ed6\u8c03\u6574", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("L4ToolMW", u"\u529f\u80fd\u9009\u9879", None))
 #if QT_CONFIG(tooltip)
