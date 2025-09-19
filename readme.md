@@ -50,6 +50,8 @@
 **请将本应用放置在独立的文件夹中，本应用需要在文件夹下保存一些内容**
 ## macOS (Apple Silicon)
 使用PlayCover运行LLLL后，直接对Local进行附加即可。
+
+**关闭SIP会导致Hook时LLLL程序崩溃**
 ## iOS
 ### 已越狱
 1. 在Cydia或Sileo添加源`https://build.frida.re`
