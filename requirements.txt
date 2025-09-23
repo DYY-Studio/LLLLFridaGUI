@@ -6,3 +6,4 @@ pyside6_essentials==6.9.2
 Requests==2.32.5
 tqdm==4.67.1
 typing_extensions==4.15.0
+frida==17.1.3

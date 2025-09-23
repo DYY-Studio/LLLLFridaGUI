@@ -40,18 +40,17 @@
 # 请不要用于视频制作和直播
 
 # 环境配置
+## 注意：使用frida 17.1.4及以上版本会导致LLLL崩溃！
 ## 桌面端
 > 从Release下载完整包可略过这两步直接运行
 
 1. 在桌面设备（Windows, Linux, macOS）上安装Python 3.10+   
 2. 安装Frida
-   - `pip install frida frida-tools`
+   - `pip install frida==17.1.3 frida-tools`
 
 **请将本应用放置在独立的文件夹中，本应用需要在文件夹下保存一些内容**
 ## macOS (Apple Silicon)
 使用PlayCover运行LLLL后，直接对Local进行附加即可。
-
-**关闭SIP会导致Hook时LLLL程序崩溃**
 ## iOS
 ### 已越狱
 1. 在Cydia或Sileo添加源`https://build.frida.re`
