@@ -3,6 +3,8 @@
 
 为macOS原生运行及iOS越狱设备设计，同时兼容Android设备（有无Root均可）和一般iOS设备（需要开发者账号）
 
+一般iOS设备推荐移步隔壁项目[LLLLResUpiOS](https://github.com/DYY-Studio/LLLLResUpiOS)
+
 本程序基于 MIT 许可发布
 
 仅在Mac mini (2024) *macOS Sequoia 15.3.1*上进行了测试
@@ -89,4 +91,5 @@
 # 致谢
 * [Frida](https://frida.re/)
 * [frida-il2cpp-bridge](https://github.com/vfsfitvnm/frida-il2cpp-bridge)
+
 * [@ChocoLZS](https://github.com/ChocoLZS)
