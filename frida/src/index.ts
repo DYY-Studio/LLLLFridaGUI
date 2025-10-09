@@ -767,7 +767,11 @@ Il2Cpp.perform(() => {
     AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function (skipReturn, skipLine, timesec, seekbar) {
         this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar)
         if (globalConfig.AutoNovelAuto) {
-            this.method("NovelAutoSpeed").invoke(1)
+            if (this.tryMethod("NovelAutoSpeed")) {
+                this.method("NovelAutoSpeed").invoke(1)
+            } else if (this.tryMethod("SetNovelWaitInterval")) {
+                this.method("SetNovelWaitInterval").invoke(1)
+            }
         }
         if (globalConfig.AutoCloseSubtitle) {
             const isSubtitle = this.field<Il2Cpp.Object>("menu").value.field<boolean>("isSubtitle").value

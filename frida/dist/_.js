@@ -1,5 +1,5 @@
 📦
-151175 /src/index.js
+151345 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -3832,7 +3832,11 @@ Il2Cpp.perform(() => {
   AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function(skipReturn, skipLine, timesec, seekbar) {
     this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar);
     if (globalConfig.AutoNovelAuto) {
-      this.method("NovelAutoSpeed").invoke(1);
+      if (this.tryMethod("NovelAutoSpeed")) {
+        this.method("NovelAutoSpeed").invoke(1);
+      } else if (this.tryMethod("SetNovelWaitInterval")) {
+        this.method("SetNovelWaitInterval").invoke(1);
+      }
     }
     if (globalConfig.AutoCloseSubtitle) {
       const isSubtitle = this.field("menu").value.field("isSubtitle").value;
