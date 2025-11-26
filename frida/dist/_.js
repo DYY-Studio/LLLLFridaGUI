@@ -1,5 +1,5 @@
 📦
-151345 /src/index.js
+251530 /src/index.js
 ✄
 // node_modules/frida-il2cpp-bridge/dist/index.js
 var __decorate = function(decorators, target, key, desc) {
@@ -90,9 +90,9 @@ var Il2Cpp2;
   getter(Il2Cpp3, "unityVersionIsBelow202120", () => {
     return UnityVersion.lt(Il2Cpp3.unityVersion, "2021.2.0");
   }, lazy);
-  function unityEngineCall(method) {
-    const handle = Il2Cpp3.exports.resolveInternalCall(Memory.allocUtf8String("UnityEngine.Application::" + method));
-    const nativeFunction = new NativeFunction(handle, "pointer", []);
+  function unityEngineCall(method2) {
+    const handle2 = Il2Cpp3.exports.resolveInternalCall(Memory.allocUtf8String("UnityEngine.Application::" + method2));
+    const nativeFunction = new NativeFunction(handle2, "pointer", []);
     return nativeFunction.isNull() ? null : new Il2Cpp3.String(nativeFunction()).asNullable()?.content ?? null;
   }
 })(Il2Cpp2 || (Il2Cpp2 = {}));
@@ -569,18 +569,18 @@ var Il2Cpp2;
   };
   decorate(Il2Cpp3.exports, lazy);
   getter(Il2Cpp3, "memorySnapshotExports", () => new CModule("#include <stdint.h>\n#include <string.h>\n\ntypedef struct Il2CppManagedMemorySnapshot Il2CppManagedMemorySnapshot;\ntypedef struct Il2CppMetadataType Il2CppMetadataType;\n\nstruct Il2CppManagedMemorySnapshot\n{\n  struct Il2CppManagedHeap\n  {\n    uint32_t section_count;\n    void * sections;\n  } heap;\n  struct Il2CppStacks\n  {\n    uint32_t stack_count;\n    void * stacks;\n  } stacks;\n  struct Il2CppMetadataSnapshot\n  {\n    uint32_t type_count;\n    Il2CppMetadataType * types;\n  } metadata_snapshot;\n  struct Il2CppGCHandles\n  {\n    uint32_t tracked_object_count;\n    void ** pointers_to_objects;\n  } gc_handles;\n  struct Il2CppRuntimeInformation\n  {\n    uint32_t pointer_size;\n    uint32_t object_header_size;\n    uint32_t array_header_size;\n    uint32_t array_bounds_offset_in_header;\n    uint32_t array_size_offset_in_header;\n    uint32_t allocation_granularity;\n  } runtime_information;\n  void * additional_user_information;\n};\n\nstruct Il2CppMetadataType\n{\n  uint32_t flags;\n  void * fields;\n  uint32_t field_count;\n  uint32_t statics_size;\n  uint8_t * statics;\n  uint32_t base_or_element_type_index;\n  char * name;\n  const char * assembly_name;\n  uint64_t type_info_address;\n  uint32_t size;\n};\n\nuintptr_t\nil2cpp_memory_snapshot_get_classes (\n    const Il2CppManagedMemorySnapshot * snapshot, Il2CppMetadataType ** iter)\n{\n  const int zero = 0;\n  const void * null = 0;\n\n  if (iter != NULL && snapshot->metadata_snapshot.type_count > zero)\n  {\n    if (*iter == null)\n    {\n      *iter = snapshot->metadata_snapshot.types;\n      return (uintptr_t) (*iter)->type_info_address;\n    }\n    else\n    {\n      Il2CppMetadataType * metadata_type = *iter + 1;\n\n      if (metadata_type < snapshot->metadata_snapshot.types +\n                              snapshot->metadata_snapshot.type_count)\n      {\n        *iter = metadata_type;\n        return (uintptr_t) (*iter)->type_info_address;\n      }\n    }\n  }\n  return 0;\n}\n\nvoid **\nil2cpp_memory_snapshot_get_objects (\n    const Il2CppManagedMemorySnapshot * snapshot, uint32_t * size)\n{\n  *size = snapshot->gc_handles.tracked_object_count;\n  return snapshot->gc_handles.pointers_to_objects;\n}\n"), lazy);
-  function r(exportName, retType, argTypes) {
-    const handle = Il2Cpp3.$config.exports?.[exportName]?.() ?? Il2Cpp3.module.findExportByName(exportName) ?? Il2Cpp3.memorySnapshotExports[exportName];
-    const target = new NativeFunction(handle ?? NULL, retType, argTypes);
+  function r(exportName, retType2, argTypes2) {
+    const handle2 = Il2Cpp3.$config.exports?.[exportName]?.() ?? Il2Cpp3.module.findExportByName(exportName) ?? Il2Cpp3.memorySnapshotExports[exportName];
+    const target = new NativeFunction(handle2 ?? NULL, retType2, argTypes2);
     return target.isNull() ? new Proxy(target, {
       get(value, name) {
         const property = value[name];
         return typeof property === "function" ? property.bind(value) : property;
       },
       apply() {
-        if (handle == null) {
+        if (handle2 == null) {
           raise(`couldn't resolve export ${exportName}`);
-        } else if (handle.isNull()) {
+        } else if (handle2.isNull()) {
           raise(`export ${exportName} points to NULL IL2CPP library has likely been stripped, obfuscated, or customized`);
         }
       }
@@ -677,9 +677,9 @@ var Il2Cpp2;
         Il2Cpp3.exports.livenessCalculationFromStatics(state);
         Il2Cpp3.exports.livenessCalculationEnd(state);
       } else {
-        const realloc = (handle, size) => {
-          if (!handle.isNull() && size.compare(0) == 0) {
-            Il2Cpp3.free(handle);
+        const realloc = (handle2, size) => {
+          if (!handle2.isNull() && size.compare(0) == 0) {
+            Il2Cpp3.free(handle2);
             return NULL;
           } else {
             return Il2Cpp3.alloc(size);
@@ -735,9 +735,9 @@ var Android;
     return value ? parseInt(value) : null;
   }, lazy);
   function getProperty(name) {
-    const handle = Process.findModuleByName("libc.so")?.findExportByName("__system_property_get");
-    if (handle) {
-      const __system_property_get = new NativeFunction(handle, "void", ["pointer", "pointer"]);
+    const handle2 = Process.findModuleByName("libc.so")?.findExportByName("__system_property_get");
+    if (handle2) {
+      const __system_property_get = new NativeFunction(handle2, "void", ["pointer", "pointer"]);
       const value = Memory.alloc(92).writePointer(NULL);
       __system_property_get(Memory.allocUtf8String(name), value);
       return value.readCString() ?? void 0;
@@ -766,8 +766,8 @@ function decorate(target, decorator, descriptors = Object.getOwnPropertyDescript
   Object.defineProperties(target, descriptors);
   return target;
 }
-function getter(target, key, get, decorator) {
-  globalThis.Object.defineProperty(target, key, decorator?.(target, key, { get, configurable: true }) ?? { get, configurable: true });
+function getter(target, key, get2, decorator) {
+  globalThis.Object.defineProperty(target, key, decorator?.(target, key, { get: get2, configurable: true }) ?? { get: get2, configurable: true });
 }
 function cyrb53(str) {
   let h1 = 3735928559;
@@ -834,19 +834,19 @@ NativePointer.prototype.offsetOf = function(condition, depth) {
   }
   return null;
 };
-function readNativeIterator(block) {
+function readNativeIterator(block2) {
   const array = [];
   const iterator = Memory.alloc(Process.pointerSize);
-  let handle = block(iterator);
-  while (!handle.isNull()) {
-    array.push(handle);
-    handle = block(iterator);
+  let handle2 = block2(iterator);
+  while (!handle2.isNull()) {
+    array.push(handle2);
+    handle2 = block2(iterator);
   }
   return array;
 }
-function readNativeList(block) {
+function readNativeList(block2) {
   const lengthPointer = Memory.alloc(Process.pointerSize);
-  const startPointer = block(lengthPointer);
+  const startPointer = block2(lengthPointer);
   if (startPointer.isNull()) {
     return [];
   }
@@ -860,11 +860,11 @@ function recycle(Class) {
   return new Proxy(Class, {
     cache: /* @__PURE__ */ new Map(),
     construct(Target, argArray) {
-      const handle = argArray[0].toUInt32();
-      if (!this.cache.has(handle)) {
-        this.cache.set(handle, new Target(argArray[0]));
+      const handle2 = argArray[0].toUInt32();
+      if (!this.cache.has(handle2)) {
+        this.cache.set(handle2, new Target(argArray[0]));
       }
-      return this.cache.get(handle);
+      return this.cache.get(handle2);
     }
   });
 }
@@ -999,13 +999,13 @@ var Il2Cpp2;
   Il2Cpp3.write = write;
   function fromFridaValue(value, type) {
     if (globalThis.Array.isArray(value)) {
-      const handle = Memory.alloc(type.class.valueTypeSize);
+      const handle2 = Memory.alloc(type.class.valueTypeSize);
       const fields = type.class.fields.filter((_) => !_.isStatic);
       for (let i = 0; i < fields.length; i++) {
         const convertedValue = fromFridaValue(value[i], fields[i].type);
-        write(handle.add(fields[i].offset).sub(Il2Cpp3.Object.headerSize), convertedValue, fields[i].type);
+        write(handle2.add(fields[i].offset).sub(Il2Cpp3.Object.headerSize), convertedValue, fields[i].type);
       }
-      return new Il2Cpp3.ValueType(handle, type);
+      return new Il2Cpp3.ValueType(handle2, type);
     } else if (value instanceof NativePointer) {
       if (type.isByReference) {
         return new Il2Cpp3.Reference(value, type);
@@ -1108,12 +1108,12 @@ var Il2Cpp2;
 })(Il2Cpp2 || (Il2Cpp2 = {}));
 var Il2Cpp2;
 (function(Il2Cpp3) {
-  async function perform(block, flag = "bind") {
+  async function perform(block2, flag = "bind") {
     let attachedThread = null;
     try {
       const isInMainThread = await Il2Cpp3.initialize(flag == "main");
       if (flag == "main" && !isInMainThread) {
-        return perform(() => Il2Cpp3.mainThread.schedule(block), "free");
+        return perform(() => Il2Cpp3.mainThread.schedule(block2), "free");
       }
       if (Il2Cpp3.currentThread == null) {
         attachedThread = Il2Cpp3.domain.attach();
@@ -1121,7 +1121,7 @@ var Il2Cpp2;
       if (flag == "bind" && attachedThread != null) {
         Script.bindWeak(globalThis, () => attachedThread?.detach());
       }
-      const result = block();
+      const result = block2();
       return result instanceof Promise ? await result : result;
     } catch (error) {
       Script.nextTick((_) => {
@@ -1241,21 +1241,21 @@ ${this.#state.buffer.join("\n")}
     }
     /** Commits the current changes by finding the target methods. */
     and() {
-      const filterMethod = (method) => {
+      const filterMethod = (method2) => {
         if (this.#parameterFilter == void 0) {
-          this.#targets.push(method);
+          this.#targets.push(method2);
           return;
         }
-        for (const parameter of method.parameters) {
+        for (const parameter of method2.parameters) {
           if (this.#parameterFilter(parameter)) {
-            this.#targets.push(method);
+            this.#targets.push(method2);
             break;
           }
         }
       };
       const filterMethods = (values) => {
-        for (const method of values) {
-          filterMethod(method);
+        for (const method2 of values) {
+          filterMethod(method2);
         }
       };
       const filterClass = (klass) => {
@@ -1263,9 +1263,9 @@ ${this.#state.buffer.join("\n")}
           filterMethods(klass.methods);
           return;
         }
-        for (const method of klass.methods) {
-          if (this.#methodFilter(method)) {
-            filterMethod(method);
+        for (const method2 of klass.methods) {
+          if (this.#methodFilter(method2)) {
+            filterMethod(method2);
           }
         }
       };
@@ -1332,41 +1332,41 @@ ${this.#state.buffer.join("\n")}
   }
   Il2Cpp3.Tracer = Tracer;
   function trace(parameters = false) {
-    const applier = () => (method, state, threadId) => {
-      const paddedVirtualAddress = method.relativeVirtualAddress.toString(16).padStart(8, "0");
-      Interceptor.attach(method.virtualAddress, {
+    const applier = () => (method2, state, threadId) => {
+      const paddedVirtualAddress = method2.relativeVirtualAddress.toString(16).padStart(8, "0");
+      Interceptor.attach(method2.virtualAddress, {
         onEnter() {
           if (this.threadId == threadId) {
-            state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(state.depth++)}\u250C\u2500\x1B[35m${method.class.type.name}::\x1B[1m${method.name}\x1B[0m\x1B[0m`);
+            state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(state.depth++)}\u250C\u2500\x1B[35m${method2.class.type.name}::\x1B[1m${method2.name}\x1B[0m\x1B[0m`);
           }
         },
         onLeave() {
           if (this.threadId == threadId) {
-            state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(--state.depth)}\u2514\u2500\x1B[33m${method.class.type.name}::\x1B[1m${method.name}\x1B[0m\x1B[0m`);
+            state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(--state.depth)}\u2514\u2500\x1B[33m${method2.class.type.name}::\x1B[1m${method2.name}\x1B[0m\x1B[0m`);
             state.flush();
           }
         }
       });
     };
-    const applierWithParameters = () => (method, state, threadId) => {
-      const paddedVirtualAddress = method.relativeVirtualAddress.toString(16).padStart(8, "0");
-      const startIndex = +!method.isStatic | +Il2Cpp3.unityVersionIsBelow201830;
+    const applierWithParameters = () => (method2, state, threadId) => {
+      const paddedVirtualAddress = method2.relativeVirtualAddress.toString(16).padStart(8, "0");
+      const startIndex = +!method2.isStatic | +Il2Cpp3.unityVersionIsBelow201830;
       const callback = function(...args) {
         if (this.threadId == threadId) {
-          const thisParameter = method.isStatic ? void 0 : new Il2Cpp3.Parameter("this", -1, method.class.type);
-          const parameters2 = thisParameter ? [thisParameter].concat(method.parameters) : method.parameters;
-          state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(state.depth++)}\u250C\u2500\x1B[35m${method.class.type.name}::\x1B[1m${method.name}\x1B[0m\x1B[0m(${parameters2.map((e) => `\x1B[32m${e.name}\x1B[0m = \x1B[31m${Il2Cpp3.fromFridaValue(args[e.position + startIndex], e.type)}\x1B[0m`).join(", ")})`);
+          const thisParameter = method2.isStatic ? void 0 : new Il2Cpp3.Parameter("this", -1, method2.class.type);
+          const parameters2 = thisParameter ? [thisParameter].concat(method2.parameters) : method2.parameters;
+          state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(state.depth++)}\u250C\u2500\x1B[35m${method2.class.type.name}::\x1B[1m${method2.name}\x1B[0m\x1B[0m(${parameters2.map((e) => `\x1B[32m${e.name}\x1B[0m = \x1B[31m${Il2Cpp3.fromFridaValue(args[e.position + startIndex], e.type)}\x1B[0m`).join(", ")})`);
         }
-        const returnValue = method.nativeFunction(...args);
+        const returnValue = method2.nativeFunction(...args);
         if (this.threadId == threadId) {
-          state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(--state.depth)}\u2514\u2500\x1B[33m${method.class.type.name}::\x1B[1m${method.name}\x1B[0m\x1B[0m${returnValue == void 0 ? "" : ` = \x1B[36m${Il2Cpp3.fromFridaValue(returnValue, method.returnType)}`}\x1B[0m`);
+          state.buffer.push(`\x1B[2m0x${paddedVirtualAddress}\x1B[0m ${`\u2502 `.repeat(--state.depth)}\u2514\u2500\x1B[33m${method2.class.type.name}::\x1B[1m${method2.name}\x1B[0m\x1B[0m${returnValue == void 0 ? "" : ` = \x1B[36m${Il2Cpp3.fromFridaValue(returnValue, method2.returnType)}`}\x1B[0m`);
           state.flush();
         }
         return returnValue;
       };
-      method.revert();
-      const nativeCallback = new NativeCallback(callback, method.returnType.fridaAlias, method.fridaSignature);
-      Interceptor.replace(method.virtualAddress, nativeCallback);
+      method2.revert();
+      const nativeCallback = new NativeCallback(callback, method2.returnType.fridaAlias, method2.fridaSignature);
+      Interceptor.replace(method2.virtualAddress, nativeCallback);
     };
     return new Il2Cpp3.Tracer(parameters ? applierWithParameters() : applier());
   }
@@ -1389,18 +1389,18 @@ ${this.#state.buffer.join("\n")}
       }
       return methods[right];
     };
-    const applier = () => (method, state, threadId) => {
-      Interceptor.attach(method.virtualAddress, function() {
+    const applier = () => (method2, state, threadId) => {
+      Interceptor.attach(method2.virtualAddress, function() {
         if (this.threadId == threadId) {
           const handles = globalThis.Thread.backtrace(this.context, mode);
-          handles.unshift(method.virtualAddress);
-          for (const handle of handles) {
-            if (handle.compare(Il2Cpp3.module.base) > 0 && handle.compare(Il2Cpp3.module.base.add(Il2Cpp3.module.size)) < 0) {
-              const method2 = searchInsert(handle);
-              if (method2) {
-                const offset = handle.sub(method2.virtualAddress);
+          handles.unshift(method2.virtualAddress);
+          for (const handle2 of handles) {
+            if (handle2.compare(Il2Cpp3.module.base) > 0 && handle2.compare(Il2Cpp3.module.base.add(Il2Cpp3.module.size)) < 0) {
+              const method3 = searchInsert(handle2);
+              if (method3) {
+                const offset = handle2.sub(method3.virtualAddress);
                 if (offset.compare(4095) < 0) {
-                  state.buffer.push(`\x1B[2m0x${method2.relativeVirtualAddress.toString(16).padStart(8, "0")}\x1B[0m\x1B[2m+0x${offset.toString(16).padStart(3, `0`)}\x1B[0m ${method2.class.type.name}::\x1B[1m${method2.name}\x1B[0m`);
+                  state.buffer.push(`\x1B[2m0x${method3.relativeVirtualAddress.toString(16).padStart(8, "0")}\x1B[0m\x1B[2m+0x${offset.toString(16).padStart(3, `0`)}\x1B[0m ${method3.class.type.name}::\x1B[1m${method3.name}\x1B[0m`);
                 }
               }
             }
@@ -1590,8 +1590,8 @@ var Il2Cpp2;
       if (!this.isGeneric && !this.isInflated) {
         return [];
       }
-      const types = this.type.object.method("GetGenericArguments").invoke();
-      return globalThis.Array.from(types).map((_) => new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(_)));
+      const types2 = this.type.object.method("GetGenericArguments").invoke();
+      return globalThis.Array.from(types2).map((_) => new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(_)));
     }
     /** Determines whether the GC has tracking references to the current class instances. */
     get hasReferences() {
@@ -1723,8 +1723,8 @@ var Il2Cpp2;
       if (this.generics.length != classes.length) {
         raise(`cannot inflate class ${this.type.name} as it needs ${this.generics.length} generic parameter(s), not ${classes.length}`);
       }
-      const types = classes.map((_) => _.type.object);
-      const typeArray = Il2Cpp3.array(Il2Cpp3.corlib.class("System.Type"), types);
+      const types2 = classes.map((_) => _.type.object);
+      const typeArray = Il2Cpp3.array(Il2Cpp3.corlib.class("System.Type"), types2);
       const inflatedType = this.type.object.method("MakeGenericType", 1).invoke(typeArray);
       return new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(inflatedType));
     }
@@ -1785,8 +1785,8 @@ ${this.isEnum ? `enum` : this.isStruct ? `struct` : this.isInterface ? `interfac
 }`;
     }
     /** Executes a callback for every defined class. */
-    static enumerate(block) {
-      const callback = new NativeCallback((_) => block(new Il2Cpp3.Class(_)), "void", ["pointer", "pointer"]);
+    static enumerate(block2) {
+      const callback = new NativeCallback((_) => block2(new Il2Cpp3.Class(_)), "void", ["pointer", "pointer"]);
       return Il2Cpp3.exports.classForEach(callback, NULL);
     }
   };
@@ -1893,7 +1893,7 @@ ${this.isEnum ? `enum` : this.isStruct ? `struct` : this.isInterface ? `interfac
 })(Il2Cpp2 || (Il2Cpp2 = {}));
 var Il2Cpp2;
 (function(Il2Cpp3) {
-  function delegate(klass, block) {
+  function delegate(klass, block2) {
     const SystemDelegate = Il2Cpp3.corlib.class("System.Delegate");
     const SystemMulticastDelegate = Il2Cpp3.corlib.class("System.MulticastDelegate");
     if (!SystemDelegate.isAssignableFrom(klass)) {
@@ -1906,7 +1906,7 @@ var Il2Cpp2;
     const key = delegate2.handle.toString();
     const Invoke = delegate2.tryMethod("Invoke") ?? raise(`cannot create a delegate for ${klass.type.name}, there is no Invoke method`);
     delegate2.method(".ctor").invoke(delegate2, Invoke.handle);
-    const callback = Invoke.wrap(block);
+    const callback = Invoke.wrap(block2);
     delegate2.field("method_ptr").value = callback;
     delegate2.field("invoke_impl").value = callback;
     Il2Cpp3._callbacksToKeepAlive[key] = callback;
@@ -2019,9 +2019,9 @@ var Il2Cpp2;
       if (!this.isStatic) {
         raise(`cannot access instance field ${this.class.type.name}::${this.name} from a class, use an object instead`);
       }
-      const handle = Memory.alloc(Process.pointerSize);
-      Il2Cpp3.exports.fieldGetStaticValue(this.handle, handle);
-      return Il2Cpp3.read(handle, this.type);
+      const handle2 = Memory.alloc(Process.pointerSize);
+      Il2Cpp3.exports.fieldGetStaticValue(this.handle, handle2);
+      return Il2Cpp3.read(handle2, this.type);
     }
     /** Sets the value of this field. Thread static or literal values cannot be altered yet. */
     set value(value) {
@@ -2031,12 +2031,12 @@ var Il2Cpp2;
       if (this.isThreadStatic || this.isLiteral) {
         raise(`cannot write the value of field ${this.name} as it's thread static or literal`);
       }
-      const handle = (
+      const handle2 = (
         // pointer-like values should be passed as-is, but boxed
         // value types (primitives included) must be unboxed first
         value instanceof Il2Cpp3.Object && this.type.class.isValueType ? value.unbox() : value instanceof NativeStruct ? value.handle : value instanceof NativePointer ? value : Il2Cpp3.write(Memory.alloc(this.type.class.valueTypeSize), value, this.type)
       );
-      Il2Cpp3.exports.fieldSetStaticValue(this.handle, handle);
+      Il2Cpp3.exports.fieldSetStaticValue(this.handle, handle2);
     }
     /** */
     toString() {
@@ -2106,8 +2106,8 @@ var Il2Cpp2;
   class GCHandle {
     handle;
     /** @internal */
-    constructor(handle) {
-      this.handle = handle;
+    constructor(handle2) {
+      this.handle = handle2;
     }
     /** Gets the object associated to this handle. */
     get target() {
@@ -2138,11 +2138,11 @@ var Il2Cpp2;
     /** Gets the classes defined in this image. */
     get classes() {
       if (Il2Cpp3.unityVersionIsBelow201830) {
-        const types = this.assembly.object.method("GetTypes").invoke(false);
-        const classes = globalThis.Array.from(types, (_) => new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(_)));
-        const Module = this.tryClass("<Module>");
-        if (Module) {
-          classes.unshift(Module);
+        const types2 = this.assembly.object.method("GetTypes").invoke(false);
+        const classes = globalThis.Array.from(types2, (_) => new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(_)));
+        const Module2 = this.tryClass("<Module>");
+        if (Module2) {
+          classes.unshift(Module2);
         }
         return classes;
       } else {
@@ -2193,8 +2193,8 @@ var Il2Cpp2;
       return new Il2Cpp3.MemorySnapshot();
     }
     /** Creates a memory snapshot with the given handle. */
-    constructor(handle = Il2Cpp3.exports.memorySnapshotCapture()) {
-      super(handle);
+    constructor(handle2 = Il2Cpp3.exports.memorySnapshotCapture()) {
+      super(handle2);
     }
     /** Gets any initialized class. */
     get classes() {
@@ -2216,9 +2216,9 @@ var Il2Cpp2;
     lazy
   ], MemorySnapshot.prototype, "objects", null);
   Il2Cpp3.MemorySnapshot = MemorySnapshot;
-  function memorySnapshot(block) {
+  function memorySnapshot(block2) {
     const memorySnapshot2 = Il2Cpp3.MemorySnapshot.capture();
-    const result = block(memorySnapshot2);
+    const result = block2(memorySnapshot2);
     memorySnapshot2.free();
     return result;
   }
@@ -2243,25 +2243,25 @@ var Il2Cpp2;
     }
     /** */
     get fridaSignature() {
-      const types = [];
+      const types2 = [];
       for (const parameter of this.parameters) {
-        types.push(parameter.type.fridaAlias);
+        types2.push(parameter.type.fridaAlias);
       }
       if (!this.isStatic || Il2Cpp3.unityVersionIsBelow201830) {
-        types.unshift("pointer");
+        types2.unshift("pointer");
       }
       if (this.isInflated) {
-        types.push("pointer");
+        types2.push("pointer");
       }
-      return types;
+      return types2;
     }
     /** Gets the generic parameters of this generic method. */
     get generics() {
       if (!this.isGeneric && !this.isInflated) {
         return [];
       }
-      const types = this.object.method("GetGenericArguments").invoke();
-      return globalThis.Array.from(types).map((_) => new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(_)));
+      const types2 = this.object.method("GetGenericArguments").invoke();
+      return globalThis.Array.from(types2).map((_) => new Il2Cpp3.Class(Il2Cpp3.exports.classFromObject(_)));
     }
     /** Determines whether this method is external. */
     get isExternal() {
@@ -2345,9 +2345,9 @@ var Il2Cpp2;
       return this.virtualAddress;
     }
     /** Replaces the body of this method. */
-    set implementation(block) {
+    set implementation(block2) {
       try {
-        Interceptor.replace(this.virtualAddress, this.wrap(block));
+        Interceptor.replace(this.virtualAddress, this.wrap(block2));
       } catch (e) {
         switch (e.message) {
           case "access violation accessing 0x0":
@@ -2366,15 +2366,15 @@ var Il2Cpp2;
     /** Creates a generic instance of the current generic method. */
     inflate(...classes) {
       if (!this.isGeneric || this.generics.length != classes.length) {
-        for (const method of this.overloads()) {
-          if (method.isGeneric && method.generics.length == classes.length) {
-            return method.inflate(...classes);
+        for (const method2 of this.overloads()) {
+          if (method2.isGeneric && method2.generics.length == classes.length) {
+            return method2.inflate(...classes);
           }
         }
         raise(`could not find inflatable signature of method ${this.name} with ${classes.length} generic parameter(s)`);
       }
-      const types = classes.map((_) => _.type.object);
-      const typeArray = Il2Cpp3.array(Il2Cpp3.corlib.class("System.Type"), types);
+      const types2 = classes.map((_) => _.type.object);
+      const typeArray = Il2Cpp3.array(Il2Cpp3.corlib.class("System.Type"), types2);
       const inflatedMethodObject = this.object.method("MakeGenericMethod", 1).invoke(typeArray);
       return new Il2Cpp3.Method(inflatedMethodObject.field("mhandle").value);
     }
@@ -2414,15 +2414,15 @@ var Il2Cpp2;
     }
     /** Gets the overloaded method with the given parameter types. */
     overload(...typeNamesOrClasses) {
-      const method = this.tryOverload(...typeNamesOrClasses);
-      return method ?? raise(`couldn't find overloaded method ${this.name}(${typeNamesOrClasses.map((_) => _ instanceof Il2Cpp3.Class ? _.type.name : _)})`);
+      const method2 = this.tryOverload(...typeNamesOrClasses);
+      return method2 ?? raise(`couldn't find overloaded method ${this.name}(${typeNamesOrClasses.map((_) => _ instanceof Il2Cpp3.Class ? _.type.name : _)})`);
     }
     /** @internal */
     *overloads() {
       for (const klass of this.class.hierarchy()) {
-        for (const method of klass.methods) {
-          if (this.name == method.name) {
-            yield method;
+        for (const method2 of klass.methods) {
+          if (this.name == method2.name) {
+            yield method2;
           }
         }
       }
@@ -2441,12 +2441,12 @@ var Il2Cpp2;
       const minScore = typeNamesOrClasses.length * 1;
       const maxScore = typeNamesOrClasses.length * 2;
       let candidate = void 0;
-      loop: for (const method of this.overloads()) {
-        if (method.parameterCount != typeNamesOrClasses.length)
+      loop: for (const method2 of this.overloads()) {
+        if (method2.parameterCount != typeNamesOrClasses.length)
           continue;
         let score = 0;
         let i = 0;
-        for (const parameter of method.parameters) {
+        for (const parameter of method2.parameters) {
           const desiredTypeNameOrClass = typeNamesOrClasses[i];
           if (desiredTypeNameOrClass instanceof Il2Cpp3.Class) {
             if (parameter.type.is(desiredTypeNameOrClass.type)) {
@@ -2466,14 +2466,14 @@ var Il2Cpp2;
         if (score < minScore) {
           continue;
         } else if (score == maxScore) {
-          return method;
+          return method2;
         } else if (candidate == void 0 || score > candidate[0]) {
-          candidate = [score, method];
+          candidate = [score, method2];
         } else if (score == candidate[0]) {
           let i2 = 0;
           for (const parameter of candidate[1].parameters) {
-            if (parameter.type.class.isAssignableFrom(method.parameters[i2].type.class)) {
-              candidate = [score, method];
+            if (parameter.type.class.isAssignableFrom(method2.parameters[i2].type.class)) {
+              candidate = [score, method2];
               continue loop;
             }
             i2++;
@@ -2506,13 +2506,13 @@ var Il2Cpp2;
         get(target, property, receiver) {
           switch (property) {
             case "invoke":
-              const handle = instance instanceof Il2Cpp3.ValueType ? target.class.isValueType ? instance.handle.sub(structMethodsRequireObjectInstances() ? Il2Cpp3.Object.headerSize : 0) : raise(`cannot invoke method ${target.class.type.name}::${target.name} against a value type, you must box it first`) : target.class.isValueType ? instance.handle.add(structMethodsRequireObjectInstances() ? 0 : Il2Cpp3.Object.headerSize) : instance.handle;
-              return target.invokeRaw.bind(target, handle);
+              const handle2 = instance instanceof Il2Cpp3.ValueType ? target.class.isValueType ? instance.handle.sub(structMethodsRequireObjectInstances() ? Il2Cpp3.Object.headerSize : 0) : raise(`cannot invoke method ${target.class.type.name}::${target.name} against a value type, you must box it first`) : target.class.isValueType ? instance.handle.add(structMethodsRequireObjectInstances() ? 0 : Il2Cpp3.Object.headerSize) : instance.handle;
+              return target.invokeRaw.bind(target, handle2);
             case "overloads":
               return function* () {
-                for (const method of target[property]()) {
-                  if (!method.isStatic) {
-                    yield method;
+                for (const method2 of target[property]()) {
+                  if (!method2.isStatic) {
+                    yield method2;
                   }
                 }
               };
@@ -2529,12 +2529,12 @@ var Il2Cpp2;
       });
     }
     /** @internal */
-    wrap(block) {
+    wrap(block2) {
       const startIndex = +!this.isStatic | +Il2Cpp3.unityVersionIsBelow201830;
       return new NativeCallback((...args) => {
         const thisObject = this.isStatic ? this.class : this.class.isValueType ? new Il2Cpp3.ValueType(args[0].add(structMethodsRequireObjectInstances() ? Il2Cpp3.Object.headerSize : 0), this.class.type) : new Il2Cpp3.Object(args[0]);
         const parameters = this.parameters.map((_, i) => Il2Cpp3.fromFridaValue(args[i + startIndex], _.type));
-        const result = block.call(thisObject, ...parameters);
+        const result = block2.call(thisObject, ...parameters);
         return Il2Cpp3.toFridaValue(result);
       }, this.returnType.fridaAlias, this.fridaSignature);
     }
@@ -2680,8 +2680,8 @@ var Il2Cpp2;
       return new Il2Cpp3.GCHandle(Il2Cpp3.exports.gcHandleNew(this, +pin));
     }
     /** Gets the correct virtual method from the given virtual method. */
-    virtualMethod(method) {
-      return new Il2Cpp3.Method(Il2Cpp3.exports.objectGetVirtualMethod(this, method)).bind(this);
+    virtualMethod(method2) {
+      return new Il2Cpp3.Method(Il2Cpp3.exports.objectGetVirtualMethod(this, method2)).bind(this);
     }
     /** Gets the non-static field with the given name of the current class hierarchy, if it exists. */
     tryField(name) {
@@ -2700,18 +2700,18 @@ var Il2Cpp2;
     }
     /** Gets the non-static method with the given name (and optionally parameter count) of the current class hierarchy, if it exists. */
     tryMethod(name, parameterCount = -1) {
-      const method = this.class.tryMethod(name, parameterCount);
-      if (method?.isStatic) {
+      const method2 = this.class.tryMethod(name, parameterCount);
+      if (method2?.isStatic) {
         for (const klass of this.class.hierarchy()) {
-          for (const method2 of klass.methods) {
-            if (method2.name == name && !method2.isStatic && (parameterCount < 0 || method2.parameterCount == parameterCount)) {
-              return method2.bind(this);
+          for (const method3 of klass.methods) {
+            if (method3.name == name && !method3.isStatic && (parameterCount < 0 || method3.parameterCount == parameterCount)) {
+              return method3.bind(this);
             }
           }
         }
         return void 0;
       }
-      return method?.bind(this);
+      return method2?.bind(this);
     }
     /** */
     toString() {
@@ -2740,8 +2740,8 @@ var Il2Cpp2;
     class Monitor {
       handle;
       /** @internal */
-      constructor(handle) {
-        this.handle = handle;
+      constructor(handle2) {
+        this.handle = handle2;
       }
       /** Acquires an exclusive lock on the current object. */
       enter() {
@@ -2800,8 +2800,8 @@ var Il2Cpp2;
 (function(Il2Cpp3) {
   class Pointer extends NativeStruct {
     type;
-    constructor(handle, type) {
-      super(handle);
+    constructor(handle2, type) {
+      super(handle2);
       this.type = type;
     }
     /** Gets the element at the given index. */
@@ -2837,8 +2837,8 @@ var Il2Cpp2;
 (function(Il2Cpp3) {
   class Reference extends NativeStruct {
     type;
-    constructor(handle, type) {
-      super(handle);
+    constructor(handle2, type) {
+      super(handle2);
       this.type = type;
     }
     /** Gets the element referenced by the current reference. */
@@ -2856,51 +2856,51 @@ var Il2Cpp2;
   }
   Il2Cpp3.Reference = Reference;
   function reference(value, type) {
-    const handle = Memory.alloc(Process.pointerSize);
+    const handle2 = Memory.alloc(Process.pointerSize);
     switch (typeof value) {
       case "boolean":
-        return new Il2Cpp3.Reference(handle.writeS8(+value), Il2Cpp3.corlib.class("System.Boolean").type);
+        return new Il2Cpp3.Reference(handle2.writeS8(+value), Il2Cpp3.corlib.class("System.Boolean").type);
       case "number":
         switch (type?.enumValue) {
           case Il2Cpp3.Type.Enum.UBYTE:
-            return new Il2Cpp3.Reference(handle.writeU8(value), type);
+            return new Il2Cpp3.Reference(handle2.writeU8(value), type);
           case Il2Cpp3.Type.Enum.BYTE:
-            return new Il2Cpp3.Reference(handle.writeS8(value), type);
+            return new Il2Cpp3.Reference(handle2.writeS8(value), type);
           case Il2Cpp3.Type.Enum.CHAR:
           case Il2Cpp3.Type.Enum.USHORT:
-            return new Il2Cpp3.Reference(handle.writeU16(value), type);
+            return new Il2Cpp3.Reference(handle2.writeU16(value), type);
           case Il2Cpp3.Type.Enum.SHORT:
-            return new Il2Cpp3.Reference(handle.writeS16(value), type);
+            return new Il2Cpp3.Reference(handle2.writeS16(value), type);
           case Il2Cpp3.Type.Enum.UINT:
-            return new Il2Cpp3.Reference(handle.writeU32(value), type);
+            return new Il2Cpp3.Reference(handle2.writeU32(value), type);
           case Il2Cpp3.Type.Enum.INT:
-            return new Il2Cpp3.Reference(handle.writeS32(value), type);
+            return new Il2Cpp3.Reference(handle2.writeS32(value), type);
           case Il2Cpp3.Type.Enum.ULONG:
-            return new Il2Cpp3.Reference(handle.writeU64(value), type);
+            return new Il2Cpp3.Reference(handle2.writeU64(value), type);
           case Il2Cpp3.Type.Enum.LONG:
-            return new Il2Cpp3.Reference(handle.writeS64(value), type);
+            return new Il2Cpp3.Reference(handle2.writeS64(value), type);
           case Il2Cpp3.Type.Enum.FLOAT:
-            return new Il2Cpp3.Reference(handle.writeFloat(value), type);
+            return new Il2Cpp3.Reference(handle2.writeFloat(value), type);
           case Il2Cpp3.Type.Enum.DOUBLE:
-            return new Il2Cpp3.Reference(handle.writeDouble(value), type);
+            return new Il2Cpp3.Reference(handle2.writeDouble(value), type);
         }
       case "object":
         if (value instanceof Il2Cpp3.ValueType || value instanceof Il2Cpp3.Pointer) {
           return new Il2Cpp3.Reference(value.handle, value.type);
         } else if (value instanceof Il2Cpp3.Object) {
-          return new Il2Cpp3.Reference(handle.writePointer(value), value.class.type);
+          return new Il2Cpp3.Reference(handle2.writePointer(value), value.class.type);
         } else if (value instanceof Il2Cpp3.String || value instanceof Il2Cpp3.Array) {
-          return new Il2Cpp3.Reference(handle.writePointer(value), value.object.class.type);
+          return new Il2Cpp3.Reference(handle2.writePointer(value), value.object.class.type);
         } else if (value instanceof NativePointer) {
           switch (type?.enumValue) {
             case Il2Cpp3.Type.Enum.NUINT:
             case Il2Cpp3.Type.Enum.NINT:
-              return new Il2Cpp3.Reference(handle.writePointer(value), type);
+              return new Il2Cpp3.Reference(handle2.writePointer(value), type);
           }
         } else if (value instanceof Int64) {
-          return new Il2Cpp3.Reference(handle.writeS64(value), Il2Cpp3.corlib.class("System.Int64").type);
+          return new Il2Cpp3.Reference(handle2.writeS64(value), Il2Cpp3.corlib.class("System.Int64").type);
         } else if (value instanceof UInt64) {
-          return new Il2Cpp3.Reference(handle.writeU64(value), Il2Cpp3.corlib.class("System.UInt64").type);
+          return new Il2Cpp3.Reference(handle2.writeU64(value), Il2Cpp3.corlib.class("System.UInt64").type);
         }
       default:
         raise(`couldn't create a reference to ${value} using an unhandled type ${type?.name}`);
@@ -2950,19 +2950,19 @@ var Il2Cpp2;
   class Thread extends NativeStruct {
     /** Gets the native id of the current thread. */
     get id() {
-      let get = function() {
+      let get2 = function() {
         return this.internal.field("thread_id").value.toNumber();
       };
       if (Process.platform != "windows") {
         const currentThreadId = Process.getCurrentThreadId();
-        const currentPosixThread = ptr(get.apply(Il2Cpp3.currentThread));
+        const currentPosixThread = ptr(get2.apply(Il2Cpp3.currentThread));
         const offset = currentPosixThread.offsetOf((_) => _.readS32() == currentThreadId, 1024) ?? raise(`couldn't find the offset for determining the kernel id of a posix thread`);
-        const _get = get;
-        get = function() {
+        const _get = get2;
+        get2 = function() {
           return ptr(_get.apply(this)).add(offset).readS32();
         };
       }
-      getter(Il2Cpp3.Thread.prototype, "id", get, lazy);
+      getter(Il2Cpp3.Thread.prototype, "id", get2, lazy);
       return this.id;
     }
     /** Gets the encompassing internal object (System.Threding.InternalThreead) of the current thread. */
@@ -2997,14 +2997,14 @@ var Il2Cpp2;
       return Il2Cpp3.exports.threadDetach(this);
     }
     /** Schedules a callback on the current thread. */
-    schedule(block) {
+    schedule(block2) {
       const Post = this.synchronizationContext?.tryMethod("Post");
       if (Post == null) {
-        return Process.runOnThread(this.id, block);
+        return Process.runOnThread(this.id, block2);
       }
       return new Promise((resolve) => {
         const delegate = Il2Cpp3.delegate(Il2Cpp3.corlib.class("System.Threading.SendOrPostCallback"), () => {
-          const result = block();
+          const result = block2();
           setImmediate(() => resolve(result));
         });
         Script.bindWeak(globalThis, () => {
@@ -3055,11 +3055,11 @@ var Il2Cpp2;
           const matches = Memory.scanSync(range.base, range.size, pattern);
           if (matches.length == 1) {
             while (true) {
-              const handle = matches[0].address.sub(matches[0].size * threads.length).readPointer();
-              if (handle.isNull() || !handle.readPointer().equals(currentThreadHandle.readPointer())) {
+              const handle2 = matches[0].address.sub(matches[0].size * threads.length).readPointer();
+              if (handle2.isNull() || !handle2.readPointer().equals(currentThreadHandle.readPointer())) {
                 break;
               }
-              threads.unshift(new Il2Cpp3.Thread(handle));
+              threads.unshift(new Il2Cpp3.Thread(handle2));
             }
             break;
           }
@@ -3081,7 +3081,7 @@ var Il2Cpp2;
   let Type = class Type extends NativeStruct {
     /** */
     static get Enum() {
-      const _ = (_2, block = (_3) => _3) => block(Il2Cpp3.corlib.class(_2)).type.enumValue;
+      const _ = (_2, block2 = (_3) => _3) => block2(Il2Cpp3.corlib.class(_2)).type.enumValue;
       const initial = {
         VOID: _("System.Void"),
         BOOLEAN: _("System.Boolean"),
@@ -3199,11 +3199,11 @@ var Il2Cpp2;
     }
     /** Gets the name of this type. */
     get name() {
-      const handle = Il2Cpp3.exports.typeGetName(this);
+      const handle2 = Il2Cpp3.exports.typeGetName(this);
       try {
-        return handle.readUtf8String();
+        return handle2.readUtf8String();
       } finally {
-        Il2Cpp3.free(handle);
+        Il2Cpp3.free(handle2);
       }
     }
     /** Gets the encompassing object of the current type. */
@@ -3258,8 +3258,8 @@ var Il2Cpp2;
 (function(Il2Cpp3) {
   class ValueType extends NativeStruct {
     type;
-    constructor(handle, type) {
-      super(handle);
+    constructor(handle2, type) {
+      super(handle2);
       this.type = type;
     }
     /** Boxes the current value type in a object. */
@@ -3291,18 +3291,18 @@ var Il2Cpp2;
     }
     /** Gets the non-static method with the given name (and optionally parameter count) of the current class hierarchy, if it exists. */
     tryMethod(name, parameterCount = -1) {
-      const method = this.type.class.tryMethod(name, parameterCount);
-      if (method?.isStatic) {
+      const method2 = this.type.class.tryMethod(name, parameterCount);
+      if (method2?.isStatic) {
         for (const klass of this.type.class.hierarchy()) {
-          for (const method2 of klass.methods) {
-            if (method2.name == name && !method2.isStatic && (parameterCount < 0 || method2.parameterCount == parameterCount)) {
-              return method2.bind(this);
+          for (const method3 of klass.methods) {
+            if (method3.name == name && !method3.isStatic && (parameterCount < 0 || method3.parameterCount == parameterCount)) {
+              return method3.bind(this);
             }
           }
         }
         return void 0;
       }
-      return method?.bind(this);
+      return method2?.bind(this);
     }
     /** */
     toString() {
@@ -3318,7 +3318,2992 @@ var Il2Cpp2;
 })(Il2Cpp2 || (Il2Cpp2 = {}));
 globalThis.Il2Cpp = Il2Cpp2;
 
+// node_modules/frida-objc-bridge/lib/api.js
+var cachedApi = null;
+var defaultInvocationOptions = {
+  exceptions: "propagate"
+};
+function getApi() {
+  if (cachedApi !== null) {
+    return cachedApi;
+  }
+  const temporaryApi = {};
+  const pending = [
+    {
+      module: "libsystem_malloc.dylib",
+      functions: {
+        "free": ["void", ["pointer"]]
+      }
+    },
+    {
+      module: "libobjc.A.dylib",
+      functions: {
+        "objc_msgSend": function(address) {
+          this.objc_msgSend = address;
+        },
+        "objc_msgSend_stret": function(address) {
+          this.objc_msgSend_stret = address;
+        },
+        "objc_msgSend_fpret": function(address) {
+          this.objc_msgSend_fpret = address;
+        },
+        "objc_msgSendSuper": function(address) {
+          this.objc_msgSendSuper = address;
+        },
+        "objc_msgSendSuper_stret": function(address) {
+          this.objc_msgSendSuper_stret = address;
+        },
+        "objc_msgSendSuper_fpret": function(address) {
+          this.objc_msgSendSuper_fpret = address;
+        },
+        "objc_getClassList": ["int", ["pointer", "int"]],
+        "objc_lookUpClass": ["pointer", ["pointer"]],
+        "objc_allocateClassPair": ["pointer", ["pointer", "pointer", "pointer"]],
+        "objc_disposeClassPair": ["void", ["pointer"]],
+        "objc_registerClassPair": ["void", ["pointer"]],
+        "class_isMetaClass": ["bool", ["pointer"]],
+        "class_getName": ["pointer", ["pointer"]],
+        "class_getImageName": ["pointer", ["pointer"]],
+        "class_copyProtocolList": ["pointer", ["pointer", "pointer"]],
+        "class_copyMethodList": ["pointer", ["pointer", "pointer"]],
+        "class_getClassMethod": ["pointer", ["pointer", "pointer"]],
+        "class_getInstanceMethod": ["pointer", ["pointer", "pointer"]],
+        "class_getSuperclass": ["pointer", ["pointer"]],
+        "class_addProtocol": ["bool", ["pointer", "pointer"]],
+        "class_addMethod": ["bool", ["pointer", "pointer", "pointer", "pointer"]],
+        "class_copyIvarList": ["pointer", ["pointer", "pointer"]],
+        "objc_getProtocol": ["pointer", ["pointer"]],
+        "objc_copyProtocolList": ["pointer", ["pointer"]],
+        "objc_allocateProtocol": ["pointer", ["pointer"]],
+        "objc_registerProtocol": ["void", ["pointer"]],
+        "protocol_getName": ["pointer", ["pointer"]],
+        "protocol_copyMethodDescriptionList": ["pointer", ["pointer", "bool", "bool", "pointer"]],
+        "protocol_copyPropertyList": ["pointer", ["pointer", "pointer"]],
+        "protocol_copyProtocolList": ["pointer", ["pointer", "pointer"]],
+        "protocol_addProtocol": ["void", ["pointer", "pointer"]],
+        "protocol_addMethodDescription": ["void", ["pointer", "pointer", "pointer", "bool", "bool"]],
+        "ivar_getName": ["pointer", ["pointer"]],
+        "ivar_getTypeEncoding": ["pointer", ["pointer"]],
+        "ivar_getOffset": ["pointer", ["pointer"]],
+        "object_isClass": ["bool", ["pointer"]],
+        "object_getClass": ["pointer", ["pointer"]],
+        "object_getClassName": ["pointer", ["pointer"]],
+        "method_getName": ["pointer", ["pointer"]],
+        "method_getTypeEncoding": ["pointer", ["pointer"]],
+        "method_getImplementation": ["pointer", ["pointer"]],
+        "method_setImplementation": ["pointer", ["pointer", "pointer"]],
+        "property_getName": ["pointer", ["pointer"]],
+        "property_copyAttributeList": ["pointer", ["pointer", "pointer"]],
+        "sel_getName": ["pointer", ["pointer"]],
+        "sel_registerName": ["pointer", ["pointer"]],
+        "class_getInstanceSize": ["pointer", ["pointer"]]
+      },
+      optionals: {
+        "objc_msgSend_stret": "ABI",
+        "objc_msgSend_fpret": "ABI",
+        "objc_msgSendSuper_stret": "ABI",
+        "objc_msgSendSuper_fpret": "ABI",
+        "object_isClass": "iOS8"
+      }
+    },
+    {
+      module: "libdispatch.dylib",
+      functions: {
+        "dispatch_async_f": ["void", ["pointer", "pointer", "pointer"]]
+      },
+      variables: {
+        "_dispatch_main_q": function(address) {
+          this._dispatch_main_q = address;
+        }
+      }
+    }
+  ];
+  let remaining = 0;
+  pending.forEach(function(api2) {
+    const isObjCApi = api2.module === "libobjc.A.dylib";
+    const functions = api2.functions || {};
+    const variables = api2.variables || {};
+    const optionals = api2.optionals || {};
+    remaining += Object.keys(functions).length + Object.keys(variables).length;
+    const exportByName = (Process.findModuleByName(api2.module)?.enumerateExports() ?? []).reduce(function(result, exp) {
+      result[exp.name] = exp;
+      return result;
+    }, {});
+    Object.keys(functions).forEach(function(name) {
+      const exp = exportByName[name];
+      if (exp !== void 0 && exp.type === "function") {
+        const signature2 = functions[name];
+        if (typeof signature2 === "function") {
+          signature2.call(temporaryApi, exp.address);
+          if (isObjCApi)
+            signature2.call(temporaryApi, exp.address);
+        } else {
+          temporaryApi[name] = new NativeFunction(exp.address, signature2[0], signature2[1], defaultInvocationOptions);
+          if (isObjCApi)
+            temporaryApi[name] = temporaryApi[name];
+        }
+        remaining--;
+      } else {
+        const optional = optionals[name];
+        if (optional)
+          remaining--;
+      }
+    });
+    Object.keys(variables).forEach(function(name) {
+      const exp = exportByName[name];
+      if (exp !== void 0 && exp.type === "variable") {
+        const handler = variables[name];
+        handler.call(temporaryApi, exp.address);
+        remaining--;
+      }
+    });
+  });
+  if (remaining === 0) {
+    if (!temporaryApi.objc_msgSend_stret)
+      temporaryApi.objc_msgSend_stret = temporaryApi.objc_msgSend;
+    if (!temporaryApi.objc_msgSend_fpret)
+      temporaryApi.objc_msgSend_fpret = temporaryApi.objc_msgSend;
+    if (!temporaryApi.objc_msgSendSuper_stret)
+      temporaryApi.objc_msgSendSuper_stret = temporaryApi.objc_msgSendSuper;
+    if (!temporaryApi.objc_msgSendSuper_fpret)
+      temporaryApi.objc_msgSendSuper_fpret = temporaryApi.objc_msgSendSuper;
+    cachedApi = temporaryApi;
+  }
+  return cachedApi;
+}
+
+// node_modules/frida-objc-bridge/lib/fastpaths.js
+var code = `#include <glib.h>
+#include <ptrauth.h>
+
+#define KERN_SUCCESS 0
+#define MALLOC_PTR_IN_USE_RANGE_TYPE 1
+#if defined (HAVE_I386) && GLIB_SIZEOF_VOID_P == 8
+# define OBJC_ISA_MASK 0x7ffffffffff8ULL
+#elif defined (HAVE_ARM64)
+# define OBJC_ISA_MASK 0xffffffff8ULL
+#endif
+
+typedef struct _ChooseContext ChooseContext;
+
+typedef struct _malloc_zone_t malloc_zone_t;
+typedef struct _malloc_introspection_t malloc_introspection_t;
+typedef struct _vm_range_t vm_range_t;
+
+typedef gpointer Class;
+typedef int kern_return_t;
+typedef guint mach_port_t;
+typedef mach_port_t task_t;
+typedef guintptr vm_offset_t;
+typedef guintptr vm_size_t;
+typedef vm_offset_t vm_address_t;
+
+struct _ChooseContext
+{
+  GHashTable * classes;
+  GArray * matches;
+};
+
+struct _malloc_zone_t
+{
+  void * reserved1;
+  void * reserved2;
+  size_t (* size) (struct _malloc_zone_t * zone, const void * ptr);
+  void * (* malloc) (struct _malloc_zone_t * zone, size_t size);
+  void * (* calloc) (struct _malloc_zone_t * zone, size_t num_items, size_t size);
+  void * (* valloc) (struct _malloc_zone_t * zone, size_t size);
+  void (* free) (struct _malloc_zone_t * zone, void * ptr);
+  void * (* realloc) (struct _malloc_zone_t * zone, void * ptr, size_t size);
+  void (* destroy) (struct _malloc_zone_t * zone);
+  const char * zone_name;
+
+  unsigned (* batch_malloc) (struct _malloc_zone_t * zone, size_t size, void ** results, unsigned num_requested);
+  void (* batch_free) (struct _malloc_zone_t * zone, void ** to_be_freed, unsigned num_to_be_freed);
+
+  malloc_introspection_t * introspect;
+};
+
+typedef kern_return_t (* memory_reader_t) (task_t remote_task, vm_address_t remote_address, vm_size_t size, void ** local_memory);
+typedef void (* vm_range_recorder_t) (task_t task, void * user_data, unsigned type, vm_range_t * ranges, unsigned count);
+typedef kern_return_t (* enumerator_func) (task_t task, void * user_data, unsigned type_mask, vm_address_t zone_address, memory_reader_t reader,
+      vm_range_recorder_t recorder);
+
+struct _malloc_introspection_t
+{
+  enumerator_func enumerator;
+};
+
+struct _vm_range_t
+{
+  vm_address_t address;
+  vm_size_t size;
+};
+
+extern int objc_getClassList (Class * buffer, int buffer_count);
+extern Class class_getSuperclass (Class cls);
+extern size_t class_getInstanceSize (Class cls);
+extern kern_return_t malloc_get_all_zones (task_t task, memory_reader_t reader, vm_address_t ** addresses, unsigned * count);
+
+static void collect_subclasses (Class klass, GHashTable * result);
+static void collect_matches_in_ranges (task_t task, void * user_data, unsigned type, vm_range_t * ranges, unsigned count);
+static kern_return_t read_local_memory (task_t remote_task, vm_address_t remote_address, vm_size_t size, void ** local_memory);
+
+extern mach_port_t selfTask;
+
+gpointer *
+choose (Class * klass,
+        gboolean consider_subclasses,
+        guint * count)
+{
+  ChooseContext ctx;
+  GHashTable * classes;
+  vm_address_t * malloc_zone_addresses;
+  unsigned malloc_zone_count, i;
+
+  classes = g_hash_table_new_full (NULL, NULL, NULL, NULL);
+  ctx.classes = classes;
+  ctx.matches = g_array_new (FALSE, FALSE, sizeof (gpointer));
+  if (consider_subclasses)
+    collect_subclasses (klass, classes);
+  else
+    g_hash_table_insert (classes, klass, GSIZE_TO_POINTER (class_getInstanceSize (klass)));
+
+  malloc_zone_count = 0;
+  malloc_get_all_zones (selfTask, read_local_memory, &malloc_zone_addresses, &malloc_zone_count);
+
+  for (i = 0; i != malloc_zone_count; i++)
+  {
+    vm_address_t zone_address = malloc_zone_addresses[i];
+    malloc_zone_t * zone = (malloc_zone_t *) zone_address;
+    enumerator_func enumerator;
+
+    if (zone != NULL && zone->introspect != NULL &&
+        (enumerator = (ptrauth_strip (zone->introspect, ptrauth_key_asda))->enumerator) != NULL)
+    {
+      enumerator = ptrauth_sign_unauthenticated (
+          ptrauth_strip (enumerator, ptrauth_key_asia),
+          ptrauth_key_asia, 0);
+
+      enumerator (selfTask, &ctx, MALLOC_PTR_IN_USE_RANGE_TYPE, zone_address, read_local_memory,
+          collect_matches_in_ranges);
+    }
+  }
+
+  g_hash_table_unref (classes);
+
+  *count = ctx.matches->len;
+
+  return (gpointer *) g_array_free (ctx.matches, FALSE);
+}
+
+void
+destroy (gpointer mem)
+{
+  g_free (mem);
+}
+
+static void
+collect_subclasses (Class klass,
+                    GHashTable * result)
+{
+  Class * classes;
+  int count, i;
+
+  count = objc_getClassList (NULL, 0);
+  classes = g_malloc (count * sizeof (gpointer));
+  count = objc_getClassList (classes, count);
+
+  for (i = 0; i != count; i++)
+  {
+    Class candidate = classes[i];
+    Class c;
+
+    c = candidate;
+    do
+    {
+      if (c == klass)
+      {
+        g_hash_table_insert (result, candidate, GSIZE_TO_POINTER (class_getInstanceSize (candidate)));
+        break;
+      }
+
+      c = class_getSuperclass (c);
+    }
+    while (c != NULL);
+  }
+
+  g_free (classes);
+}
+
+static void
+collect_matches_in_ranges (task_t task,
+                           void * user_data,
+                           unsigned type,
+                           vm_range_t * ranges,
+                           unsigned count)
+{
+  ChooseContext * ctx = user_data;
+  GHashTable * classes = ctx->classes;
+  unsigned i;
+
+  for (i = 0; i != count; i++)
+  {
+    const vm_range_t * range = &ranges[i];
+    gconstpointer candidate = GSIZE_TO_POINTER (range->address);
+    gconstpointer isa;
+    guint instance_size;
+
+    isa = *(gconstpointer *) candidate;
+#ifdef OBJC_ISA_MASK
+    isa = GSIZE_TO_POINTER (GPOINTER_TO_SIZE (isa) & OBJC_ISA_MASK);
+#endif
+
+    instance_size = GPOINTER_TO_UINT (g_hash_table_lookup (classes, isa));
+    if (instance_size != 0 && range->size >= instance_size)
+    {
+      g_array_append_val (ctx->matches, candidate);
+    }
+  }
+}
+
+static kern_return_t
+read_local_memory (task_t remote_task,
+                   vm_address_t remote_address,
+                   vm_size_t size,
+                   void ** local_memory)
+{
+  *local_memory = (void *) remote_address;
+
+  return KERN_SUCCESS;
+}
+`;
+var { pointerSize: pointerSize2 } = Process;
+var cachedModule = null;
+function get() {
+  if (cachedModule === null)
+    cachedModule = compileModule();
+  return cachedModule;
+}
+function compileModule() {
+  const {
+    objc_getClassList,
+    class_getSuperclass,
+    class_getInstanceSize
+  } = getApi();
+  const selfTask = Memory.alloc(4);
+  selfTask.writeU32(Module.getGlobalExportByName("mach_task_self_").readU32());
+  const cm = new CModule(code, {
+    objc_getClassList,
+    class_getSuperclass,
+    class_getInstanceSize,
+    malloc_get_all_zones: Process.getModuleByName("/usr/lib/system/libsystem_malloc.dylib").getExportByName("malloc_get_all_zones"),
+    selfTask
+  });
+  const _choose = new NativeFunction(cm.choose, "pointer", ["pointer", "bool", "pointer"]);
+  const _destroy = new NativeFunction(cm.destroy, "void", ["pointer"]);
+  return {
+    handle: cm,
+    choose(klass, considerSubclasses) {
+      const result = [];
+      const countPtr = Memory.alloc(4);
+      const matches = _choose(klass, considerSubclasses ? 1 : 0, countPtr);
+      try {
+        const count = countPtr.readU32();
+        for (let i = 0; i !== count; i++)
+          result.push(matches.add(i * pointerSize2).readPointer());
+      } finally {
+        _destroy(matches);
+      }
+      return result;
+    }
+  };
+}
+
+// node_modules/frida-objc-bridge/index.js
+function Runtime() {
+  const pointerSize = Process.pointerSize;
+  let api = null;
+  let apiError = null;
+  const realizedClasses = /* @__PURE__ */ new Set();
+  const classRegistry = new ClassRegistry();
+  const protocolRegistry = new ProtocolRegistry();
+  const replacedMethods = /* @__PURE__ */ new Map();
+  const scheduledWork = /* @__PURE__ */ new Map();
+  let nextId = 1;
+  let workCallback = null;
+  let NSAutoreleasePool = null;
+  const bindings = /* @__PURE__ */ new Map();
+  let readObjectIsa = null;
+  const msgSendBySignatureId = /* @__PURE__ */ new Map();
+  const msgSendSuperBySignatureId = /* @__PURE__ */ new Map();
+  let cachedNSString = null;
+  let cachedNSStringCtor = null;
+  let cachedNSNumber = null;
+  let cachedNSNumberCtor = null;
+  let singularTypeById = null;
+  let modifiers = null;
+  try {
+    tryInitialize();
+  } catch (e) {
+  }
+  function tryInitialize() {
+    if (api !== null)
+      return true;
+    if (apiError !== null)
+      throw apiError;
+    try {
+      api = getApi();
+    } catch (e) {
+      apiError = e;
+      throw e;
+    }
+    return api !== null;
+  }
+  function dispose() {
+    for (const [rawMethodHandle, impls] of replacedMethods.entries()) {
+      const methodHandle = ptr(rawMethodHandle);
+      const [oldImp, newImp] = impls;
+      if (api.method_getImplementation(methodHandle).equals(newImp))
+        api.method_setImplementation(methodHandle, oldImp);
+    }
+    replacedMethods.clear();
+  }
+  Script.bindWeak(this, dispose);
+  Object.defineProperty(this, "available", {
+    enumerable: true,
+    get() {
+      return tryInitialize();
+    }
+  });
+  Object.defineProperty(this, "api", {
+    enumerable: true,
+    get() {
+      return getApi();
+    }
+  });
+  Object.defineProperty(this, "classes", {
+    enumerable: true,
+    value: classRegistry
+  });
+  Object.defineProperty(this, "protocols", {
+    enumerable: true,
+    value: protocolRegistry
+  });
+  Object.defineProperty(this, "Object", {
+    enumerable: true,
+    value: ObjCObject
+  });
+  Object.defineProperty(this, "Protocol", {
+    enumerable: true,
+    value: ObjCProtocol
+  });
+  Object.defineProperty(this, "Block", {
+    enumerable: true,
+    value: Block
+  });
+  Object.defineProperty(this, "mainQueue", {
+    enumerable: true,
+    get() {
+      return api?._dispatch_main_q ?? null;
+    }
+  });
+  Object.defineProperty(this, "registerProxy", {
+    enumerable: true,
+    value: registerProxy
+  });
+  Object.defineProperty(this, "registerClass", {
+    enumerable: true,
+    value: registerClass
+  });
+  Object.defineProperty(this, "registerProtocol", {
+    enumerable: true,
+    value: registerProtocol
+  });
+  Object.defineProperty(this, "bind", {
+    enumerable: true,
+    value: bind
+  });
+  Object.defineProperty(this, "unbind", {
+    enumerable: true,
+    value: unbind
+  });
+  Object.defineProperty(this, "getBoundData", {
+    enumerable: true,
+    value: getBoundData
+  });
+  Object.defineProperty(this, "enumerateLoadedClasses", {
+    enumerable: true,
+    value: enumerateLoadedClasses
+  });
+  Object.defineProperty(this, "enumerateLoadedClassesSync", {
+    enumerable: true,
+    value: enumerateLoadedClassesSync
+  });
+  Object.defineProperty(this, "choose", {
+    enumerable: true,
+    value: choose
+  });
+  Object.defineProperty(this, "chooseSync", {
+    enumerable: true,
+    value(specifier) {
+      const instances = [];
+      choose(specifier, {
+        onMatch(i) {
+          instances.push(i);
+        },
+        onComplete() {
+        }
+      });
+      return instances;
+    }
+  });
+  this.schedule = function(queue, work) {
+    const id = ptr(nextId++);
+    scheduledWork.set(id.toString(), work);
+    if (workCallback === null) {
+      workCallback = new NativeCallback(performScheduledWorkItem, "void", ["pointer"]);
+    }
+    Script.pin();
+    api.dispatch_async_f(queue, id, workCallback);
+  };
+  function performScheduledWorkItem(rawId) {
+    const id = rawId.toString();
+    const work = scheduledWork.get(id);
+    scheduledWork.delete(id);
+    if (NSAutoreleasePool === null)
+      NSAutoreleasePool = classRegistry.NSAutoreleasePool;
+    const pool = NSAutoreleasePool.alloc().init();
+    let pendingException = null;
+    try {
+      work();
+    } catch (e) {
+      pendingException = e;
+    }
+    pool.release();
+    setImmediate(performScheduledWorkCleanup, pendingException);
+  }
+  function performScheduledWorkCleanup(pendingException) {
+    Script.unpin();
+    if (pendingException !== null) {
+      throw pendingException;
+    }
+  }
+  this.implement = function(method2, fn) {
+    return new NativeCallback(fn, method2.returnType, method2.argumentTypes);
+  };
+  this.selector = selector;
+  this.selectorAsString = selectorAsString;
+  function selector(name) {
+    return api.sel_registerName(Memory.allocUtf8String(name));
+  }
+  function selectorAsString(sel2) {
+    return api.sel_getName(sel2).readUtf8String();
+  }
+  const registryBuiltins = /* @__PURE__ */ new Set([
+    "prototype",
+    "constructor",
+    "hasOwnProperty",
+    "toJSON",
+    "toString",
+    "valueOf"
+  ]);
+  function ClassRegistry() {
+    const cachedClasses = {};
+    let numCachedClasses = 0;
+    const registry = new Proxy(this, {
+      has(target, property) {
+        return hasProperty(property);
+      },
+      get(target, property, receiver) {
+        switch (property) {
+          case "prototype":
+            return target.prototype;
+          case "constructor":
+            return target.constructor;
+          case "hasOwnProperty":
+            return hasProperty;
+          case "toJSON":
+            return toJSON;
+          case "toString":
+            return toString;
+          case "valueOf":
+            return valueOf;
+          default:
+            const klass = findClass(property);
+            return klass !== null ? klass : void 0;
+        }
+      },
+      set(target, property, value, receiver) {
+        return false;
+      },
+      ownKeys(target) {
+        if (api === null)
+          return [];
+        let numClasses = api.objc_getClassList(NULL, 0);
+        if (numClasses !== numCachedClasses) {
+          const classHandles = Memory.alloc(numClasses * pointerSize);
+          numClasses = api.objc_getClassList(classHandles, numClasses);
+          for (let i = 0; i !== numClasses; i++) {
+            const handle2 = classHandles.add(i * pointerSize).readPointer();
+            const name = api.class_getName(handle2).readUtf8String();
+            cachedClasses[name] = handle2;
+          }
+          numCachedClasses = numClasses;
+        }
+        return Object.keys(cachedClasses);
+      },
+      getOwnPropertyDescriptor(target, property) {
+        return {
+          writable: false,
+          configurable: true,
+          enumerable: true
+        };
+      }
+    });
+    function hasProperty(name) {
+      if (registryBuiltins.has(name))
+        return true;
+      return findClass(name) !== null;
+    }
+    function getClass(name) {
+      const cls = findClass(name);
+      if (cls === null)
+        throw new Error("Unable to find class '" + name + "'");
+      return cls;
+    }
+    function findClass(name) {
+      let handle2 = cachedClasses[name];
+      if (handle2 === void 0) {
+        handle2 = api.objc_lookUpClass(Memory.allocUtf8String(name));
+        if (handle2.isNull())
+          return null;
+        cachedClasses[name] = handle2;
+        numCachedClasses++;
+      }
+      return new ObjCObject(handle2, void 0, true);
+    }
+    function toJSON() {
+      return Object.keys(registry).reduce(function(r, name) {
+        r[name] = getClass(name).toJSON();
+        return r;
+      }, {});
+    }
+    function toString() {
+      return "ClassRegistry";
+    }
+    function valueOf() {
+      return "ClassRegistry";
+    }
+    return registry;
+  }
+  function ProtocolRegistry() {
+    let cachedProtocols = {};
+    let numCachedProtocols = 0;
+    const registry = new Proxy(this, {
+      has(target, property) {
+        return hasProperty(property);
+      },
+      get(target, property, receiver) {
+        switch (property) {
+          case "prototype":
+            return target.prototype;
+          case "constructor":
+            return target.constructor;
+          case "hasOwnProperty":
+            return hasProperty;
+          case "toJSON":
+            return toJSON;
+          case "toString":
+            return toString;
+          case "valueOf":
+            return valueOf;
+          default:
+            const proto = findProtocol(property);
+            return proto !== null ? proto : void 0;
+        }
+      },
+      set(target, property, value, receiver) {
+        return false;
+      },
+      ownKeys(target) {
+        if (api === null)
+          return [];
+        const numProtocolsBuf = Memory.alloc(pointerSize);
+        const protocolHandles = api.objc_copyProtocolList(numProtocolsBuf);
+        try {
+          const numProtocols = numProtocolsBuf.readUInt();
+          if (numProtocols !== numCachedProtocols) {
+            cachedProtocols = {};
+            for (let i = 0; i !== numProtocols; i++) {
+              const handle2 = protocolHandles.add(i * pointerSize).readPointer();
+              const name = api.protocol_getName(handle2).readUtf8String();
+              cachedProtocols[name] = handle2;
+            }
+            numCachedProtocols = numProtocols;
+          }
+        } finally {
+          api.free(protocolHandles);
+        }
+        return Object.keys(cachedProtocols);
+      },
+      getOwnPropertyDescriptor(target, property) {
+        return {
+          writable: false,
+          configurable: true,
+          enumerable: true
+        };
+      }
+    });
+    function hasProperty(name) {
+      if (registryBuiltins.has(name))
+        return true;
+      return findProtocol(name) !== null;
+    }
+    function findProtocol(name) {
+      let handle2 = cachedProtocols[name];
+      if (handle2 === void 0) {
+        handle2 = api.objc_getProtocol(Memory.allocUtf8String(name));
+        if (handle2.isNull())
+          return null;
+        cachedProtocols[name] = handle2;
+        numCachedProtocols++;
+      }
+      return new ObjCProtocol(handle2);
+    }
+    function toJSON() {
+      return Object.keys(registry).reduce(function(r, name) {
+        r[name] = { handle: cachedProtocols[name] };
+        return r;
+      }, {});
+    }
+    function toString() {
+      return "ProtocolRegistry";
+    }
+    function valueOf() {
+      return "ProtocolRegistry";
+    }
+    return registry;
+  }
+  const objCObjectBuiltins = /* @__PURE__ */ new Set([
+    "prototype",
+    "constructor",
+    "handle",
+    "hasOwnProperty",
+    "toJSON",
+    "toString",
+    "valueOf",
+    "equals",
+    "$kind",
+    "$super",
+    "$superClass",
+    "$class",
+    "$className",
+    "$moduleName",
+    "$protocols",
+    "$methods",
+    "$ownMethods",
+    "$ivars"
+  ]);
+  function ObjCObject(handle2, protocol, cachedIsClass, superSpecifier2) {
+    let cachedClassHandle = null;
+    let cachedKind = null;
+    let cachedSuper = null;
+    let cachedSuperClass = null;
+    let cachedClass = null;
+    let cachedClassName = null;
+    let cachedModuleName = null;
+    let cachedProtocols = null;
+    let cachedMethodNames = null;
+    let cachedProtocolMethods = null;
+    let respondsToSelector = null;
+    const cachedMethods = {};
+    let cachedNativeMethodNames = null;
+    let cachedOwnMethodNames = null;
+    let cachedIvars = null;
+    handle2 = getHandle(handle2);
+    if (cachedIsClass === void 0) {
+      const klass = api.object_getClass(handle2);
+      const key = klass.toString();
+      if (!realizedClasses.has(key)) {
+        api.objc_lookUpClass(api.class_getName(klass));
+        realizedClasses.add(key);
+      }
+    }
+    const self = new Proxy(this, {
+      has(target, property) {
+        return hasProperty(property);
+      },
+      get(target, property, receiver) {
+        switch (property) {
+          case "handle":
+            return handle2;
+          case "prototype":
+            return target.prototype;
+          case "constructor":
+            return target.constructor;
+          case "hasOwnProperty":
+            return hasProperty;
+          case "toJSON":
+            return toJSON;
+          case "toString":
+          case "valueOf":
+            const descriptionImpl = receiver.description;
+            if (descriptionImpl !== void 0) {
+              const description = descriptionImpl.call(receiver);
+              if (description !== null)
+                return description.UTF8String.bind(description);
+            }
+            return function() {
+              return receiver.$className;
+            };
+          case "equals":
+            return equals;
+          case "$kind":
+            if (cachedKind === null) {
+              if (isClass())
+                cachedKind = api.class_isMetaClass(handle2) ? "meta-class" : "class";
+              else
+                cachedKind = "instance";
+            }
+            return cachedKind;
+          case "$super":
+            if (cachedSuper === null) {
+              const superHandle = api.class_getSuperclass(classHandle());
+              if (!superHandle.isNull()) {
+                const specifier = Memory.alloc(2 * pointerSize);
+                specifier.writePointer(handle2);
+                specifier.add(pointerSize).writePointer(superHandle);
+                cachedSuper = [new ObjCObject(handle2, void 0, cachedIsClass, specifier)];
+              } else {
+                cachedSuper = [null];
+              }
+            }
+            return cachedSuper[0];
+          case "$superClass":
+            if (cachedSuperClass === null) {
+              const superClassHandle = api.class_getSuperclass(classHandle());
+              if (!superClassHandle.isNull()) {
+                cachedSuperClass = [new ObjCObject(superClassHandle)];
+              } else {
+                cachedSuperClass = [null];
+              }
+            }
+            return cachedSuperClass[0];
+          case "$class":
+            if (cachedClass === null)
+              cachedClass = new ObjCObject(api.object_getClass(handle2), void 0, true);
+            return cachedClass;
+          case "$className":
+            if (cachedClassName === null) {
+              if (superSpecifier2)
+                cachedClassName = api.class_getName(superSpecifier2.add(pointerSize).readPointer()).readUtf8String();
+              else if (isClass())
+                cachedClassName = api.class_getName(handle2).readUtf8String();
+              else
+                cachedClassName = api.object_getClassName(handle2).readUtf8String();
+            }
+            return cachedClassName;
+          case "$moduleName":
+            if (cachedModuleName === null) {
+              cachedModuleName = api.class_getImageName(classHandle()).readUtf8String();
+            }
+            return cachedModuleName;
+          case "$protocols":
+            if (cachedProtocols === null) {
+              cachedProtocols = {};
+              const numProtocolsBuf = Memory.alloc(pointerSize);
+              const protocolHandles = api.class_copyProtocolList(classHandle(), numProtocolsBuf);
+              if (!protocolHandles.isNull()) {
+                try {
+                  const numProtocols = numProtocolsBuf.readUInt();
+                  for (let i = 0; i !== numProtocols; i++) {
+                    const protocolHandle = protocolHandles.add(i * pointerSize).readPointer();
+                    const p = new ObjCProtocol(protocolHandle);
+                    cachedProtocols[p.name] = p;
+                  }
+                } finally {
+                  api.free(protocolHandles);
+                }
+              }
+            }
+            return cachedProtocols;
+          case "$methods":
+            if (cachedNativeMethodNames === null) {
+              const klass = superSpecifier2 ? superSpecifier2.add(pointerSize).readPointer() : classHandle();
+              const meta = api.object_getClass(klass);
+              const names = /* @__PURE__ */ new Set();
+              let cur = meta;
+              do {
+                for (let methodName of collectMethodNames(cur, "+ "))
+                  names.add(methodName);
+                cur = api.class_getSuperclass(cur);
+              } while (!cur.isNull());
+              cur = klass;
+              do {
+                for (let methodName of collectMethodNames(cur, "- "))
+                  names.add(methodName);
+                cur = api.class_getSuperclass(cur);
+              } while (!cur.isNull());
+              cachedNativeMethodNames = Array.from(names);
+            }
+            return cachedNativeMethodNames;
+          case "$ownMethods":
+            if (cachedOwnMethodNames === null) {
+              const klass = superSpecifier2 ? superSpecifier2.add(pointerSize).readPointer() : classHandle();
+              const meta = api.object_getClass(klass);
+              const classMethods = collectMethodNames(meta, "+ ");
+              const instanceMethods = collectMethodNames(klass, "- ");
+              cachedOwnMethodNames = classMethods.concat(instanceMethods);
+            }
+            return cachedOwnMethodNames;
+          case "$ivars":
+            if (cachedIvars === null) {
+              if (isClass())
+                cachedIvars = {};
+              else
+                cachedIvars = new ObjCIvars(self, classHandle());
+            }
+            return cachedIvars;
+          default:
+            if (typeof property === "symbol") {
+              return target[property];
+            }
+            if (protocol) {
+              const details = findProtocolMethod(property);
+              if (details === null || !details.implemented)
+                return void 0;
+            }
+            const wrapper = findMethodWrapper(property);
+            if (wrapper === null)
+              return void 0;
+            return wrapper;
+        }
+      },
+      set(target, property, value, receiver) {
+        return false;
+      },
+      ownKeys(target) {
+        if (cachedMethodNames === null) {
+          if (!protocol) {
+            const jsNames = {};
+            const nativeNames = {};
+            let cur = api.object_getClass(handle2);
+            do {
+              const numMethodsBuf = Memory.alloc(pointerSize);
+              const methodHandles = api.class_copyMethodList(cur, numMethodsBuf);
+              const fullNamePrefix = isClass() ? "+ " : "- ";
+              try {
+                const numMethods = numMethodsBuf.readUInt();
+                for (let i = 0; i !== numMethods; i++) {
+                  const methodHandle = methodHandles.add(i * pointerSize).readPointer();
+                  const sel2 = api.method_getName(methodHandle);
+                  const nativeName = api.sel_getName(sel2).readUtf8String();
+                  if (nativeNames[nativeName] !== void 0)
+                    continue;
+                  nativeNames[nativeName] = nativeName;
+                  const jsName = jsMethodName(nativeName);
+                  let serial = 2;
+                  let name = jsName;
+                  while (jsNames[name] !== void 0) {
+                    serial++;
+                    name = jsName + serial;
+                  }
+                  jsNames[name] = true;
+                  const fullName = fullNamePrefix + nativeName;
+                  if (cachedMethods[fullName] === void 0) {
+                    const details = {
+                      sel: sel2,
+                      handle: methodHandle,
+                      wrapper: null
+                    };
+                    cachedMethods[fullName] = details;
+                    cachedMethods[name] = details;
+                  }
+                }
+              } finally {
+                api.free(methodHandles);
+              }
+              cur = api.class_getSuperclass(cur);
+            } while (!cur.isNull());
+            cachedMethodNames = Object.keys(jsNames);
+          } else {
+            const methodNames = [];
+            const protocolMethods = allProtocolMethods();
+            Object.keys(protocolMethods).forEach(function(methodName) {
+              if (methodName[0] !== "+" && methodName[0] !== "-") {
+                const details = protocolMethods[methodName];
+                if (details.implemented) {
+                  methodNames.push(methodName);
+                }
+              }
+            });
+            cachedMethodNames = methodNames;
+          }
+        }
+        return ["handle"].concat(cachedMethodNames);
+      },
+      getOwnPropertyDescriptor(target, property) {
+        return {
+          writable: false,
+          configurable: true,
+          enumerable: true
+        };
+      }
+    });
+    if (protocol) {
+      respondsToSelector = !isClass() ? findMethodWrapper("- respondsToSelector:") : null;
+    }
+    return self;
+    function hasProperty(name) {
+      if (objCObjectBuiltins.has(name))
+        return true;
+      if (protocol) {
+        const details = findProtocolMethod(name);
+        return !!(details !== null && details.implemented);
+      }
+      return findMethod(name) !== null;
+    }
+    function classHandle() {
+      if (cachedClassHandle === null)
+        cachedClassHandle = isClass() ? handle2 : api.object_getClass(handle2);
+      return cachedClassHandle;
+    }
+    function isClass() {
+      if (cachedIsClass === void 0) {
+        if (api.object_isClass)
+          cachedIsClass = !!api.object_isClass(handle2);
+        else
+          cachedIsClass = !!api.class_isMetaClass(api.object_getClass(handle2));
+      }
+      return cachedIsClass;
+    }
+    function findMethod(rawName) {
+      let method2 = cachedMethods[rawName];
+      if (method2 !== void 0)
+        return method2;
+      const tokens = parseMethodName(rawName);
+      const fullName = tokens[2];
+      method2 = cachedMethods[fullName];
+      if (method2 !== void 0) {
+        cachedMethods[rawName] = method2;
+        return method2;
+      }
+      const kind = tokens[0];
+      const name = tokens[1];
+      const sel2 = selector(name);
+      const defaultKind = isClass() ? "+" : "-";
+      if (protocol) {
+        const details = findProtocolMethod(fullName);
+        if (details !== null) {
+          method2 = {
+            sel: sel2,
+            types: details.types,
+            wrapper: null,
+            kind
+          };
+        }
+      }
+      if (method2 === void 0) {
+        const methodHandle = kind === "+" ? api.class_getClassMethod(classHandle(), sel2) : api.class_getInstanceMethod(classHandle(), sel2);
+        if (!methodHandle.isNull()) {
+          method2 = {
+            sel: sel2,
+            handle: methodHandle,
+            wrapper: null,
+            kind
+          };
+        } else {
+          if (isClass() || kind !== "-" || name === "forwardingTargetForSelector:" || name === "methodSignatureForSelector:") {
+            return null;
+          }
+          let target = self;
+          if ("- forwardingTargetForSelector:" in self) {
+            const forwardingTarget = self.forwardingTargetForSelector_(sel2);
+            if (forwardingTarget !== null && forwardingTarget.$kind === "instance") {
+              target = forwardingTarget;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
+          const methodHandle2 = api.class_getInstanceMethod(api.object_getClass(target.handle), sel2);
+          if (methodHandle2.isNull()) {
+            return null;
+          }
+          let types2 = api.method_getTypeEncoding(methodHandle2).readUtf8String();
+          if (types2 === null || types2 === "") {
+            types2 = stealTypesFromProtocols(target, fullName);
+            if (types2 === null)
+              types2 = stealTypesFromProtocols(self, fullName);
+            if (types2 === null)
+              return null;
+          }
+          method2 = {
+            sel: sel2,
+            types: types2,
+            wrapper: null,
+            kind
+          };
+        }
+      }
+      cachedMethods[fullName] = method2;
+      cachedMethods[rawName] = method2;
+      if (kind === defaultKind)
+        cachedMethods[jsMethodName(name)] = method2;
+      return method2;
+    }
+    function stealTypesFromProtocols(klass, fullName) {
+      const candidates = Object.keys(klass.$protocols).map((protocolName) => flatProtocolMethods({}, klass.$protocols[protocolName])).reduce((allMethods, methods) => {
+        Object.assign(allMethods, methods);
+        return allMethods;
+      }, {});
+      const method2 = candidates[fullName];
+      if (method2 === void 0) {
+        return null;
+      }
+      return method2.types;
+    }
+    function flatProtocolMethods(result, protocol2) {
+      if (protocol2.methods !== void 0) {
+        Object.assign(result, protocol2.methods);
+      }
+      if (protocol2.protocol !== void 0) {
+        flatProtocolMethods(result, protocol2.protocol);
+      }
+      return result;
+    }
+    function findProtocolMethod(rawName) {
+      const protocolMethods = allProtocolMethods();
+      const details = protocolMethods[rawName];
+      return details !== void 0 ? details : null;
+    }
+    function allProtocolMethods() {
+      if (cachedProtocolMethods === null) {
+        const methods = {};
+        const protocols = collectProtocols(protocol);
+        const defaultKind = isClass() ? "+" : "-";
+        Object.keys(protocols).forEach(function(name) {
+          const p = protocols[name];
+          const m2 = p.methods;
+          Object.keys(m2).forEach(function(fullMethodName) {
+            const method2 = m2[fullMethodName];
+            const methodName = fullMethodName.substr(2);
+            const kind = fullMethodName[0];
+            let didCheckImplemented = false;
+            let implemented = false;
+            const details = {
+              types: method2.types
+            };
+            Object.defineProperty(details, "implemented", {
+              get() {
+                if (!didCheckImplemented) {
+                  if (method2.required) {
+                    implemented = true;
+                  } else {
+                    implemented = respondsToSelector !== null && respondsToSelector.call(self, selector(methodName));
+                  }
+                  didCheckImplemented = true;
+                }
+                return implemented;
+              }
+            });
+            methods[fullMethodName] = details;
+            if (kind === defaultKind)
+              methods[jsMethodName(methodName)] = details;
+          });
+        });
+        cachedProtocolMethods = methods;
+      }
+      return cachedProtocolMethods;
+    }
+    function findMethodWrapper(name) {
+      const method2 = findMethod(name);
+      if (method2 === null)
+        return null;
+      let wrapper = method2.wrapper;
+      if (wrapper === null) {
+        wrapper = makeMethodInvocationWrapper(method2, self, superSpecifier2, defaultInvocationOptions);
+        method2.wrapper = wrapper;
+      }
+      return wrapper;
+    }
+    function parseMethodName(rawName) {
+      const match = /([+\-])\s(\S+)/.exec(rawName);
+      let name, kind;
+      if (match === null) {
+        kind = isClass() ? "+" : "-";
+        name = objcMethodName(rawName);
+      } else {
+        kind = match[1];
+        name = match[2];
+      }
+      const fullName = [kind, name].join(" ");
+      return [kind, name, fullName];
+    }
+    function toJSON() {
+      return {
+        handle: handle2.toString()
+      };
+    }
+    function equals(ptr2) {
+      return handle2.equals(getHandle(ptr2));
+    }
+  }
+  function getReplacementMethodImplementation(methodHandle) {
+    const existingEntry = replacedMethods.get(methodHandle.toString());
+    if (existingEntry === void 0)
+      return null;
+    const [, newImp] = existingEntry;
+    return newImp;
+  }
+  function replaceMethodImplementation(methodHandle, imp) {
+    const key = methodHandle.toString();
+    let oldImp;
+    const existingEntry = replacedMethods.get(key);
+    if (existingEntry !== void 0)
+      [oldImp] = existingEntry;
+    else
+      oldImp = api.method_getImplementation(methodHandle);
+    if (!imp.equals(oldImp))
+      replacedMethods.set(key, [oldImp, imp]);
+    else
+      replacedMethods.delete(key);
+    api.method_setImplementation(methodHandle, imp);
+  }
+  function collectMethodNames(klass, prefix) {
+    const names = [];
+    const numMethodsBuf = Memory.alloc(pointerSize);
+    const methodHandles = api.class_copyMethodList(klass, numMethodsBuf);
+    try {
+      const numMethods = numMethodsBuf.readUInt();
+      for (let i = 0; i !== numMethods; i++) {
+        const methodHandle = methodHandles.add(i * pointerSize).readPointer();
+        const sel2 = api.method_getName(methodHandle);
+        const nativeName = api.sel_getName(sel2).readUtf8String();
+        names.push(prefix + nativeName);
+      }
+    } finally {
+      api.free(methodHandles);
+    }
+    return names;
+  }
+  function ObjCProtocol(handle2) {
+    let cachedName = null;
+    let cachedProtocols = null;
+    let cachedProperties = null;
+    let cachedMethods = null;
+    Object.defineProperty(this, "handle", {
+      value: handle2,
+      enumerable: true
+    });
+    Object.defineProperty(this, "name", {
+      get() {
+        if (cachedName === null)
+          cachedName = api.protocol_getName(handle2).readUtf8String();
+        return cachedName;
+      },
+      enumerable: true
+    });
+    Object.defineProperty(this, "protocols", {
+      get() {
+        if (cachedProtocols === null) {
+          cachedProtocols = {};
+          const numProtocolsBuf = Memory.alloc(pointerSize);
+          const protocolHandles = api.protocol_copyProtocolList(handle2, numProtocolsBuf);
+          if (!protocolHandles.isNull()) {
+            try {
+              const numProtocols = numProtocolsBuf.readUInt();
+              for (let i = 0; i !== numProtocols; i++) {
+                const protocolHandle = protocolHandles.add(i * pointerSize).readPointer();
+                const protocol = new ObjCProtocol(protocolHandle);
+                cachedProtocols[protocol.name] = protocol;
+              }
+            } finally {
+              api.free(protocolHandles);
+            }
+          }
+        }
+        return cachedProtocols;
+      },
+      enumerable: true
+    });
+    Object.defineProperty(this, "properties", {
+      get() {
+        if (cachedProperties === null) {
+          cachedProperties = {};
+          const numBuf = Memory.alloc(pointerSize);
+          const propertyHandles = api.protocol_copyPropertyList(handle2, numBuf);
+          if (!propertyHandles.isNull()) {
+            try {
+              const numProperties = numBuf.readUInt();
+              for (let i = 0; i !== numProperties; i++) {
+                const propertyHandle = propertyHandles.add(i * pointerSize).readPointer();
+                const propName = api.property_getName(propertyHandle).readUtf8String();
+                const attributes = {};
+                const attributeEntries = api.property_copyAttributeList(propertyHandle, numBuf);
+                if (!attributeEntries.isNull()) {
+                  try {
+                    const numAttributeValues = numBuf.readUInt();
+                    for (let j = 0; j !== numAttributeValues; j++) {
+                      const attributeEntry = attributeEntries.add(j * (2 * pointerSize));
+                      const name = attributeEntry.readPointer().readUtf8String();
+                      const value = attributeEntry.add(pointerSize).readPointer().readUtf8String();
+                      attributes[name] = value;
+                    }
+                  } finally {
+                    api.free(attributeEntries);
+                  }
+                }
+                cachedProperties[propName] = attributes;
+              }
+            } finally {
+              api.free(propertyHandles);
+            }
+          }
+        }
+        return cachedProperties;
+      },
+      enumerable: true
+    });
+    Object.defineProperty(this, "methods", {
+      get() {
+        if (cachedMethods === null) {
+          cachedMethods = {};
+          const numBuf = Memory.alloc(pointerSize);
+          collectMethods(cachedMethods, numBuf, { required: true, instance: false });
+          collectMethods(cachedMethods, numBuf, { required: false, instance: false });
+          collectMethods(cachedMethods, numBuf, { required: true, instance: true });
+          collectMethods(cachedMethods, numBuf, { required: false, instance: true });
+        }
+        return cachedMethods;
+      },
+      enumerable: true
+    });
+    function collectMethods(methods, numBuf, spec) {
+      const methodDescValues = api.protocol_copyMethodDescriptionList(handle2, spec.required ? 1 : 0, spec.instance ? 1 : 0, numBuf);
+      if (methodDescValues.isNull())
+        return;
+      try {
+        const numMethodDescValues = numBuf.readUInt();
+        for (let i = 0; i !== numMethodDescValues; i++) {
+          const methodDesc = methodDescValues.add(i * (2 * pointerSize));
+          const name = (spec.instance ? "- " : "+ ") + selectorAsString(methodDesc.readPointer());
+          const types2 = methodDesc.add(pointerSize).readPointer().readUtf8String();
+          methods[name] = {
+            required: spec.required,
+            types: types2
+          };
+        }
+      } finally {
+        api.free(methodDescValues);
+      }
+    }
+  }
+  const objCIvarsBuiltins = /* @__PURE__ */ new Set([
+    "prototype",
+    "constructor",
+    "hasOwnProperty",
+    "toJSON",
+    "toString",
+    "valueOf"
+  ]);
+  function ObjCIvars(instance, classHandle) {
+    const ivars = {};
+    let cachedIvarNames = null;
+    let classHandles = [];
+    let currentClassHandle = classHandle;
+    do {
+      classHandles.unshift(currentClassHandle);
+      currentClassHandle = api.class_getSuperclass(currentClassHandle);
+    } while (!currentClassHandle.isNull());
+    const numIvarsBuf = Memory.alloc(pointerSize);
+    classHandles.forEach((c) => {
+      const ivarHandles = api.class_copyIvarList(c, numIvarsBuf);
+      try {
+        const numIvars = numIvarsBuf.readUInt();
+        for (let i = 0; i !== numIvars; i++) {
+          const handle2 = ivarHandles.add(i * pointerSize).readPointer();
+          const name = api.ivar_getName(handle2).readUtf8String();
+          ivars[name] = [handle2, null];
+        }
+      } finally {
+        api.free(ivarHandles);
+      }
+    });
+    const self = new Proxy(this, {
+      has(target, property) {
+        return hasProperty(property);
+      },
+      get(target, property, receiver) {
+        switch (property) {
+          case "prototype":
+            return target.prototype;
+          case "constructor":
+            return target.constructor;
+          case "hasOwnProperty":
+            return hasProperty;
+          case "toJSON":
+            return toJSON;
+          case "toString":
+            return toString;
+          case "valueOf":
+            return valueOf;
+          default:
+            const ivar = findIvar(property);
+            if (ivar === null)
+              return void 0;
+            return ivar.get();
+        }
+      },
+      set(target, property, value, receiver) {
+        const ivar = findIvar(property);
+        if (ivar === null)
+          throw new Error("Unknown ivar");
+        ivar.set(value);
+        return true;
+      },
+      ownKeys(target) {
+        if (cachedIvarNames === null)
+          cachedIvarNames = Object.keys(ivars);
+        return cachedIvarNames;
+      },
+      getOwnPropertyDescriptor(target, property) {
+        return {
+          writable: true,
+          configurable: true,
+          enumerable: true
+        };
+      }
+    });
+    return self;
+    function findIvar(name) {
+      const entry = ivars[name];
+      if (entry === void 0)
+        return null;
+      let impl = entry[1];
+      if (impl === null) {
+        const ivar = entry[0];
+        const offset = api.ivar_getOffset(ivar).toInt32();
+        const address = instance.handle.add(offset);
+        const type = parseType(api.ivar_getTypeEncoding(ivar).readUtf8String());
+        const fromNative = type.fromNative || identityTransform;
+        const toNative = type.toNative || identityTransform;
+        let read, write;
+        if (name === "isa") {
+          read = readObjectIsa;
+          write = function() {
+            throw new Error("Unable to set the isa instance variable");
+          };
+        } else {
+          read = type.read;
+          write = type.write;
+        }
+        impl = {
+          get() {
+            return fromNative.call(instance, read(address));
+          },
+          set(value) {
+            write(address, toNative.call(instance, value));
+          }
+        };
+        entry[1] = impl;
+      }
+      return impl;
+    }
+    function hasProperty(name) {
+      if (objCIvarsBuiltins.has(name))
+        return true;
+      return ivars.hasOwnProperty(name);
+    }
+    function toJSON() {
+      return Object.keys(self).reduce(function(result, name) {
+        result[name] = self[name];
+        return result;
+      }, {});
+    }
+    function toString() {
+      return "ObjCIvars";
+    }
+    function valueOf() {
+      return "ObjCIvars";
+    }
+  }
+  let blockDescriptorAllocSize, blockDescriptorDeclaredSize, blockDescriptorOffsets;
+  let blockSize, blockOffsets;
+  if (pointerSize === 4) {
+    blockDescriptorAllocSize = 16;
+    blockDescriptorDeclaredSize = 20;
+    blockDescriptorOffsets = {
+      reserved: 0,
+      size: 4,
+      rest: 8
+    };
+    blockSize = 20;
+    blockOffsets = {
+      isa: 0,
+      flags: 4,
+      reserved: 8,
+      invoke: 12,
+      descriptor: 16
+    };
+  } else {
+    blockDescriptorAllocSize = 32;
+    blockDescriptorDeclaredSize = 32;
+    blockDescriptorOffsets = {
+      reserved: 0,
+      size: 8,
+      rest: 16
+    };
+    blockSize = 32;
+    blockOffsets = {
+      isa: 0,
+      flags: 8,
+      reserved: 12,
+      invoke: 16,
+      descriptor: 24
+    };
+  }
+  const BLOCK_HAS_COPY_DISPOSE = 1 << 25;
+  const BLOCK_HAS_CTOR = 1 << 26;
+  const BLOCK_IS_GLOBAL = 1 << 28;
+  const BLOCK_HAS_STRET = 1 << 29;
+  const BLOCK_HAS_SIGNATURE = 1 << 30;
+  function Block(target, options = defaultInvocationOptions) {
+    this._options = options;
+    if (target instanceof NativePointer) {
+      const descriptor = target.add(blockOffsets.descriptor).readPointer();
+      this.handle = target;
+      const flags = target.add(blockOffsets.flags).readU32();
+      if ((flags & BLOCK_HAS_SIGNATURE) !== 0) {
+        const signatureOffset = (flags & BLOCK_HAS_COPY_DISPOSE) !== 0 ? 2 : 0;
+        this.types = descriptor.add(blockDescriptorOffsets.rest + signatureOffset * pointerSize).readPointer().readCString();
+        this._signature = parseSignature(this.types);
+      } else {
+        this._signature = null;
+      }
+    } else {
+      this.declare(target);
+      const descriptor = Memory.alloc(blockDescriptorAllocSize + blockSize);
+      const block2 = descriptor.add(blockDescriptorAllocSize);
+      const typesStr = Memory.allocUtf8String(this.types);
+      descriptor.add(blockDescriptorOffsets.reserved).writeULong(0);
+      descriptor.add(blockDescriptorOffsets.size).writeULong(blockDescriptorDeclaredSize);
+      descriptor.add(blockDescriptorOffsets.rest).writePointer(typesStr);
+      block2.add(blockOffsets.isa).writePointer(classRegistry.__NSGlobalBlock__);
+      block2.add(blockOffsets.flags).writeU32(BLOCK_HAS_SIGNATURE | BLOCK_IS_GLOBAL);
+      block2.add(blockOffsets.reserved).writeU32(0);
+      block2.add(blockOffsets.descriptor).writePointer(descriptor);
+      this.handle = block2;
+      this._storage = [descriptor, typesStr];
+      this.implementation = target.implementation;
+    }
+  }
+  Object.defineProperties(Block.prototype, {
+    implementation: {
+      enumerable: true,
+      get() {
+        const address = this.handle.add(blockOffsets.invoke).readPointer().strip();
+        const signature2 = this._getSignature();
+        return makeBlockInvocationWrapper(this, signature2, new NativeFunction(
+          address.sign(),
+          signature2.retType.type,
+          signature2.argTypes.map(function(arg) {
+            return arg.type;
+          }),
+          this._options
+        ));
+      },
+      set(func) {
+        const signature2 = this._getSignature();
+        const callback = new NativeCallback(
+          makeBlockImplementationWrapper(this, signature2, func),
+          signature2.retType.type,
+          signature2.argTypes.map(function(arg) {
+            return arg.type;
+          })
+        );
+        this._callback = callback;
+        const location = this.handle.add(blockOffsets.invoke);
+        const prot = Memory.queryProtection(location);
+        const writable = prot.includes("w");
+        if (!writable)
+          Memory.protect(location, Process.pointerSize, "rw-");
+        location.writePointer(callback.strip().sign("ia", location));
+        if (!writable)
+          Memory.protect(location, Process.pointerSize, prot);
+      }
+    },
+    declare: {
+      value(signature2) {
+        let types2 = signature2.types;
+        if (types2 === void 0) {
+          types2 = unparseSignature(signature2.retType, ["block"].concat(signature2.argTypes));
+        }
+        this.types = types2;
+        this._signature = parseSignature(types2);
+      }
+    },
+    _getSignature: {
+      value() {
+        const signature2 = this._signature;
+        if (signature2 === null)
+          throw new Error("block is missing signature; call declare()");
+        return signature2;
+      }
+    }
+  });
+  function collectProtocols(p, acc) {
+    acc = acc || {};
+    acc[p.name] = p;
+    const parentProtocols = p.protocols;
+    Object.keys(parentProtocols).forEach(function(name) {
+      collectProtocols(parentProtocols[name], acc);
+    });
+    return acc;
+  }
+  function registerProxy(properties) {
+    const protocols = properties.protocols || [];
+    const methods = properties.methods || {};
+    const events = properties.events || {};
+    const supportedSelectors = new Set(
+      Object.keys(methods).filter((m2) => /([+\-])\s(\S+)/.exec(m2) !== null).map((m2) => m2.split(" ")[1])
+    );
+    const proxyMethods = {
+      "- dealloc": function() {
+        const target = this.data.target;
+        if ("- release" in target)
+          target.release();
+        unbind(this.self);
+        this.super.dealloc();
+        const callback = this.data.events.dealloc;
+        if (callback !== void 0)
+          callback.call(this);
+      },
+      "- respondsToSelector:": function(sel2) {
+        const selector2 = selectorAsString(sel2);
+        if (supportedSelectors.has(selector2))
+          return true;
+        return this.data.target.respondsToSelector_(sel2);
+      },
+      "- forwardingTargetForSelector:": function(sel2) {
+        const callback = this.data.events.forward;
+        if (callback !== void 0)
+          callback.call(this, selectorAsString(sel2));
+        return this.data.target;
+      },
+      "- methodSignatureForSelector:": function(sel2) {
+        return this.data.target.methodSignatureForSelector_(sel2);
+      },
+      "- forwardInvocation:": function(invocation) {
+        invocation.invokeWithTarget_(this.data.target);
+      }
+    };
+    for (var key in methods) {
+      if (methods.hasOwnProperty(key)) {
+        if (proxyMethods.hasOwnProperty(key))
+          throw new Error("The '" + key + "' method is reserved");
+        proxyMethods[key] = methods[key];
+      }
+    }
+    const ProxyClass = registerClass({
+      name: properties.name,
+      super: classRegistry.NSProxy,
+      protocols,
+      methods: proxyMethods
+    });
+    return function(target, data) {
+      target = target instanceof NativePointer ? new ObjCObject(target) : target;
+      data = data || {};
+      const instance = ProxyClass.alloc().autorelease();
+      const boundData = getBoundData(instance);
+      boundData.target = "- retain" in target ? target.retain() : target;
+      boundData.events = events;
+      for (var key2 in data) {
+        if (data.hasOwnProperty(key2)) {
+          if (boundData.hasOwnProperty(key2))
+            throw new Error("The '" + key2 + "' property is reserved");
+          boundData[key2] = data[key2];
+        }
+      }
+      this.handle = instance.handle;
+    };
+  }
+  function registerClass(properties) {
+    let name = properties.name;
+    if (name === void 0)
+      name = makeClassName();
+    const superClass = properties.super !== void 0 ? properties.super : classRegistry.NSObject;
+    const protocols = properties.protocols || [];
+    const methods = properties.methods || {};
+    const methodCallbacks = [];
+    const classHandle = api.objc_allocateClassPair(superClass !== null ? superClass.handle : NULL, Memory.allocUtf8String(name), ptr("0"));
+    if (classHandle.isNull())
+      throw new Error("Unable to register already registered class '" + name + "'");
+    const metaClassHandle = api.object_getClass(classHandle);
+    try {
+      protocols.forEach(function(protocol) {
+        api.class_addProtocol(classHandle, protocol.handle);
+      });
+      Object.keys(methods).forEach(function(rawMethodName) {
+        const match = /([+\-])\s(\S+)/.exec(rawMethodName);
+        if (match === null)
+          throw new Error("Invalid method name");
+        const kind = match[1];
+        const name2 = match[2];
+        let method2;
+        const value = methods[rawMethodName];
+        if (typeof value === "function") {
+          let types3 = null;
+          if (rawMethodName in superClass) {
+            types3 = superClass[rawMethodName].types;
+          } else {
+            for (let protocol of protocols) {
+              const method3 = protocol.methods[rawMethodName];
+              if (method3 !== void 0) {
+                types3 = method3.types;
+                break;
+              }
+            }
+          }
+          if (types3 === null)
+            throw new Error("Unable to find '" + rawMethodName + "' in super-class or any of its protocols");
+          method2 = {
+            types: types3,
+            implementation: value
+          };
+        } else {
+          method2 = value;
+        }
+        const target = kind === "+" ? metaClassHandle : classHandle;
+        let types2 = method2.types;
+        if (types2 === void 0) {
+          types2 = unparseSignature(method2.retType, [kind === "+" ? "class" : "object", "selector"].concat(method2.argTypes));
+        }
+        const signature2 = parseSignature(types2);
+        const implementation2 = new NativeCallback(
+          makeMethodImplementationWrapper(signature2, method2.implementation),
+          signature2.retType.type,
+          signature2.argTypes.map(function(arg) {
+            return arg.type;
+          })
+        );
+        methodCallbacks.push(implementation2);
+        api.class_addMethod(target, selector(name2), implementation2, Memory.allocUtf8String(types2));
+      });
+    } catch (e) {
+      api.objc_disposeClassPair(classHandle);
+      throw e;
+    }
+    api.objc_registerClassPair(classHandle);
+    classHandle._methodCallbacks = methodCallbacks;
+    Script.bindWeak(classHandle, makeClassDestructor(ptr(classHandle)));
+    return new ObjCObject(classHandle);
+  }
+  function makeClassDestructor(classHandle) {
+    return function() {
+      api.objc_disposeClassPair(classHandle);
+    };
+  }
+  function registerProtocol(properties) {
+    let name = properties.name;
+    if (name === void 0)
+      name = makeProtocolName();
+    const protocols = properties.protocols || [];
+    const methods = properties.methods || {};
+    protocols.forEach(function(protocol) {
+      if (!(protocol instanceof ObjCProtocol))
+        throw new Error("Expected protocol");
+    });
+    const methodSpecs = Object.keys(methods).map(function(rawMethodName) {
+      const method2 = methods[rawMethodName];
+      const match = /([+\-])\s(\S+)/.exec(rawMethodName);
+      if (match === null)
+        throw new Error("Invalid method name");
+      const kind = match[1];
+      const name2 = match[2];
+      let types2 = method2.types;
+      if (types2 === void 0) {
+        types2 = unparseSignature(method2.retType, [kind === "+" ? "class" : "object", "selector"].concat(method2.argTypes));
+      }
+      return {
+        kind,
+        name: name2,
+        types: types2,
+        optional: method2.optional
+      };
+    });
+    const handle2 = api.objc_allocateProtocol(Memory.allocUtf8String(name));
+    if (handle2.isNull())
+      throw new Error("Unable to register already registered protocol '" + name + "'");
+    protocols.forEach(function(protocol) {
+      api.protocol_addProtocol(handle2, protocol.handle);
+    });
+    methodSpecs.forEach(function(spec) {
+      const isRequiredMethod = spec.optional ? 0 : 1;
+      const isInstanceMethod = spec.kind === "-" ? 1 : 0;
+      api.protocol_addMethodDescription(handle2, selector(spec.name), Memory.allocUtf8String(spec.types), isRequiredMethod, isInstanceMethod);
+    });
+    api.objc_registerProtocol(handle2);
+    return new ObjCProtocol(handle2);
+  }
+  function getHandle(obj) {
+    if (obj instanceof NativePointer)
+      return obj;
+    else if (typeof obj === "object" && obj.hasOwnProperty("handle"))
+      return obj.handle;
+    else
+      throw new Error("Expected NativePointer or ObjC.Object instance");
+  }
+  function bind(obj, data) {
+    const handle2 = getHandle(obj);
+    const self = obj instanceof ObjCObject ? obj : new ObjCObject(handle2);
+    bindings.set(handle2.toString(), {
+      self,
+      super: self.$super,
+      data
+    });
+  }
+  function unbind(obj) {
+    const handle2 = getHandle(obj);
+    bindings.delete(handle2.toString());
+  }
+  function getBoundData(obj) {
+    return getBinding(obj).data;
+  }
+  function getBinding(obj) {
+    const handle2 = getHandle(obj);
+    const key = handle2.toString();
+    let binding = bindings.get(key);
+    if (binding === void 0) {
+      const self = obj instanceof ObjCObject ? obj : new ObjCObject(handle2);
+      binding = {
+        self,
+        super: self.$super,
+        data: {}
+      };
+      bindings.set(key, binding);
+    }
+    return binding;
+  }
+  function enumerateLoadedClasses(...args) {
+    const allModules = new ModuleMap();
+    let unfiltered = false;
+    let callbacks;
+    let modules;
+    if (args.length === 1) {
+      callbacks = args[0];
+    } else {
+      callbacks = args[1];
+      const options = args[0];
+      modules = options.ownedBy;
+    }
+    if (modules === void 0) {
+      modules = allModules;
+      unfiltered = true;
+    }
+    const classGetName = api.class_getName;
+    const onMatch = callbacks.onMatch.bind(callbacks);
+    const swiftNominalTypeDescriptorOffset = (pointerSize === 8 ? 8 : 11) * pointerSize;
+    const numClasses = api.objc_getClassList(NULL, 0);
+    const classHandles = Memory.alloc(numClasses * pointerSize);
+    api.objc_getClassList(classHandles, numClasses);
+    for (let i = 0; i !== numClasses; i++) {
+      const classHandle = classHandles.add(i * pointerSize).readPointer();
+      const rawName = classGetName(classHandle);
+      let name = null;
+      let modulePath = modules.findPath(rawName);
+      const possiblySwift = modulePath === null && (unfiltered || allModules.findPath(rawName) === null);
+      if (possiblySwift) {
+        name = rawName.readCString();
+        const probablySwift = name.indexOf(".") !== -1;
+        if (probablySwift) {
+          const nominalTypeDescriptor = classHandle.add(swiftNominalTypeDescriptorOffset).readPointer();
+          modulePath = modules.findPath(nominalTypeDescriptor);
+        }
+      }
+      if (modulePath !== null) {
+        if (name === null)
+          name = rawName.readUtf8String();
+        onMatch(name, modulePath);
+      }
+    }
+    callbacks.onComplete();
+  }
+  function enumerateLoadedClassesSync(options = {}) {
+    const result = {};
+    enumerateLoadedClasses(options, {
+      onMatch(name, owner2) {
+        let group = result[owner2];
+        if (group === void 0) {
+          group = [];
+          result[owner2] = group;
+        }
+        group.push(name);
+      },
+      onComplete() {
+      }
+    });
+    return result;
+  }
+  function choose(specifier, callbacks) {
+    let cls = specifier;
+    let subclasses = true;
+    if (!(specifier instanceof ObjCObject) && typeof specifier === "object") {
+      cls = specifier.class;
+      if (specifier.hasOwnProperty("subclasses"))
+        subclasses = specifier.subclasses;
+    }
+    if (!(cls instanceof ObjCObject && (cls.$kind === "class" || cls.$kind === "meta-class")))
+      throw new Error("Expected an ObjC.Object for a class or meta-class");
+    const matches = get().choose(cls, subclasses).map((handle2) => new ObjCObject(handle2));
+    for (const match of matches) {
+      const result = callbacks.onMatch(match);
+      if (result === "stop")
+        break;
+    }
+    callbacks.onComplete();
+  }
+  function makeMethodInvocationWrapper(method, owner, superSpecifier, invocationOptions) {
+    const sel = method.sel;
+    let handle = method.handle;
+    let types;
+    if (handle === void 0) {
+      handle = null;
+      types = method.types;
+    } else {
+      types = api.method_getTypeEncoding(handle).readUtf8String();
+    }
+    const signature = parseSignature(types);
+    const retType = signature.retType;
+    const argTypes = signature.argTypes.slice(2);
+    const objc_msgSend = superSpecifier ? getMsgSendSuperImpl(signature, invocationOptions) : getMsgSendImpl(signature, invocationOptions);
+    const argVariableNames = argTypes.map(function(t, i) {
+      return "a" + (i + 1);
+    });
+    const callArgs = [
+      superSpecifier ? "superSpecifier" : "this",
+      "sel"
+    ].concat(argTypes.map(function(t, i) {
+      if (t.toNative) {
+        return "argTypes[" + i + "].toNative.call(this, " + argVariableNames[i] + ")";
+      }
+      return argVariableNames[i];
+    }));
+    let returnCaptureLeft;
+    let returnCaptureRight;
+    if (retType.type === "void") {
+      returnCaptureLeft = "";
+      returnCaptureRight = "";
+    } else if (retType.fromNative) {
+      returnCaptureLeft = "return retType.fromNative.call(this, ";
+      returnCaptureRight = ")";
+    } else {
+      returnCaptureLeft = "return ";
+      returnCaptureRight = "";
+    }
+    const m = eval("var m = function (" + argVariableNames.join(", ") + ") { " + returnCaptureLeft + "objc_msgSend(" + callArgs.join(", ") + ")" + returnCaptureRight + "; }; m;");
+    Object.defineProperty(m, "handle", {
+      enumerable: true,
+      get: getMethodHandle
+    });
+    m.selector = sel;
+    Object.defineProperty(m, "implementation", {
+      enumerable: true,
+      get() {
+        const h = getMethodHandle();
+        const impl = new NativeFunction(api.method_getImplementation(h), m.returnType, m.argumentTypes, invocationOptions);
+        const newImp = getReplacementMethodImplementation(h);
+        if (newImp !== null)
+          impl._callback = newImp;
+        return impl;
+      },
+      set(imp) {
+        replaceMethodImplementation(getMethodHandle(), imp);
+      }
+    });
+    m.returnType = retType.type;
+    m.argumentTypes = signature.argTypes.map((t) => t.type);
+    m.types = types;
+    Object.defineProperty(m, "symbol", {
+      enumerable: true,
+      get() {
+        return `${method.kind}[${owner.$className} ${selectorAsString(sel)}]`;
+      }
+    });
+    m.clone = function(options) {
+      return makeMethodInvocationWrapper(method, owner, superSpecifier, options);
+    };
+    function getMethodHandle() {
+      if (handle === null) {
+        if (owner.$kind === "instance") {
+          let cur = owner;
+          do {
+            if ("- forwardingTargetForSelector:" in cur) {
+              const target = cur.forwardingTargetForSelector_(sel);
+              if (target === null)
+                break;
+              if (target.$kind !== "instance")
+                break;
+              const h = api.class_getInstanceMethod(target.$class.handle, sel);
+              if (!h.isNull())
+                handle = h;
+              else
+                cur = target;
+            } else {
+              break;
+            }
+          } while (handle === null);
+        }
+        if (handle === null)
+          throw new Error("Unable to find method handle of proxied function");
+      }
+      return handle;
+    }
+    return m;
+  }
+  function makeMethodImplementationWrapper(signature, implementation) {
+    const retType = signature.retType;
+    const argTypes = signature.argTypes;
+    const argVariableNames = argTypes.map(function(t, i) {
+      if (i === 0)
+        return "handle";
+      else if (i === 1)
+        return "sel";
+      else
+        return "a" + (i - 1);
+    });
+    const callArgs = argTypes.slice(2).map(function(t, i) {
+      const argVariableName = argVariableNames[2 + i];
+      if (t.fromNative) {
+        return "argTypes[" + (2 + i) + "].fromNative.call(self, " + argVariableName + ")";
+      }
+      return argVariableName;
+    });
+    let returnCaptureLeft;
+    let returnCaptureRight;
+    if (retType.type === "void") {
+      returnCaptureLeft = "";
+      returnCaptureRight = "";
+    } else if (retType.toNative) {
+      returnCaptureLeft = "return retType.toNative.call(self, ";
+      returnCaptureRight = ")";
+    } else {
+      returnCaptureLeft = "return ";
+      returnCaptureRight = "";
+    }
+    const m = eval("var m = function (" + argVariableNames.join(", ") + ") { var binding = getBinding(handle);var self = binding.self;" + returnCaptureLeft + "implementation.call(binding" + (callArgs.length > 0 ? ", " : "") + callArgs.join(", ") + ")" + returnCaptureRight + "; }; m;");
+    return m;
+  }
+  function makeBlockInvocationWrapper(block, signature, implementation) {
+    const retType = signature.retType;
+    const argTypes = signature.argTypes.slice(1);
+    const argVariableNames = argTypes.map(function(t, i) {
+      return "a" + (i + 1);
+    });
+    const callArgs = argTypes.map(function(t, i) {
+      if (t.toNative) {
+        return "argTypes[" + i + "].toNative.call(this, " + argVariableNames[i] + ")";
+      }
+      return argVariableNames[i];
+    });
+    let returnCaptureLeft;
+    let returnCaptureRight;
+    if (retType.type === "void") {
+      returnCaptureLeft = "";
+      returnCaptureRight = "";
+    } else if (retType.fromNative) {
+      returnCaptureLeft = "return retType.fromNative.call(this, ";
+      returnCaptureRight = ")";
+    } else {
+      returnCaptureLeft = "return ";
+      returnCaptureRight = "";
+    }
+    const f = eval("var f = function (" + argVariableNames.join(", ") + ") { " + returnCaptureLeft + "implementation(this" + (callArgs.length > 0 ? ", " : "") + callArgs.join(", ") + ")" + returnCaptureRight + "; }; f;");
+    return f.bind(block);
+  }
+  function makeBlockImplementationWrapper(block, signature, implementation) {
+    const retType = signature.retType;
+    const argTypes = signature.argTypes;
+    const argVariableNames = argTypes.map(function(t, i) {
+      if (i === 0)
+        return "handle";
+      else
+        return "a" + i;
+    });
+    const callArgs = argTypes.slice(1).map(function(t, i) {
+      const argVariableName = argVariableNames[1 + i];
+      if (t.fromNative) {
+        return "argTypes[" + (1 + i) + "].fromNative.call(this, " + argVariableName + ")";
+      }
+      return argVariableName;
+    });
+    let returnCaptureLeft;
+    let returnCaptureRight;
+    if (retType.type === "void") {
+      returnCaptureLeft = "";
+      returnCaptureRight = "";
+    } else if (retType.toNative) {
+      returnCaptureLeft = "return retType.toNative.call(this, ";
+      returnCaptureRight = ")";
+    } else {
+      returnCaptureLeft = "return ";
+      returnCaptureRight = "";
+    }
+    const f = eval("var f = function (" + argVariableNames.join(", ") + ") { if (!this.handle.equals(handle))this.handle = handle;" + returnCaptureLeft + "implementation.call(block" + (callArgs.length > 0 ? ", " : "") + callArgs.join(", ") + ")" + returnCaptureRight + "; }; f;");
+    return f.bind(block);
+  }
+  function rawFridaType(t) {
+    return t === "object" ? "pointer" : t;
+  }
+  function makeClassName() {
+    for (let i = 1; true; i++) {
+      const name = "FridaAnonymousClass" + i;
+      if (!(name in classRegistry)) {
+        return name;
+      }
+    }
+  }
+  function makeProtocolName() {
+    for (let i = 1; true; i++) {
+      const name = "FridaAnonymousProtocol" + i;
+      if (!(name in protocolRegistry)) {
+        return name;
+      }
+    }
+  }
+  function objcMethodName(name) {
+    return name.replace(/_/g, ":");
+  }
+  function jsMethodName(name) {
+    let result = name.replace(/:/g, "_");
+    if (objCObjectBuiltins.has(result))
+      result += "2";
+    return result;
+  }
+  const isaMasks = {
+    x64: "0x7ffffffffff8",
+    arm64: "0xffffffff8"
+  };
+  const rawMask = isaMasks[Process.arch];
+  if (rawMask !== void 0) {
+    const mask = ptr(rawMask);
+    readObjectIsa = function(p) {
+      return p.readPointer().and(mask);
+    };
+  } else {
+    readObjectIsa = function(p) {
+      return p.readPointer();
+    };
+  }
+  function getMsgSendImpl(signature2, invocationOptions2) {
+    return resolveMsgSendImpl(msgSendBySignatureId, signature2, invocationOptions2, false);
+  }
+  function getMsgSendSuperImpl(signature2, invocationOptions2) {
+    return resolveMsgSendImpl(msgSendSuperBySignatureId, signature2, invocationOptions2, true);
+  }
+  function resolveMsgSendImpl(cache, signature2, invocationOptions2, isSuper) {
+    if (invocationOptions2 !== defaultInvocationOptions)
+      return makeMsgSendImpl(signature2, invocationOptions2, isSuper);
+    const { id } = signature2;
+    let impl = cache.get(id);
+    if (impl === void 0) {
+      impl = makeMsgSendImpl(signature2, invocationOptions2, isSuper);
+      cache.set(id, impl);
+    }
+    return impl;
+  }
+  function makeMsgSendImpl(signature2, invocationOptions2, isSuper) {
+    const retType2 = signature2.retType.type;
+    const argTypes2 = signature2.argTypes.map(function(t) {
+      return t.type;
+    });
+    const components = ["objc_msgSend"];
+    if (isSuper)
+      components.push("Super");
+    const returnsStruct = retType2 instanceof Array;
+    if (returnsStruct && !typeFitsInRegisters(retType2))
+      components.push("_stret");
+    else if (retType2 === "float" || retType2 === "double")
+      components.push("_fpret");
+    const name = components.join("");
+    return new NativeFunction(api[name], retType2, argTypes2, invocationOptions2);
+  }
+  function typeFitsInRegisters(type) {
+    if (Process.arch !== "x64")
+      return false;
+    const size = sizeOfTypeOnX64(type);
+    return size <= 16;
+  }
+  function sizeOfTypeOnX64(type) {
+    if (type instanceof Array)
+      return type.reduce((total, field) => total + sizeOfTypeOnX64(field), 0);
+    switch (type) {
+      case "bool":
+      case "char":
+      case "uchar":
+        return 1;
+      case "int16":
+      case "uint16":
+        return 2;
+      case "int":
+      case "int32":
+      case "uint":
+      case "uint32":
+      case "float":
+        return 4;
+      default:
+        return 8;
+    }
+  }
+  function unparseSignature(retType2, argTypes2) {
+    const retTypeId = typeIdFromAlias(retType2);
+    const argTypeIds = argTypes2.map(typeIdFromAlias);
+    const argSizes = argTypeIds.map((id) => singularTypeById[id].size);
+    const frameSize = argSizes.reduce((total, size) => total + size, 0);
+    let frameOffset = 0;
+    return retTypeId + frameSize + argTypeIds.map((id, i) => {
+      const result = id + frameOffset;
+      frameOffset += argSizes[i];
+      return result;
+    }).join("");
+  }
+  function parseSignature(sig) {
+    const cursor = [sig, 0];
+    parseQualifiers(cursor);
+    const retType2 = readType(cursor);
+    readNumber(cursor);
+    const argTypes2 = [];
+    let id = JSON.stringify(retType2.type);
+    while (dataAvailable(cursor)) {
+      parseQualifiers(cursor);
+      const argType = readType(cursor);
+      readNumber(cursor);
+      argTypes2.push(argType);
+      id += JSON.stringify(argType.type);
+    }
+    return {
+      id,
+      retType: retType2,
+      argTypes: argTypes2
+    };
+  }
+  function parseType(type) {
+    const cursor = [type, 0];
+    return readType(cursor);
+  }
+  function readType(cursor) {
+    let id = readChar(cursor);
+    if (id === "@") {
+      let next = peekChar(cursor);
+      if (next === "?") {
+        id += next;
+        skipChar(cursor);
+        if (peekChar(cursor) === "<")
+          skipExtendedBlock(cursor);
+      } else if (next === '"') {
+        skipChar(cursor);
+        readUntil('"', cursor);
+      }
+    } else if (id === "^") {
+      let next = peekChar(cursor);
+      if (next === "@") {
+        id += next;
+        skipChar(cursor);
+      }
+    }
+    const type = singularTypeById[id];
+    if (type !== void 0) {
+      return type;
+    } else if (id === "[") {
+      const length = readNumber(cursor);
+      const elementType = readType(cursor);
+      skipChar(cursor);
+      return arrayType(length, elementType);
+    } else if (id === "{") {
+      if (!tokenExistsAhead("=", "}", cursor)) {
+        readUntil("}", cursor);
+        return structType([]);
+      }
+      readUntil("=", cursor);
+      const structFields = [];
+      let ch;
+      while ((ch = peekChar(cursor)) !== "}") {
+        if (ch === '"') {
+          skipChar(cursor);
+          readUntil('"', cursor);
+        }
+        structFields.push(readType(cursor));
+      }
+      skipChar(cursor);
+      return structType(structFields);
+    } else if (id === "(") {
+      readUntil("=", cursor);
+      const unionFields = [];
+      while (peekChar(cursor) !== ")")
+        unionFields.push(readType(cursor));
+      skipChar(cursor);
+      return unionType(unionFields);
+    } else if (id === "b") {
+      readNumber(cursor);
+      return singularTypeById.i;
+    } else if (id === "^") {
+      readType(cursor);
+      return singularTypeById["?"];
+    } else if (modifiers.has(id)) {
+      return readType(cursor);
+    } else {
+      throw new Error("Unable to handle type " + id);
+    }
+  }
+  function skipExtendedBlock(cursor) {
+    let ch;
+    skipChar(cursor);
+    while ((ch = peekChar(cursor)) !== ">") {
+      if (peekChar(cursor) === "<") {
+        skipExtendedBlock(cursor);
+      } else {
+        skipChar(cursor);
+        if (ch === '"')
+          readUntil('"', cursor);
+      }
+    }
+    skipChar(cursor);
+  }
+  function readNumber(cursor) {
+    let result = "";
+    while (dataAvailable(cursor)) {
+      const c = peekChar(cursor);
+      const v = c.charCodeAt(0);
+      const isDigit = v >= 48 && v <= 57;
+      if (isDigit) {
+        result += c;
+        skipChar(cursor);
+      } else {
+        break;
+      }
+    }
+    return parseInt(result);
+  }
+  function readUntil(token, cursor) {
+    const buffer = cursor[0];
+    const offset = cursor[1];
+    const index = buffer.indexOf(token, offset);
+    if (index === -1)
+      throw new Error("Expected token '" + token + "' not found");
+    const result = buffer.substring(offset, index);
+    cursor[1] = index + 1;
+    return result;
+  }
+  function readChar(cursor) {
+    return cursor[0][cursor[1]++];
+  }
+  function peekChar(cursor) {
+    return cursor[0][cursor[1]];
+  }
+  function tokenExistsAhead(token, terminator, cursor) {
+    const [buffer, offset] = cursor;
+    const tokenIndex = buffer.indexOf(token, offset);
+    if (tokenIndex === -1)
+      return false;
+    const terminatorIndex = buffer.indexOf(terminator, offset);
+    if (terminatorIndex === -1)
+      throw new Error("Expected to find terminator: " + terminator);
+    return tokenIndex < terminatorIndex;
+  }
+  function skipChar(cursor) {
+    cursor[1]++;
+  }
+  function dataAvailable(cursor) {
+    return cursor[1] !== cursor[0].length;
+  }
+  const qualifierById = {
+    "r": "const",
+    "n": "in",
+    "N": "inout",
+    "o": "out",
+    "O": "bycopy",
+    "R": "byref",
+    "V": "oneway"
+  };
+  function parseQualifiers(cursor) {
+    const qualifiers = [];
+    while (true) {
+      const q = qualifierById[peekChar(cursor)];
+      if (q === void 0)
+        break;
+      qualifiers.push(q);
+      skipChar(cursor);
+    }
+    return qualifiers;
+  }
+  const idByAlias = {
+    "char": "c",
+    "int": "i",
+    "int16": "s",
+    "int32": "i",
+    "int64": "q",
+    "uchar": "C",
+    "uint": "I",
+    "uint16": "S",
+    "uint32": "I",
+    "uint64": "Q",
+    "float": "f",
+    "double": "d",
+    "bool": "B",
+    "void": "v",
+    "string": "*",
+    "object": "@",
+    "block": "@?",
+    "class": "#",
+    "selector": ":",
+    "pointer": "^v"
+  };
+  function typeIdFromAlias(alias) {
+    if (typeof alias === "object" && alias !== null)
+      return `@"${alias.type}"`;
+    const id = idByAlias[alias];
+    if (id === void 0)
+      throw new Error("No known encoding for type " + alias);
+    return id;
+  }
+  const fromNativeId = function(h) {
+    if (h.isNull()) {
+      return null;
+    } else if (h.toString(16) === this.handle.toString(16)) {
+      return this;
+    } else {
+      return new ObjCObject(h);
+    }
+  };
+  const toNativeId = function(v) {
+    if (v === null)
+      return NULL;
+    const type = typeof v;
+    if (type === "string") {
+      if (cachedNSStringCtor === null) {
+        cachedNSString = classRegistry.NSString;
+        cachedNSStringCtor = cachedNSString.stringWithUTF8String_;
+      }
+      return cachedNSStringCtor.call(cachedNSString, Memory.allocUtf8String(v));
+    } else if (type === "number") {
+      if (cachedNSNumberCtor === null) {
+        cachedNSNumber = classRegistry.NSNumber;
+        cachedNSNumberCtor = cachedNSNumber.numberWithDouble_;
+      }
+      return cachedNSNumberCtor.call(cachedNSNumber, v);
+    }
+    return v;
+  };
+  const fromNativeBlock = function(h) {
+    if (h.isNull()) {
+      return null;
+    } else if (h.toString(16) === this.handle.toString(16)) {
+      return this;
+    } else {
+      return new Block(h);
+    }
+  };
+  const toNativeBlock = function(v) {
+    return v !== null ? v : NULL;
+  };
+  const toNativeObjectArray = function(v) {
+    if (v instanceof Array) {
+      const length = v.length;
+      const array = Memory.alloc(length * pointerSize);
+      for (let i = 0; i !== length; i++)
+        array.add(i * pointerSize).writePointer(toNativeId(v[i]));
+      return array;
+    }
+    return v;
+  };
+  function arrayType(length, elementType) {
+    return {
+      type: "pointer",
+      read(address) {
+        const result = [];
+        const elementSize = elementType.size;
+        for (let index = 0; index !== length; index++) {
+          result.push(elementType.read(address.add(index * elementSize)));
+        }
+        return result;
+      },
+      write(address, values) {
+        const elementSize = elementType.size;
+        values.forEach((value, index) => {
+          elementType.write(address.add(index * elementSize), value);
+        });
+      }
+    };
+  }
+  function structType(fieldTypes) {
+    let fromNative, toNative;
+    if (fieldTypes.some(function(t) {
+      return !!t.fromNative;
+    })) {
+      const fromTransforms = fieldTypes.map(function(t) {
+        if (t.fromNative)
+          return t.fromNative;
+        else
+          return identityTransform;
+      });
+      fromNative = function(v) {
+        return v.map(function(e, i) {
+          return fromTransforms[i].call(this, e);
+        });
+      };
+    } else {
+      fromNative = identityTransform;
+    }
+    if (fieldTypes.some(function(t) {
+      return !!t.toNative;
+    })) {
+      const toTransforms = fieldTypes.map(function(t) {
+        if (t.toNative)
+          return t.toNative;
+        else
+          return identityTransform;
+      });
+      toNative = function(v) {
+        return v.map(function(e, i) {
+          return toTransforms[i].call(this, e);
+        });
+      };
+    } else {
+      toNative = identityTransform;
+    }
+    const [totalSize, fieldOffsets] = fieldTypes.reduce(function(result, t) {
+      const [previousOffset, offsets] = result;
+      const { size } = t;
+      const offset = align(previousOffset, size);
+      offsets.push(offset);
+      return [offset + size, offsets];
+    }, [0, []]);
+    return {
+      type: fieldTypes.map((t) => t.type),
+      size: totalSize,
+      read(address) {
+        return fieldTypes.map((type, index) => type.read(address.add(fieldOffsets[index])));
+      },
+      write(address, values) {
+        values.forEach((value, index) => {
+          fieldTypes[index].write(address.add(fieldOffsets[index]), value);
+        });
+      },
+      fromNative,
+      toNative
+    };
+  }
+  function unionType(fieldTypes) {
+    const largestType = fieldTypes.reduce(function(largest, t) {
+      if (t.size > largest.size)
+        return t;
+      else
+        return largest;
+    }, fieldTypes[0]);
+    let fromNative, toNative;
+    if (largestType.fromNative) {
+      const fromTransform = largestType.fromNative;
+      fromNative = function(v) {
+        return fromTransform.call(this, v[0]);
+      };
+    } else {
+      fromNative = function(v) {
+        return v[0];
+      };
+    }
+    if (largestType.toNative) {
+      const toTransform = largestType.toNative;
+      toNative = function(v) {
+        return [toTransform.call(this, v)];
+      };
+    } else {
+      toNative = function(v) {
+        return [v];
+      };
+    }
+    return {
+      type: [largestType.type],
+      size: largestType.size,
+      read: largestType.read,
+      write: largestType.write,
+      fromNative,
+      toNative
+    };
+  }
+  const longBits = pointerSize == 8 && Process.platform !== "windows" ? 64 : 32;
+  modifiers = /* @__PURE__ */ new Set([
+    "j",
+    // complex
+    "A",
+    // atomic
+    "r",
+    // const
+    "n",
+    // in
+    "N",
+    // inout
+    "o",
+    // out
+    "O",
+    // by copy
+    "R",
+    // by ref
+    "V",
+    // one way
+    "+"
+    // GNU register
+  ]);
+  singularTypeById = {
+    "c": {
+      type: "char",
+      size: 1,
+      read: (address) => address.readS8(),
+      write: (address, value) => {
+        address.writeS8(value);
+      },
+      toNative(v) {
+        if (typeof v === "boolean") {
+          return v ? 1 : 0;
+        }
+        return v;
+      }
+    },
+    "i": {
+      type: "int",
+      size: 4,
+      read: (address) => address.readInt(),
+      write: (address, value) => {
+        address.writeInt(value);
+      }
+    },
+    "s": {
+      type: "int16",
+      size: 2,
+      read: (address) => address.readS16(),
+      write: (address, value) => {
+        address.writeS16(value);
+      }
+    },
+    "l": {
+      type: "int32",
+      size: 4,
+      read: (address) => address.readS32(),
+      write: (address, value) => {
+        address.writeS32(value);
+      }
+    },
+    "q": {
+      type: "int64",
+      size: 8,
+      read: (address) => address.readS64(),
+      write: (address, value) => {
+        address.writeS64(value);
+      }
+    },
+    "C": {
+      type: "uchar",
+      size: 1,
+      read: (address) => address.readU8(),
+      write: (address, value) => {
+        address.writeU8(value);
+      }
+    },
+    "I": {
+      type: "uint",
+      size: 4,
+      read: (address) => address.readUInt(),
+      write: (address, value) => {
+        address.writeUInt(value);
+      }
+    },
+    "S": {
+      type: "uint16",
+      size: 2,
+      read: (address) => address.readU16(),
+      write: (address, value) => {
+        address.writeU16(value);
+      }
+    },
+    "L": {
+      type: "uint" + longBits,
+      size: longBits / 8,
+      read: (address) => address.readULong(),
+      write: (address, value) => {
+        address.writeULong(value);
+      }
+    },
+    "Q": {
+      type: "uint64",
+      size: 8,
+      read: (address) => address.readU64(),
+      write: (address, value) => {
+        address.writeU64(value);
+      }
+    },
+    "f": {
+      type: "float",
+      size: 4,
+      read: (address) => address.readFloat(),
+      write: (address, value) => {
+        address.writeFloat(value);
+      }
+    },
+    "d": {
+      type: "double",
+      size: 8,
+      read: (address) => address.readDouble(),
+      write: (address, value) => {
+        address.writeDouble(value);
+      }
+    },
+    "B": {
+      type: "bool",
+      size: 1,
+      read: (address) => address.readU8(),
+      write: (address, value) => {
+        address.writeU8(value);
+      },
+      fromNative(v) {
+        return v ? true : false;
+      },
+      toNative(v) {
+        return v ? 1 : 0;
+      }
+    },
+    "v": {
+      type: "void",
+      size: 0
+    },
+    "*": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      },
+      fromNative(h) {
+        return h.readUtf8String();
+      }
+    },
+    "@": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      },
+      fromNative: fromNativeId,
+      toNative: toNativeId
+    },
+    "@?": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      },
+      fromNative: fromNativeBlock,
+      toNative: toNativeBlock
+    },
+    "^@": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      },
+      toNative: toNativeObjectArray
+    },
+    "^v": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      }
+    },
+    "#": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      },
+      fromNative: fromNativeId,
+      toNative: toNativeId
+    },
+    ":": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      }
+    },
+    "?": {
+      type: "pointer",
+      size: pointerSize,
+      read: (address) => address.readPointer(),
+      write: (address, value) => {
+        address.writePointer(value);
+      }
+    }
+  };
+  function identityTransform(v) {
+    return v;
+  }
+  function align(value, boundary) {
+    const remainder = value % boundary;
+    return remainder === 0 ? value : value + (boundary - remainder);
+  }
+}
+var runtime = new Runtime();
+var frida_objc_bridge_default = runtime;
+
 // src/index.ts
+var IL2CPP_INIT_PATTERN = "F4 4F BE A9 FD 7B 01 A9 FD 43 00 91 F3 03 00 AA ?? ?? ?? ?? ?? ?? ?? ?? 00 00 80 52 ?? ?? ?? ?? E0 03 13 AA ?? ?? ?? ?? FD 7B 41 A9 F4 4F C2 A8 C0 03 5F D6";
+var IL2CPP_MODULE_NAME = "UnityFramework";
+var IL2CPP_RUNTIME_OFFSETS = {
+  "il2cpp_init": 0,
+  "il2cpp_get_corlib": 96,
+  "il2cpp_class_enum_basetype": 136,
+  "il2cpp_class_from_system_type": 140,
+  "il2cpp_class_is_generic": 144,
+  "il2cpp_class_is_inflated": 148,
+  "il2cpp_class_is_subclass_of": 152,
+  "il2cpp_class_is_abstract": 240,
+  "il2cpp_class_is_interface": 252,
+  "il2cpp_class_from_il2cpp_type": 160,
+  "il2cpp_class_from_name": 168,
+  "il2cpp_class_get_fields": 172,
+  "il2cpp_class_get_nested_types": 176,
+  "il2cpp_class_get_field_from_name": 180,
+  "il2cpp_class_get_methods": 184,
+  "il2cpp_class_get_name": 188,
+  "il2cpp_class_get_namespace": 192,
+  "il2cpp_class_get_parent": 196,
+  "il2cpp_class_get_declaring_type": 200,
+  "il2cpp_class_instance_size": 204,
+  "il2cpp_class_is_valuetype": 208,
+  "il2cpp_class_get_method_from_name": 398908,
+  // Internal function
+  // "il2cpp_class_get_property_from_name": 0x61878, // no equivalent function, offset of il2cpp_class_get_properties internal
+  "il2cpp_class_get_interfaces": 398468,
+  // Internal function
+  "il2cpp_class_array_element_size": 296,
+  "il2cpp_class_from_type": 300,
+  "il2cpp_class_get_type": 308,
+  "il2cpp_class_has_attribute": 316,
+  "il2cpp_class_is_enum": 320,
+  "il2cpp_class_get_image": 332,
+  "il2cpp_class_get_assemblyname": 336,
+  "il2cpp_class_get_rank": 340,
+  "il2cpp_class_is_assignable_from": 3496,
+  "il2cpp_class_value_size": 399704,
+  // Internal function
+  "il2cpp_domain_get": 348,
+  "il2cpp_domain_assembly_open": 352,
+  // "il2cpp_domain_get_assemblies": 0x35E24, // no equivalent function, see System.AppDomain$$GetAssemblies_0
+  "il2cpp_free": 104,
+  // Mono.SafeStringMarshal$$GFree_0_0
+  "il2cpp_image_get_class": 1340,
+  "il2cpp_image_get_class_count": 1316,
+  "il2cpp_resolve_icall": 309304,
+  // Internal function
+  "il2cpp_string_length": 916,
+  "il2cpp_string_chars": 920,
+  "il2cpp_string_new": 924,
+  "il2cpp_thread_current": 940,
+  "il2cpp_thread_attach": 944,
+  "il2cpp_thread_detach": 340256,
+  // Internal function
+  "il2cpp_method_get_return_type": 800,
+  "il2cpp_method_get_from_reflection": 804,
+  "il2cpp_method_get_object": 808,
+  "il2cpp_method_get_name": 812,
+  "il2cpp_method_is_generic": 816,
+  "il2cpp_method_is_inflated": 820,
+  "il2cpp_method_is_instance": 824,
+  "il2cpp_method_get_param_count": 828,
+  "il2cpp_method_get_param_name": 336628,
+  // Internal function
+  "il2cpp_method_get_param": 832,
+  "il2cpp_method_get_class": 836,
+  "il2cpp_method_has_attribute": 840,
+  "il2cpp_object_get_class": 844,
+  "il2cpp_object_get_virtual_method": 848,
+  "il2cpp_object_new": 852,
+  "il2cpp_type_get_object": 948,
+  "il2cpp_type_get_type": 952,
+  "il2cpp_type_get_name": 960,
+  "il2cpp_field_static_get_value": 383548,
+  // Internal function
+  // "il2cpp_field_static_set_value": -1,
+  "il2cpp_array_class_get": 108,
+  "il2cpp_array_length": 112,
+  "il2cpp_array_new": 116,
+  "il2cpp_assembly_get_image": 132,
+  // "il2cpp_image_get_name": -1
+  "il2cpp_runtime_class_init": 1948,
+  "il2cpp_field_get_name": 620,
+  "il2cpp_field_get_flags": 624,
+  "il2cpp_field_get_parent": 628,
+  "il2cpp_field_get_offset": 632,
+  "il2cpp_field_get_type": 636,
+  "il2cpp_field_get_value": 640,
+  "il2cpp_field_has_attribute": 644
+};
+function createIl2CppExports(il2cppInitAddress, offsets) {
+  const exports = {};
+  for (const functionName in offsets) {
+    if (offsets.hasOwnProperty(functionName)) {
+      const offset = offsets[functionName];
+      exports[functionName] = () => {
+        const targetAddress = il2cppInitAddress.add(offset);
+        return targetAddress;
+      };
+    }
+  }
+  return exports;
+}
+function findIl2cppInitInTextSection() {
+  console.log(`[+] \u6B63\u5728\u67E5\u627E\u6A21\u5757: ${IL2CPP_MODULE_NAME}`);
+  const il2cppModule = Process.getModuleByName(IL2CPP_MODULE_NAME);
+  if (!il2cppModule) {
+    console.error(`[-] \u9519\u8BEF\uFF1A\u672A\u80FD\u627E\u5230\u6A21\u5757 ${IL2CPP_MODULE_NAME}\u3002\u8BF7\u68C0\u67E5\u540D\u79F0\u662F\u5426\u6B63\u786E\u3002`);
+    return false;
+  }
+  console.log(`[+] \u6A21\u5757\u627E\u5230: ${IL2CPP_MODULE_NAME} (\u57FA\u5730\u5740: ${il2cppModule.base})`);
+  var scanStartAddress = il2cppModule.base;
+  var scanSize = il2cppModule.size;
+  const sections = il2cppModule.enumerateSections();
+  for (const section of sections) {
+    if (section.name === "__text") {
+      const startAddress = section.address;
+      const size = section.size;
+      console.log(`[+] \u76EE\u6807\u533A\u57DF: __text Section`);
+      console.log(`[+] \u5730\u5740\u8303\u56F4: ${startAddress} - ${startAddress.add(size)} (\u5927\u5C0F: ${ptr(size)})`);
+      scanStartAddress = startAddress;
+      scanSize = size;
+      break;
+    }
+  }
+  if (!scanStartAddress || !scanSize) {
+    return false;
+  }
+  console.log(`[+] \u6B63\u5728\u5F00\u59CB\u5185\u5B58\u626B\u63CF...`);
+  const scanResult = Memory.scanSync(scanStartAddress, scanSize, IL2CPP_INIT_PATTERN);
+  if (scanResult.length > 0) {
+    const result = scanResult[0];
+    console.log(`[!!!] \u5339\u914D\u6210\u529F!`);
+    console.log(`[!!!] \u51FD\u6570\u5730\u5740: ${result.address}`);
+    console.log(`[!!!] \u6A21\u5757\u504F\u79FB (Offset): ${result.address.sub(il2cppModule.base)}`);
+    Il2Cpp.$config.exports = createIl2CppExports(result.address, IL2CPP_RUNTIME_OFFSETS);
+    return true;
+  }
+  return false;
+}
 var globalConfig = {
   "MagicaClothSimulationFrequency": 120,
   "MagicaClothSimulationCountPerFrame": 5,
@@ -3347,6 +6332,18 @@ var globalConfig = {
   "EnableProxy": false
 };
 var hasloaded = false;
+function getMaxRefreshRate490() {
+  const UnityEngineCoreModule = Il2Cpp.domain.assembly("UnityEngine.CoreModule");
+  const UnityScreen = UnityEngineCoreModule.image.class("UnityEngine.Screen");
+  const currentResolution = UnityScreen.method("get_currentResolution").invoke();
+  var refreshRate = 60;
+  if (currentResolution.tryMethod("get_refreshRate")) {
+    refreshRate = currentResolution.method("get_refreshRate").invoke();
+  } else {
+    refreshRate = currentResolution.method("get_refreshRateRatio").invoke().method("get_value").invoke();
+  }
+  return refreshRate;
+}
 rpc.exports = {
   setconfig: (cfg) => {
     globalConfig = { ...globalConfig, ...cfg };
@@ -3359,7 +6356,7 @@ rpc.exports = {
     const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
     const AssemblyCSharp = Il2Cpp.domain.assembly("Assembly-CSharp");
     const SystemDll = Il2Cpp.domain.assembly("System");
-    UnityApplication.method("set_targetFrameRate").invoke(Math.min(UnityScreen.method("get_currentResolution").invoke().method("get_refreshRate").invoke(), globalConfig["MaximumFPS"]));
+    UnityApplication.method("set_targetFrameRate").invoke(Math.min(getMaxRefreshRate490(), globalConfig["MaximumFPS"]));
     const UnityQualitySettings = UnityEngineCoreModule.image.class("UnityEngine.QualitySettings");
     UnityQualitySettings.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
     if (globalConfig["ForceRotate"]) {
@@ -3380,481 +6377,518 @@ rpc.exports = {
   getconfig: () => globalConfig
 };
 var serverResVersion = "";
-Il2Cpp.perform(() => {
-  hasloaded = true;
-  const UnityEngineCoreModule = Il2Cpp.domain.assembly("UnityEngine.CoreModule");
-  const UnityScreen = UnityEngineCoreModule.image.class("UnityEngine.Screen");
-  const UnityApplication = UnityEngineCoreModule.image.class("UnityEngine.Application");
-  const UnityQualitySettings = UnityEngineCoreModule.image.class("UnityEngine.QualitySettings");
-  const UnityRenderPipelinesRuntime = Il2Cpp.domain.assembly("Unity.RenderPipelines.Universal.Runtime");
-  const UniversalRenderPipeline = UnityRenderPipelinesRuntime.image.class("UnityEngine.Rendering.Universal.UniversalRenderPipeline");
-  const MagicaClothV2 = Il2Cpp.domain.assembly("MagicaClothV2");
-  const MagicaManager = MagicaClothV2.image.class("MagicaCloth2.MagicaManager");
-  const Core = Il2Cpp.domain.assembly("Core");
-  const AssemblyCSharp = Il2Cpp.domain.assembly("Assembly-CSharp");
-  MagicaManager.method("SetSimulationFrequency").implementation = function(frequency) {
-    console.log(`\u3010SetSimulationFrequency\u3011${frequency}, modify to ${globalConfig["MagicaClothSimulationFrequency"]}`);
-    return this.method("SetSimulationFrequency").invoke(globalConfig["MagicaClothSimulationFrequency"]);
-  };
-  MagicaManager.method("SetMaxSimulationCountPerFrame").implementation = function(count) {
-    console.log(`\u3010SetMaxSimulationCountPerFrame\u3011${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`);
-    return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame);
-  };
-  function get_SaveData() {
-    return AssemblyCSharp.image.class("Global").method("get_Instance").invoke().method("get_SaveData").invoke();
+function main() {
+  const clientVersionString = frida_objc_bridge_default.classes.NSBundle.mainBundle().objectForInfoDictionaryKey_("CFBundleShortVersionString").toString();
+  const versionArray = clientVersionString.split(".").map((x) => parseInt(x));
+  if (versionArray[0] == 4 || versionArray[1] >= 9 || versionArray[0] >= 5) {
+    if (!findIl2cppInitInTextSection()) {
+      return;
+    }
+    Il2Cpp.$config.unityVersion = "2022.3.62f2";
   }
-  const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
-  if (Core.image.tryClass("Alstromeria.ArchiveLiveDataStream") != null) {
-    Core.image.class("Alstromeria.ArchiveLiveDataStream").method(".ctor").implementation = function(directoryManager, downloader, fileSystem) {
-      const objDownloader = downloader;
-      objDownloader.method("IsDownloaded").revert();
-      objDownloader.method("IsDownloaded").implementation = function(file) {
-        var result = this.method("IsDownloaded").invoke(file);
-        if (!result) {
-          const objFile = file;
-          const name = objFile.method("get_Name").invoke();
-          const downloadStatus = this.field("downloadStatus").value;
-          const path = this.field("directoryManager").value.method("GetLocalFullPathFromFileName").invoke(name);
-          const fileExists = Il2Cpp.corlib.class("System.IO.File").method("Exists").invoke(path);
-          if (fileExists) {
-            downloadStatus.method("set_Item").invoke(file, 2);
-            result = true;
+  Il2Cpp.perform(() => {
+    hasloaded = true;
+    const UnityEngineCoreModule = Il2Cpp.domain.assembly("UnityEngine.CoreModule");
+    const UnityScreen = UnityEngineCoreModule.image.class("UnityEngine.Screen");
+    const UnityApplication = UnityEngineCoreModule.image.class("UnityEngine.Application");
+    const UnityQualitySettings = UnityEngineCoreModule.image.class("UnityEngine.QualitySettings");
+    const UnityRenderPipelinesRuntime = Il2Cpp.domain.assembly("Unity.RenderPipelines.Universal.Runtime");
+    const UniversalRenderPipeline = UnityRenderPipelinesRuntime.image.class("UnityEngine.Rendering.Universal.UniversalRenderPipeline");
+    const MagicaClothV2 = Il2Cpp.domain.assembly("MagicaClothV2");
+    const MagicaManager = MagicaClothV2.image.class("MagicaCloth2.MagicaManager");
+    const Core = Il2Cpp.domain.assembly("Core");
+    const AssemblyCSharp = Il2Cpp.domain.assembly("Assembly-CSharp");
+    MagicaManager.method("SetSimulationFrequency").implementation = function(frequency) {
+      console.log(`\u3010SetSimulationFrequency\u3011${frequency}, modify to ${globalConfig["MagicaClothSimulationFrequency"]}`);
+      return this.method("SetSimulationFrequency").invoke(globalConfig["MagicaClothSimulationFrequency"]);
+    };
+    MagicaManager.method("SetMaxSimulationCountPerFrame").implementation = function(count) {
+      console.log(`\u3010SetMaxSimulationCountPerFrame\u3011${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`);
+      return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame);
+    };
+    function get_SaveData() {
+      return AssemblyCSharp.image.class("Global").method("get_Instance").invoke().method("get_SaveData").invoke();
+    }
+    const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
+    if (Core.image.tryClass("Alstromeria.ArchiveLiveDataStream") != null) {
+      Core.image.class("Alstromeria.ArchiveLiveDataStream").method(".ctor").implementation = function(directoryManager, downloader, fileSystem) {
+        const objDownloader = downloader;
+        objDownloader.method("IsDownloaded").revert();
+        objDownloader.method("IsDownloaded").implementation = function(file) {
+          var result = this.method("IsDownloaded").invoke(file);
+          if (!result) {
+            const objFile = file;
+            const name = objFile.method("get_Name").invoke();
+            const downloadStatus = this.field("downloadStatus").value;
+            const path = this.field("directoryManager").value.method("GetLocalFullPathFromFileName").invoke(name);
+            const fileExists = Il2Cpp.corlib.class("System.IO.File").method("Exists").invoke(path);
+            if (fileExists) {
+              downloadStatus.method("set_Item").invoke(file, 2);
+              result = true;
+            }
+            console.log(`IsDownloadedReCheck(${name}) ${result}`);
           }
-          console.log(`IsDownloadedReCheck(${name}) ${result}`);
-        }
-        return result;
+          return result;
+        };
+        return this.method(".ctor").invoke(directoryManager, downloader, fileSystem);
       };
-      return this.method(".ctor").invoke(directoryManager, downloader, fileSystem);
-    };
-  }
-  function getSize(quality = -1, isLongSide = 1) {
-    if (quality == -1) {
-      quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
     }
-    var size = 0;
-    switch (quality) {
-      case 1:
-        size = globalConfig["MediumQualityLongSide"];
-        break;
-      case 2:
-        size = globalConfig["HighQualityLongSide"];
-        break;
-      default:
-        size = globalConfig["LowQualityLongSide"];
-    }
-    if (!isLongSide) {
-      return Math.floor(size / 16 * 9);
-    } else {
-      return size;
-    }
-  }
-  if (AssemblyCSharp.image.tryClass("School.LiveMain.SchoolResolution")) {
-    let setResolutions2 = function(_liveAreaResolutions) {
-      for (let i = 0; i < 3; i++) {
-        const LiveResolution = _liveAreaResolutions.method("get_Item").invoke(i);
-        LiveResolution.field("_longSide").value = getSize(i, 1);
-        LiveResolution.field("_shortSide").value = getSize(i, 0);
+    function getSize(quality = -1, isLongSide = 1) {
+      if (quality == -1) {
+        quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
       }
-    };
-    var setResolutions = setResolutions2;
-    const SchoolResolution = AssemblyCSharp.image.class("School.LiveMain.SchoolResolution");
-    AssemblyCSharp.image.class("School.LiveMain.SchoolResolution").method("GetResolution").implementation = function(quality, orientation) {
-      const _liveAreaResolutions = SchoolResolution.field("_liveAreaResolutions").value;
-      const numQuality = quality.field("value__").value;
-      const longSide = _liveAreaResolutions.method("get_Item").invoke(numQuality).field("_longSide").value;
-      if (getSize(numQuality, 1) != longSide) {
-        setResolutions2(_liveAreaResolutions);
-      }
-      const result = this.method("GetResolution").invoke(quality, orientation);
-      console.log("GetResolution", result);
-      return result;
-    };
-  }
-  const AlphaBlendCamera = Core.image.class("Inspix.AlphaBlendCamera");
-  var alphaModified = false;
-  AlphaBlendCamera.method("UpdateAlpha").implementation = function(newAlpha) {
-    const alpha = newAlpha;
-    const RenderTextureQuality = get_SaveData().method("get_RenderTextureQuality").invoke();
-    const quality = RenderTextureQuality.field("value__").value;
-    if (alpha > 0 && alpha < 1) {
-      if (!alphaModified && quality > 0) {
-        alphaModified = true;
-        get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1);
-      }
-    } else if (alphaModified) {
-      alphaModified = false;
-      if (quality < 2)
-        get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1);
-    }
-    this.method("UpdateAlpha").invoke(newAlpha);
-  };
-  Core.image.class("Inspix.Character.IsFocusableChecker").method("SetFocusArea").implementation = function() {
-    this.method("SetFocusArea").invoke();
-    const focusAreaMaxValue = this.field("focusAreaMaxValue").value;
-    const focusAreaMinValue = this.field("focusAreaMinValue").value;
-    focusAreaMaxValue.handle.add(0).writeFloat(focusAreaMaxValue.handle.add(0).readFloat() + 0.5);
-    focusAreaMinValue.handle.add(0).writeFloat(focusAreaMinValue.handle.add(0).readFloat() - 0.5);
-    console.log(`\u3010IsFocusableChecker.SetFocusArea\u3011${this.field("focusAreaMinValue").value} ${this.field("focusAreaMaxValue").value}`);
-  };
-  AssemblyCSharp.image.class("School.LiveMain.FesLiveFixedCamera").method(".ctor").implementation = function(camera, targetTexture, setting, cameraType) {
-    const objCameraSetting = setting;
-    const CameraType = cameraType;
-    console.log(`\u3010FixedCamera.ctor\u3011${objCameraSetting} ${setting} ${CameraType.toString()}`);
-    objCameraSetting.handle.add(28).writeFloat(1e6);
-    objCameraSetting.handle.add(44).writeFloat(360);
-    objCameraSetting.handle.add(60).writeFloat(0.1);
-    objCameraSetting.handle.add(52).writeFloat(10);
-    objCameraSetting.handle.add(56).writeFloat(150);
-    const objRenderTexture = targetTexture;
-    objRenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
-    if (CameraType.toString() == "LiveCameraTypeArenaView") {
-      objCameraSetting.handle.add(16).writeFloat(0);
-      objCameraSetting.handle.add(20).writeFloat(0.9);
-      objCameraSetting.handle.add(24).writeFloat(-4);
-      objCameraSetting.handle.add(32).writeFloat(0);
-      objCameraSetting.handle.add(36).writeFloat(0);
-      objCameraSetting.handle.add(40).writeFloat(0);
-    } else {
-      objCameraSetting.handle.add(16).writeFloat(0);
-      objCameraSetting.handle.add(20).writeFloat(7.5);
-      objCameraSetting.handle.add(24).writeFloat(0.5);
-      objCameraSetting.handle.add(32).writeFloat(90);
-      objCameraSetting.handle.add(36).writeFloat(0);
-      objCameraSetting.handle.add(40).writeFloat(0);
-    }
-    return this.method(".ctor").invoke(camera, targetTexture, setting, cameraType);
-  };
-  AssemblyCSharp.image.class("School.LiveMain.IdolTargetingCamera").method(".ctor").implementation = function(camera, targetTexture, setting) {
-    const objCameraSetting = setting;
-    objCameraSetting.handle.add(36).writeFloat(1e5);
-    objCameraSetting.handle.add(52).writeFloat(360);
-    objCameraSetting.handle.add(84).writeFloat(0.05);
-    objCameraSetting.handle.add(60).writeFloat(10);
-    objCameraSetting.handle.add(64).writeFloat(150);
-    objCameraSetting.handle.add(24).writeFloat(0);
-    objCameraSetting.handle.add(28).writeFloat(1.2);
-    objCameraSetting.handle.add(32).writeFloat(6);
-    objCameraSetting.handle.add(40).writeFloat(0);
-    objCameraSetting.handle.add(56).writeFloat(56);
-    objCameraSetting.handle.add(68).writeFloat(0.1);
-    objCameraSetting.handle.add(76).writeFloat(0);
-    objCameraSetting.handle.add(80).writeFloat(500);
-    console.log(`\u3010IdolTargetingCamera.ctor\u3011${setting}`);
-    const objRenderTexture = targetTexture;
-    objRenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
-    this.method(".ctor").invoke(camera, targetTexture, setting);
-    const tracer = this.field("tracer").value;
-    const defaultWorldPositionFromIdol = tracer.class.field("defaultWorldPositionFromIdol").value;
-    defaultWorldPositionFromIdol.method("Set").invoke(0, 0, 6);
-    tracer.class.field("defaultWorldPositionFromIdol").value = defaultWorldPositionFromIdol;
-  };
-  UniversalRenderPipeline.method("CreateRenderTextureDescriptor").implementation = function(camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture) {
-    const objCamera = camera;
-    if (!objCamera.toString().startsWith("StoryCamera")) {
-      return this.method("CreateRenderTextureDescriptor").invoke(camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture);
-    }
-    const quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
-    const RenderTexture = objCamera.method("get_targetTexture").invoke();
-    if (!RenderTexture.isNull()) {
-      const RenderTextureHeight = RenderTexture.method("get_height").invoke();
-      const RenderTextureWidth = RenderTexture.method("get_width").invoke();
-      var factor = 1;
+      var size = 0;
       switch (quality) {
-        case 0:
-          factor = globalConfig.LowQualityAdvFactor;
-          break;
         case 1:
-          factor = globalConfig.MediumQualityAdvFactor;
+          size = globalConfig["MediumQualityLongSide"];
           break;
         case 2:
-          factor = globalConfig.HighQualityAdvFactor;
+          size = globalConfig["HighQualityLongSide"];
           break;
+        default:
+          size = globalConfig["LowQualityLongSide"];
       }
-      RenderTexture.method("set_width").invoke(Math.floor(RenderTextureWidth * factor));
-      RenderTexture.method("set_height").invoke(Math.floor(RenderTextureHeight * factor));
-      RenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
-      RenderTexture.method("set_autoGenerateMips").invoke(true);
-      RenderTexture.method("set_useMipMap").invoke(true);
-      RenderTexture.method("set_useDynamicScale").invoke(true);
-    }
-    return this.method("CreateRenderTextureDescriptor").invoke(camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture);
-  };
-  UnityQualitySettings.method("set_antiAliasing").implementation = function(aa) {
-    return this.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
-  };
-  AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetPortraitImpl").implementation = function() {
-    if (globalConfig["OrientationModify"])
-      console.log(`\u3010REQUEST_ORIENTATION\u3011DO NOTHING`);
-    else
-      return this.method("SetPortraitImpl").invoke();
-  };
-  AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function() {
-    if (globalConfig["OrientationModify"])
-      console.log(`\u3010REQUEST_ORIENTATION\u3011DO NOTHING`);
-    else
-      return this.method("SetLandscapeImpl").invoke();
-  };
-  AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("CurrentOrientationIsImpl").implementation = function() {
-    if (globalConfig["OrientationModify"]) {
-      console.log(`\u3010CURRENT_ORIENTATION_IS\u3011modify to true`);
-      return true;
-    } else {
-      return this.method("CurrentOrientationIsImpl").invoke();
-    }
-  };
-  UnityApplication.method("set_targetFrameRate").implementation = function(fps) {
-    const targetFPS = Math.min(UnityScreen.method("get_currentResolution").invoke().method("get_refreshRate").invoke(), globalConfig["MaximumFPS"]);
-    console.log(`\u3010SET_TARGET_FRAME_RATE\u3011request: ${fps}, modify to ${targetFPS}`);
-    return this.method("set_targetFrameRate").invoke(targetFPS);
-  };
-  UnityApplication.method("set_targetFrameRate").invoke(Math.min(UnityScreen.method("get_currentResolution").invoke().method("get_refreshRate").invoke(), globalConfig["MaximumFPS"]));
-  UnityQualitySettings.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
-  Core.image.class("Inspix.CoverImageCommandReceiver").method("<Awake>b__9_0").implementation = function(value) {
-    const objValue = value;
-    if (globalConfig["RemoveImgCover"]) {
-      objValue.method(".ctor").invoke(EmptyString, objValue.field("SyncTime").value);
-    }
-    this.method("<Awake>b__9_0").invoke(objValue);
-  };
-  Core.image.class("Inspix.Character.FootShadow.FootShadowManipulator").method("<SetupObserveProperty>b__15_0").implementation = function(value) {
-    const objValue = value;
-    if (globalConfig.RemoveImgCover) {
-      objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
-    }
-    this.method("<SetupObserveProperty>b__15_0").invoke(objValue);
-  };
-  Core.image.class("Inspix.Character.CharacterVisibleReceiver").method("<SetupReceiveActions>b__9_0").implementation = function(value) {
-    const objValue = value;
-    if (globalConfig.RemoveImgCover) {
-      objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
-    }
-    this.method("<SetupReceiveActions>b__9_0").invoke(objValue);
-  };
-  var archiveData = {
-    archive_url: "",
-    live_type: 3,
-    chapters: [],
-    costume_ids: [],
-    timeline_ids: []
-  };
-  var archiveDataGet;
-  AssemblyCSharp.image.class("School.LiveMain.ApiRepository").method("ArchiveGetFesArchiveDataAsync").implementation = function(archiveId) {
-    if (globalConfig.LocalizeArchive) {
-      send({ type: "archiveDataGet", archive_id: archiveId.content });
-      archiveDataGet = recv("archiveData", function(data) {
-        archiveData = data.payload;
-      });
-      archiveDataGet.wait();
-    }
-    return this.method("ArchiveGetFesArchiveDataAsync").invoke(archiveId);
-  };
-  AssemblyCSharp.image.class("School.LiveMain.ApiRepository").method("ArchiveGetWithArchiveDataAsync").implementation = function(archiveId) {
-    if (globalConfig.LocalizeArchive) {
-      send({ type: "archiveDataGet", archive_id: archiveId.content });
-      archiveDataGet = recv("archiveData", function(data) {
-        archiveData = data.payload;
-      });
-      archiveDataGet.wait();
-    }
-    return this.method("ArchiveGetWithArchiveDataAsync").invoke(archiveId);
-  };
-  const GetWithArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetWithArchiveDataResponse");
-  const GetFesArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetFesArchiveDataResponse");
-  const globalClass = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
-  globalClass.method("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function(serverResver) {
-    var result = true;
-    if (globalConfig["TargetResVersion"]) {
-      result = this.method("TryUpdatedRequestedResourceVersion").invoke(Il2Cpp.string(globalConfig["TargetResVersion"]));
-    } else
-      result = this.method("TryUpdatedRequestedResourceVersion").invoke(serverResver);
-    return result;
-  };
-  AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("CallApiAsync").implementation = function(path, method, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken) {
-    const objHeaderParams = headerParams;
-    if (serverResVersion) {
-      const xresversion = Il2Cpp.string("x-res-version");
-      if (objHeaderParams.method("ContainsKey").invoke(xresversion)) {
-        objHeaderParams.method("set_Item").invoke(xresversion, Il2Cpp.string(serverResVersion.split("@")[0]));
+      if (!isLongSide) {
+        return Math.floor(size / 16 * 9);
+      } else {
+        return size;
       }
     }
-    const strPath = path.content ?? "";
-    if (globalConfig.ModifyWithToFes) {
-      if (archiveData.live_type == 2) {
-        if (strPath.endsWith("get_fes_archive_data")) {
-          path = Il2Cpp.string("/v1/archive/get_with_archive_data");
-        } else if (strPath.endsWith("get_fes_timeline_data")) {
-          path = Il2Cpp.string("/v1/archive/withlive_info");
-          const body = JSON.parse(postBody.content ?? "{}");
-          postBody = EmptyString;
-          const params = queryParams;
-          const classStr = Il2Cpp.corlib.class("System.String");
-          const kvPair = Il2Cpp.corlib.class("System.Collections.Generic.KeyValuePair`2").inflate(classStr, classStr);
-          const matching = [
-            ["live_id", body.ArchivesId],
-            ["play_time_second", body.PlayTimeSecond?.toString()],
-            ["timeline_unixtime", body.TimelineUnixtime?.toString()]
-          ];
-          for (const [key, value] of matching) {
-            if (!key || !value)
-              continue;
-            const objKVPair = kvPair.new();
-            objKVPair.method("set_Key").invoke(Il2Cpp.string(key));
-            objKVPair.method("set_Value").invoke(Il2Cpp.string(value));
-            params.method("Add").invoke(objKVPair);
-          }
+    if (AssemblyCSharp.image.tryClass("School.LiveMain.SchoolResolution")) {
+      let setResolutions2 = function(_liveAreaResolutions) {
+        for (let i = 0; i < 3; i++) {
+          const LiveResolution = _liveAreaResolutions.method("get_Item").invoke(i);
+          LiveResolution.field("_longSide").value = getSize(i, 1);
+          LiveResolution.field("_shortSide").value = getSize(i, 0);
         }
-      }
-    }
-    return this.method("CallApiAsync").invoke(path, method, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken);
-  };
-  var fesCameraCache = {
-    CameraType: 1,
-    FocusCharacterId: 0
-  };
-  AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("Serialize").implementation = function(obj) {
-    const objObj = obj;
-    if (globalConfig.ModifyWithToFes && objObj.class.fullName == "Org.OpenAPITools.Model.SetFesCameraRequest") {
-      if (archiveData.live_type == 2) {
-        fesCameraCache = {
-          CameraType: objObj.method("get_CameraType").invoke().field("value___").value,
-          FocusCharacterId: objObj.method("get_FocusCharacterId").invoke()
-        };
-        objObj.method("set_LiveId").invoke(Il2Cpp.string("2fd5361e-75a5-4442-a006-3cd83f6e20cf"));
-        objObj.method("set_CameraType").invoke(1);
-        objObj.method("set_FocusCharacterId").invoke(0);
-      }
-    }
-    return this.method("Serialize").invoke(objObj);
-  };
-  AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("Deserialize").implementation = function(response, returnType) {
-    const objResponse = response;
-    if (globalConfig.TargetResVersion) {
-      const headers = objResponse.method("get_Headers").invoke();
-      const Enumerator = headers.method("GetEnumerator").invoke();
-      while (Enumerator.method("MoveNext").invoke()) {
-        const entry = Enumerator.method("get_Current").invoke();
-        if (entry.method("get_Name").invoke().content == "x-res-version") {
-          serverResVersion = entry.method("get_Value").invoke().method("Trim").invoke().content ?? "";
-          entry.method("set_Value").invoke(Il2Cpp.string(globalConfig["TargetResVersion"]));
-          break;
+      };
+      var setResolutions = setResolutions2;
+      const SchoolResolution = AssemblyCSharp.image.class("School.LiveMain.SchoolResolution");
+      SchoolResolution.initialize();
+      SchoolResolution.method("GetResolution").implementation = function(quality, orientation) {
+        const _liveAreaResolutions = SchoolResolution.field("_liveAreaResolutions").value;
+        const numQuality = quality.field("value__").value;
+        const longSide = _liveAreaResolutions.method("get_Item").invoke(numQuality).field("_longSide").value;
+        if (getSize(numQuality, 1) != longSide) {
+          setResolutions2(_liveAreaResolutions);
         }
-      }
-    }
-    var objType = returnType;
-    const typeName = objType.method("get_FullName").invoke().content ?? "";
-    if (globalConfig.LocalizeArchive || globalConfig.ModifyWithToFes) {
-      if (globalConfig.ModifyWithToFes) {
-        if (archiveData.live_type == 2 && typeName == GetWithArchiveDataResponse.fullName) {
-          objType = Il2Cpp.corlib.class("System.Type").method("GetType").overload("System.String").invoke(Il2Cpp.string(GetFesArchiveDataResponse.fullName));
-        }
-      }
-    }
-    const result = this.method("Deserialize").invoke(objResponse, objType);
-    if ([GetWithArchiveDataResponse.fullName, GetFesArchiveDataResponse.fullName].includes(typeName)) {
-      const objData = result;
-      const objChapters = objData.method("get_Chapters").invoke();
-      if (globalConfig.LocalizeArchive) {
-        if (archiveData && archiveData.archive_url) {
-          const objCostumeIds = objData.method("get_CostumeIds").invoke();
-          const objTimelineIds = objData.method("get_TimelineIds").invoke();
-          objData.method("set_ArchiveUrl").invoke(Il2Cpp.string(archiveData.archive_url));
-          for (let i = 0; i < objChapters.method("get_Count").invoke(); i++) {
-            const chapter = objChapters.method("get_Item").invoke(i);
-            if (i < archiveData.chapters.length) {
-              chapter.method("set_PlayTimeSecond").invoke(archiveData.chapters[i].play_time_second);
-            } else {
-              break;
-            }
-          }
-          if (objCostumeIds.method("get_Count").invoke() == 0) {
-            archiveData.costume_ids.forEach(function(costume_id) {
-              objCostumeIds.method("Add").invoke(costume_id);
-            });
-          }
-          if (objTimelineIds.method("get_Count").invoke() == 0) {
-            archiveData.timeline_ids.forEach(function(timeline_id) {
-              objTimelineIds.method("Add").invoke(timeline_id);
-            });
-          }
-          objData.method("set_ContentCode").invoke(999);
-          if (result.class.fullName == GetWithArchiveDataResponse.fullName) {
-            objData.method("set_VideoUrl").invoke(EmptyString);
-          }
-        }
-      }
-      if (globalConfig.RemoveImgCover) {
-        if (archiveData.live_type == 2) {
-          const theVeryFirst = AssemblyCSharp.image.class("Org.OpenAPITools.Model.ArchiveWithliveChapter").new();
-          objChapters.method("Insert").invoke(0, theVeryFirst);
-        } else {
-          const theVeryFirst = AssemblyCSharp.image.class("Org.OpenAPITools.Model.ArchiveFesliveChapter").new();
-          objChapters.method("Insert").invoke(0, theVeryFirst);
-        }
-      }
-      if (archiveData.live_type == 2 && globalConfig.ModifyWithToFes || archiveData.live_type == 1) {
-        objData.method("set_TicketRank").invoke(6);
-        const cameraType = AssemblyCSharp.image.class("Org.OpenAPITools.Model.LiveCameraType");
-        const listCameraType = Il2Cpp.corlib.class("System.Collections.Generic.List`1").inflate(cameraType).new();
-        objData.method("set_SelectableCameraTypes").invoke(listCameraType);
-        [1, 2, 3, 4].forEach((i) => {
-          listCameraType.method("Add").invoke(i);
-        });
-      }
-      objData.method("set_HasExtraAdmission").invoke(true);
-    } else if (typeName == "Org.OpenAPITools.Model.GetArchiveListResponse") {
-      const archiveList = result.method("get_ArchiveList").invoke();
-      const enumerator = archiveList.method("GetEnumerator").invoke();
-      while (enumerator.method("MoveNext").invoke()) {
-        const current = enumerator.method("get_Current").invoke();
-        current.method("set_HasExtraAdmission").invoke(true);
-        current.method("set_EarnedStarCount").invoke(4);
-        current.method("set_TicketRank").invoke(6);
-        if (globalConfig.ModifyWithToFes) {
-          current.method("set_LiveType").invoke(1);
-        }
-      }
-    } else if (globalConfig.ModifyWithToFes && archiveData.live_type == 2 && typeName == "Org.OpenAPITools.Model.SetFesCameraResponse") {
-      result.method("set_CameraType").invoke(fesCameraCache.CameraType);
-      result.method("set_FocusCharacterId").invoke(fesCameraCache.FocusCharacterId);
-    }
-    return result;
-  };
-  Core.image.class("Hailstorm.Catalog").method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").implementation = function(manifest, stream) {
-    if (globalConfig["TargetClientVersion"]) {
-      UnityApplication.method("get_version").implementation = function() {
-        return Il2Cpp.string(globalConfig["TargetClientVersion"]);
+        const result = this.method("GetResolution").invoke(quality, orientation);
+        console.log("GetResolution", result);
+        return result;
       };
     }
-    const result = this.method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").invoke(manifest, stream);
-    UnityApplication.method("get_version").revert();
-    return result;
-  };
-  AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function(skipReturn, skipLine, timesec, seekbar) {
-    this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar);
-    if (globalConfig.AutoNovelAuto) {
-      if (this.tryMethod("NovelAutoSpeed")) {
-        this.method("NovelAutoSpeed").invoke(1);
-      } else if (this.tryMethod("SetNovelWaitInterval")) {
-        this.method("SetNovelWaitInterval").invoke(1);
+    const AlphaBlendCamera = Core.image.class("Inspix.AlphaBlendCamera");
+    var alphaModified = false;
+    AlphaBlendCamera.method("UpdateAlpha").implementation = function(newAlpha) {
+      const alpha = newAlpha;
+      const RenderTextureQuality = get_SaveData().method("get_RenderTextureQuality").invoke();
+      const quality = RenderTextureQuality.field("value__").value;
+      if (alpha > 0 && alpha < 1) {
+        if (!alphaModified && quality > 0) {
+          alphaModified = true;
+          get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1);
+        }
+      } else if (alphaModified) {
+        alphaModified = false;
+        if (quality < 2)
+          get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1);
+      }
+      this.method("UpdateAlpha").invoke(newAlpha);
+    };
+    Core.image.class("Inspix.Character.IsFocusableChecker").method("SetFocusArea").implementation = function() {
+      this.method("SetFocusArea").invoke();
+      const focusAreaMaxValue = this.field("focusAreaMaxValue").value;
+      const focusAreaMinValue = this.field("focusAreaMinValue").value;
+      focusAreaMaxValue.handle.add(0).writeFloat(focusAreaMaxValue.handle.add(0).readFloat() + 0.5);
+      focusAreaMinValue.handle.add(0).writeFloat(focusAreaMinValue.handle.add(0).readFloat() - 0.5);
+      console.log(`\u3010IsFocusableChecker.SetFocusArea\u3011${this.field("focusAreaMinValue").value} ${this.field("focusAreaMaxValue").value}`);
+    };
+    AssemblyCSharp.image.class("School.LiveMain.FesLiveFixedCamera").method(".ctor").implementation = function(camera, targetTexture, setting, cameraType) {
+      const objCameraSetting = setting;
+      const CameraType = cameraType;
+      console.log(`\u3010FixedCamera.ctor\u3011${objCameraSetting} ${setting} ${CameraType.toString()}`);
+      objCameraSetting.handle.add(28).writeFloat(1e6);
+      objCameraSetting.handle.add(44).writeFloat(360);
+      objCameraSetting.handle.add(60).writeFloat(0.1);
+      objCameraSetting.handle.add(52).writeFloat(10);
+      objCameraSetting.handle.add(56).writeFloat(150);
+      const objRenderTexture = targetTexture;
+      objRenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
+      if (CameraType.toString() == "LiveCameraTypeArenaView") {
+        objCameraSetting.handle.add(16).writeFloat(0);
+        objCameraSetting.handle.add(20).writeFloat(0.9);
+        objCameraSetting.handle.add(24).writeFloat(-4);
+        objCameraSetting.handle.add(32).writeFloat(0);
+        objCameraSetting.handle.add(36).writeFloat(0);
+        objCameraSetting.handle.add(40).writeFloat(0);
+      } else {
+        objCameraSetting.handle.add(16).writeFloat(0);
+        objCameraSetting.handle.add(20).writeFloat(7.5);
+        objCameraSetting.handle.add(24).writeFloat(0.5);
+        objCameraSetting.handle.add(32).writeFloat(90);
+        objCameraSetting.handle.add(36).writeFloat(0);
+        objCameraSetting.handle.add(40).writeFloat(0);
+      }
+      return this.method(".ctor").invoke(camera, targetTexture, setting, cameraType);
+    };
+    AssemblyCSharp.image.class("School.LiveMain.IdolTargetingCamera").method(".ctor").implementation = function(camera, targetTexture, setting) {
+      const objCameraSetting = setting;
+      objCameraSetting.handle.add(36).writeFloat(1e5);
+      objCameraSetting.handle.add(52).writeFloat(360);
+      objCameraSetting.handle.add(84).writeFloat(0.05);
+      objCameraSetting.handle.add(60).writeFloat(10);
+      objCameraSetting.handle.add(64).writeFloat(150);
+      objCameraSetting.handle.add(24).writeFloat(0);
+      objCameraSetting.handle.add(28).writeFloat(1.2);
+      objCameraSetting.handle.add(32).writeFloat(6);
+      objCameraSetting.handle.add(40).writeFloat(0);
+      objCameraSetting.handle.add(56).writeFloat(56);
+      objCameraSetting.handle.add(68).writeFloat(0.1);
+      objCameraSetting.handle.add(76).writeFloat(0);
+      objCameraSetting.handle.add(80).writeFloat(500);
+      console.log(`\u3010IdolTargetingCamera.ctor\u3011${setting}`);
+      const objRenderTexture = targetTexture;
+      objRenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
+      this.method(".ctor").invoke(camera, targetTexture, setting);
+      const tracer = this.field("tracer").value;
+      const defaultWorldPositionFromIdol = tracer.class.field("defaultWorldPositionFromIdol").value;
+      defaultWorldPositionFromIdol.method("Set").invoke(0, 0, 6);
+      tracer.class.field("defaultWorldPositionFromIdol").value = defaultWorldPositionFromIdol;
+    };
+    function modifyStoryCameraRenderTexture(camera) {
+      if (!camera.toString().startsWith("StoryCamera")) {
+        return;
+      }
+      const quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
+      const RenderTexture = camera.method("get_targetTexture").invoke();
+      if (!RenderTexture.isNull()) {
+        const RenderTextureHeight = RenderTexture.method("get_height").invoke();
+        const RenderTextureWidth = RenderTexture.method("get_width").invoke();
+        var factor = 1;
+        switch (quality) {
+          case 0:
+            factor = globalConfig.LowQualityAdvFactor;
+            break;
+          case 1:
+            factor = globalConfig.MediumQualityAdvFactor;
+            break;
+          case 2:
+            factor = globalConfig.HighQualityAdvFactor;
+            break;
+        }
+        RenderTexture.method("set_width").invoke(Math.floor(RenderTextureWidth * factor));
+        RenderTexture.method("set_height").invoke(Math.floor(RenderTextureHeight * factor));
+        RenderTexture.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
       }
     }
-    if (globalConfig.AutoCloseSubtitle) {
-      const isSubtitle = this.field("menu").value.field("isSubtitle").value;
-      if (isSubtitle)
-        this.method("OnClickSwitchSubtitle").invoke();
+    const CreateRenderTextureDescriptor = UniversalRenderPipeline.method("CreateRenderTextureDescriptor");
+    switch (CreateRenderTextureDescriptor.parameterCount) {
+      case 6:
+        CreateRenderTextureDescriptor.implementation = function(camera, renderScale, isHdrEnabled, msaaSamples, needsAlpha, requiresOpaqueTexture) {
+          modifyStoryCameraRenderTexture(camera);
+          return this.method("CreateRenderTextureDescriptor").invoke(camera, renderScale, isHdrEnabled, globalConfig["AntiAliasing"], needsAlpha, requiresOpaqueTexture);
+        };
+        break;
+      case 7:
+        CreateRenderTextureDescriptor.implementation = function(camera, cameraData, isHdrEnabled, requestHDRColorBufferPrecision, msaaSamples, needsAlpha, requiresOpaqueTexture) {
+          modifyStoryCameraRenderTexture(camera);
+          return this.method("CreateRenderTextureDescriptor").invoke(camera, cameraData, isHdrEnabled, requestHDRColorBufferPrecision, globalConfig["AntiAliasing"], needsAlpha, requiresOpaqueTexture);
+        };
+        break;
+      default:
+        break;
     }
-  };
-  AssemblyCSharp.image.class("School.Story.NovelView").method("AddTextAsync").implementation = function(text, rubis, durationSec, shouldTapWait, addNewLine) {
-    const result = this.method("AddTextAsync").invoke(text, rubis, durationSec, shouldTapWait, addNewLine);
-    this.field("textAnimation").value.handle.add(40).writeFloat(globalConfig.NovelTextAnimationSpeedFactor);
-    return result;
-  };
-  AssemblyCSharp.image.class("Tecotec.AddNovelTextCommand").method("GetDisplayTime").implementation = function(mnemonic) {
-    var result = this.method("GetDisplayTime").invoke(mnemonic);
-    if (!this.method("HasVoice").invoke(mnemonic)) {
-      return result * (globalConfig.NovelSingleCharDisplayTime / 0.03);
+    UnityQualitySettings.method("set_antiAliasing").implementation = function(aa) {
+      return this.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
+    };
+    AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetPortraitImpl").implementation = function() {
+      if (globalConfig["OrientationModify"])
+        console.log(`\u3010REQUEST_ORIENTATION\u3011DO NOTHING`);
+      else
+        return this.method("SetPortraitImpl").invoke();
+    };
+    AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function() {
+      if (globalConfig["OrientationModify"])
+        console.log(`\u3010REQUEST_ORIENTATION\u3011DO NOTHING`);
+      else
+        return this.method("SetLandscapeImpl").invoke();
+    };
+    AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("CurrentOrientationIsImpl").implementation = function() {
+      if (globalConfig["OrientationModify"]) {
+        console.log(`\u3010CURRENT_ORIENTATION_IS\u3011modify to true`);
+        return true;
+      } else {
+        return this.method("CurrentOrientationIsImpl").invoke();
+      }
+    };
+    UnityApplication.method("set_targetFrameRate").implementation = function(fps) {
+      const targetFPS = Math.min(getMaxRefreshRate490(), globalConfig["MaximumFPS"]);
+      console.log(`\u3010SET_TARGET_FRAME_RATE\u3011request: ${fps}, modify to ${targetFPS}`);
+      return this.method("set_targetFrameRate").invoke(targetFPS);
+    };
+    UnityApplication.method("set_targetFrameRate").invoke(Math.min(getMaxRefreshRate490(), globalConfig["MaximumFPS"]));
+    UnityQualitySettings.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
+    Core.image.class("Inspix.CoverImageCommandReceiver").method("<Awake>b__9_0").implementation = function(value) {
+      const objValue = value;
+      if (globalConfig["RemoveImgCover"]) {
+        objValue.method(".ctor").invoke(EmptyString, objValue.field("SyncTime").value);
+      }
+      this.method("<Awake>b__9_0").invoke(objValue);
+    };
+    const FootShadowManipulator = Core.image.class("Inspix.Character.FootShadow.FootShadowManipulator");
+    if (FootShadowManipulator.tryMethod("<SetupObserveProperty>b__15_0")) {
+      FootShadowManipulator.method("<SetupObserveProperty>b__15_0").implementation = function(value) {
+        const objValue = value;
+        if (globalConfig.RemoveImgCover) {
+          objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
+        }
+        this.method("<SetupObserveProperty>b__15_0").invoke(objValue);
+      };
+    } else {
+      FootShadowManipulator.method("<SetupObserveProperty>b__16_0").implementation = function(value) {
+        const objValue = value;
+        if (globalConfig.RemoveImgCover) {
+          objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
+        }
+        this.method("<SetupObserveProperty>b__16_0").invoke(objValue);
+      };
     }
-    return result;
-  };
-  console.log("successfully hook");
+    Core.image.class("Inspix.Character.CharacterVisibleReceiver").method("<SetupReceiveActions>b__9_0").implementation = function(value) {
+      const objValue = value;
+      if (globalConfig.RemoveImgCover) {
+        objValue.method(".ctor").invoke(true, objValue.field("SyncTime").value);
+      }
+      this.method("<SetupReceiveActions>b__9_0").invoke(objValue);
+    };
+    var archiveData = {
+      archive_url: "",
+      live_type: 3,
+      chapters: [],
+      costume_ids: [],
+      timeline_ids: []
+    };
+    var archiveDataGet;
+    AssemblyCSharp.image.class("School.LiveMain.ApiRepository").method("ArchiveGetFesArchiveDataAsync").implementation = function(archiveId) {
+      if (globalConfig.LocalizeArchive) {
+        send({ type: "archiveDataGet", archive_id: archiveId.content });
+        archiveDataGet = recv("archiveData", function(data) {
+          archiveData = data.payload;
+        });
+        archiveDataGet.wait();
+      }
+      return this.method("ArchiveGetFesArchiveDataAsync").invoke(archiveId);
+    };
+    AssemblyCSharp.image.class("School.LiveMain.ApiRepository").method("ArchiveGetWithArchiveDataAsync").implementation = function(archiveId) {
+      if (globalConfig.LocalizeArchive) {
+        send({ type: "archiveDataGet", archive_id: archiveId.content });
+        archiveDataGet = recv("archiveData", function(data) {
+          archiveData = data.payload;
+        });
+        archiveDataGet.wait();
+      }
+      return this.method("ArchiveGetWithArchiveDataAsync").invoke(archiveId);
+    };
+    const GetWithArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetWithArchiveDataResponse");
+    const GetFesArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetFesArchiveDataResponse");
+    const globalClass = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
+    globalClass.method("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function(serverResver) {
+      var result = true;
+      if (globalConfig["TargetResVersion"]) {
+        result = this.method("TryUpdatedRequestedResourceVersion").invoke(Il2Cpp.string(globalConfig["TargetResVersion"]));
+      } else
+        result = this.method("TryUpdatedRequestedResourceVersion").invoke(serverResver);
+      return result;
+    };
+    AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("CallApiAsync").implementation = function(path, method2, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken) {
+      const objHeaderParams = headerParams;
+      if (serverResVersion) {
+        const xresversion = Il2Cpp.string("x-res-version");
+        if (objHeaderParams.method("ContainsKey").invoke(xresversion)) {
+          objHeaderParams.method("set_Item").invoke(xresversion, Il2Cpp.string(serverResVersion.split("@")[0]));
+        }
+      }
+      const strPath = path.content ?? "";
+      if (globalConfig.ModifyWithToFes) {
+        if (archiveData.live_type == 2) {
+          if (strPath.endsWith("get_fes_archive_data")) {
+            path = Il2Cpp.string("/v1/archive/get_with_archive_data");
+          } else if (strPath.endsWith("get_fes_timeline_data")) {
+            path = Il2Cpp.string("/v1/archive/withlive_info");
+            const body = JSON.parse(postBody.content ?? "{}");
+            postBody = EmptyString;
+            const params = queryParams;
+            const classStr = Il2Cpp.corlib.class("System.String");
+            const kvPair = Il2Cpp.corlib.class("System.Collections.Generic.KeyValuePair`2").inflate(classStr, classStr);
+            const matching = [
+              ["live_id", body.ArchivesId],
+              ["play_time_second", body.PlayTimeSecond?.toString()],
+              ["timeline_unixtime", body.TimelineUnixtime?.toString()]
+            ];
+            for (const [key, value] of matching) {
+              if (!key || !value)
+                continue;
+              const objKVPair = kvPair.new();
+              objKVPair.method("set_Key").invoke(Il2Cpp.string(key));
+              objKVPair.method("set_Value").invoke(Il2Cpp.string(value));
+              params.method("Add").invoke(objKVPair);
+            }
+          }
+        }
+      }
+      return this.method("CallApiAsync").invoke(path, method2, queryParams, postBody, headerParams, formParams, fileParams, pathParams, contentType, cancellationtoken);
+    };
+    var fesCameraCache = {
+      CameraType: 1,
+      FocusCharacterId: 0
+    };
+    AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("Serialize").implementation = function(obj) {
+      const objObj = obj;
+      if (globalConfig.ModifyWithToFes && objObj.class.fullName == "Org.OpenAPITools.Model.SetFesCameraRequest") {
+        if (archiveData.live_type == 2) {
+          fesCameraCache = {
+            CameraType: objObj.method("get_CameraType").invoke().field("value___").value,
+            FocusCharacterId: objObj.method("get_FocusCharacterId").invoke()
+          };
+          objObj.method("set_LiveId").invoke(Il2Cpp.string("2fd5361e-75a5-4442-a006-3cd83f6e20cf"));
+          objObj.method("set_CameraType").invoke(1);
+          objObj.method("set_FocusCharacterId").invoke(0);
+        }
+      }
+      return this.method("Serialize").invoke(objObj);
+    };
+    AssemblyCSharp.image.class("Org.OpenAPITools.Client.ApiClient").method("Deserialize").implementation = function(response, returnType) {
+      const objResponse = response;
+      if (globalConfig.TargetResVersion) {
+        const headers = objResponse.method("get_Headers").invoke();
+        const Enumerator = headers.method("GetEnumerator").invoke();
+        while (Enumerator.method("MoveNext").invoke()) {
+          const entry = Enumerator.method("get_Current").invoke();
+          if (entry.method("get_Name").invoke().content == "x-res-version") {
+            serverResVersion = entry.method("get_Value").invoke().method("Trim").invoke().content ?? "";
+            entry.method("set_Value").invoke(Il2Cpp.string(globalConfig["TargetResVersion"]));
+            break;
+          }
+        }
+      }
+      var objType = returnType;
+      const typeName = objType.method("get_FullName").invoke().content ?? "";
+      if (globalConfig.LocalizeArchive || globalConfig.ModifyWithToFes) {
+        if (globalConfig.ModifyWithToFes) {
+          if (archiveData.live_type == 2 && typeName == GetWithArchiveDataResponse.fullName) {
+            objType = Il2Cpp.corlib.class("System.Type").method("GetType").overload("System.String").invoke(Il2Cpp.string(GetFesArchiveDataResponse.fullName));
+          }
+        }
+      }
+      const result = this.method("Deserialize").invoke(objResponse, objType);
+      if ([GetWithArchiveDataResponse.fullName, GetFesArchiveDataResponse.fullName].includes(typeName)) {
+        const objData = result;
+        const objChapters = objData.method("get_Chapters").invoke();
+        if (globalConfig.LocalizeArchive) {
+          if (archiveData && archiveData.archive_url) {
+            const objCostumeIds = objData.method("get_CostumeIds").invoke();
+            const objTimelineIds = objData.method("get_TimelineIds").invoke();
+            objData.method("set_ArchiveUrl").invoke(Il2Cpp.string(archiveData.archive_url));
+            for (let i = 0; i < objChapters.method("get_Count").invoke(); i++) {
+              const chapter = objChapters.method("get_Item").invoke(i);
+              if (i < archiveData.chapters.length) {
+                chapter.method("set_PlayTimeSecond").invoke(archiveData.chapters[i].play_time_second);
+              } else {
+                break;
+              }
+            }
+            if (objCostumeIds.method("get_Count").invoke() == 0) {
+              archiveData.costume_ids.forEach(function(costume_id) {
+                objCostumeIds.method("Add").invoke(costume_id);
+              });
+            }
+            if (objTimelineIds.method("get_Count").invoke() == 0) {
+              archiveData.timeline_ids.forEach(function(timeline_id) {
+                objTimelineIds.method("Add").invoke(timeline_id);
+              });
+            }
+            objData.method("set_ContentCode").invoke(999);
+            if (result.class.fullName == GetWithArchiveDataResponse.fullName) {
+              objData.method("set_VideoUrl").invoke(EmptyString);
+            }
+          }
+        }
+        if (globalConfig.RemoveImgCover) {
+          if (archiveData.live_type == 2) {
+            const theVeryFirst = AssemblyCSharp.image.class("Org.OpenAPITools.Model.ArchiveWithliveChapter").new();
+            objChapters.method("Insert").invoke(0, theVeryFirst);
+          } else {
+            const theVeryFirst = AssemblyCSharp.image.class("Org.OpenAPITools.Model.ArchiveFesliveChapter").new();
+            objChapters.method("Insert").invoke(0, theVeryFirst);
+          }
+        }
+        if (archiveData.live_type == 2 && globalConfig.ModifyWithToFes || archiveData.live_type == 1) {
+          objData.method("set_TicketRank").invoke(6);
+          const cameraType = AssemblyCSharp.image.class("Org.OpenAPITools.Model.LiveCameraType");
+          const listCameraType = Il2Cpp.corlib.class("System.Collections.Generic.List`1").inflate(cameraType).new();
+          objData.method("set_SelectableCameraTypes").invoke(listCameraType);
+          [1, 2, 3, 4].forEach((i) => {
+            listCameraType.method("Add").invoke(i);
+          });
+        }
+        objData.method("set_HasExtraAdmission").invoke(true);
+      } else if (typeName == "Org.OpenAPITools.Model.GetArchiveListResponse") {
+        const archiveList = result.method("get_ArchiveList").invoke();
+        const enumerator = archiveList.method("GetEnumerator").invoke();
+        while (enumerator.method("MoveNext").invoke()) {
+          const current = enumerator.method("get_Current").invoke();
+          current.method("set_HasExtraAdmission").invoke(true);
+          current.method("set_EarnedStarCount").invoke(4);
+          current.method("set_TicketRank").invoke(6);
+          if (globalConfig.ModifyWithToFes) {
+            current.method("set_LiveType").invoke(1);
+          }
+        }
+      } else if (globalConfig.ModifyWithToFes && archiveData.live_type == 2 && typeName == "Org.OpenAPITools.Model.SetFesCameraResponse") {
+        result.method("set_CameraType").invoke(fesCameraCache.CameraType);
+        result.method("set_FocusCharacterId").invoke(fesCameraCache.FocusCharacterId);
+      }
+      return result;
+    };
+    Core.image.class("Hailstorm.Catalog").method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").implementation = function(manifest, stream) {
+      if (globalConfig["TargetClientVersion"]) {
+        UnityApplication.method("get_version").implementation = function() {
+          return Il2Cpp.string(globalConfig["TargetClientVersion"]);
+        };
+      }
+      const result = this.method("Parse").overload("Hailstorm.Catalog.Manifest", "System.IO.Stream").invoke(manifest, stream);
+      UnityApplication.method("get_version").revert();
+      return result;
+    };
+    AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function(skipReturn, skipLine, timesec, seekbar) {
+      this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar);
+      if (globalConfig.AutoNovelAuto) {
+        if (this.tryMethod("NovelAutoSpeed")) {
+          this.method("NovelAutoSpeed").invoke(1);
+        } else if (this.tryMethod("SetNovelWaitInterval")) {
+          this.method("SetNovelWaitInterval").invoke(1);
+        }
+      }
+      if (globalConfig.AutoCloseSubtitle) {
+        const isSubtitle = this.field("menu").value.field("isSubtitle").value;
+        if (isSubtitle)
+          this.method("OnClickSwitchSubtitle").invoke();
+      }
+    };
+    AssemblyCSharp.image.class("School.Story.NovelView").method("AddTextAsync").implementation = function(text, rubis, durationSec, shouldTapWait, addNewLine) {
+      const result = this.method("AddTextAsync").invoke(text, rubis, durationSec, shouldTapWait, addNewLine);
+      this.field("textAnimation").value.handle.add(40).writeFloat(globalConfig.NovelTextAnimationSpeedFactor);
+      return result;
+    };
+    AssemblyCSharp.image.class("Tecotec.AddNovelTextCommand").method("GetDisplayTime").implementation = function(mnemonic) {
+      var result = this.method("GetDisplayTime").invoke(mnemonic);
+      if (!this.method("HasVoice").invoke(mnemonic)) {
+        return result * (globalConfig.NovelSingleCharDisplayTime / 0.03);
+      }
+      return result;
+    };
+    console.log("successfully hook");
+  });
+}
+setImmediate(() => {
+  main();
 });
