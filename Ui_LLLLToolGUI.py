@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'LLLLToolGUI.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.1
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -25,7 +25,7 @@ class Ui_L4ToolMW(object):
     def setupUi(self, L4ToolMW):
         if not L4ToolMW.objectName():
             L4ToolMW.setObjectName(u"L4ToolMW")
-        L4ToolMW.resize(513, 429)
+        L4ToolMW.resize(569, 498)
         self.centralwidget = QWidget(L4ToolMW)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -302,9 +302,26 @@ class Ui_L4ToolMW(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 452, 308))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 482, 481))
         self.gridLayout_16 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_16.setObjectName(u"gridLayout_16")
+        self.groupBox_8 = QGroupBox(self.scrollAreaWidgetContents)
+        self.groupBox_8.setObjectName(u"groupBox_8")
+        self.gridLayout_18 = QGridLayout(self.groupBox_8)
+        self.gridLayout_18.setObjectName(u"gridLayout_18")
+        self.blockHeartShowCheckBox = QCheckBox(self.groupBox_8)
+        self.blockHeartShowCheckBox.setObjectName(u"blockHeartShowCheckBox")
+
+        self.gridLayout_18.addWidget(self.blockHeartShowCheckBox, 0, 0, 1, 1)
+
+        self.blockCharaCutInCheckBox = QCheckBox(self.groupBox_8)
+        self.blockCharaCutInCheckBox.setObjectName(u"blockCharaCutInCheckBox")
+
+        self.gridLayout_18.addWidget(self.blockCharaCutInCheckBox, 0, 1, 1, 1)
+
+
+        self.gridLayout_16.addWidget(self.groupBox_8, 2, 0, 1, 1)
+
         self.groupBox_6 = QGroupBox(self.scrollAreaWidgetContents)
         self.groupBox_6.setObjectName(u"groupBox_6")
         sizePolicy1.setHeightForWidth(self.groupBox_6.sizePolicy().hasHeightForWidth())
@@ -395,7 +412,7 @@ class Ui_L4ToolMW(object):
 
         self.proxyPasswordLineEdit = QLineEdit(self.proxyGroup)
         self.proxyPasswordLineEdit.setObjectName(u"proxyPasswordLineEdit")
-        self.proxyPasswordLineEdit.setEchoMode(QLineEdit.Password)
+        self.proxyPasswordLineEdit.setEchoMode(QLineEdit.EchoMode.Password)
 
         self.gridLayout_17.addWidget(self.proxyPasswordLineEdit, 2, 3, 1, 1)
 
@@ -411,6 +428,34 @@ class Ui_L4ToolMW(object):
 
 
         self.gridLayout_16.addWidget(self.proxyGroup, 0, 0, 1, 1)
+
+        self.groupBox_9 = QGroupBox(self.scrollAreaWidgetContents)
+        self.groupBox_9.setObjectName(u"groupBox_9")
+        self.gridLayout_19 = QGridLayout(self.groupBox_9)
+        self.gridLayout_19.setObjectName(u"gridLayout_19")
+        self.fixPopupLandscapeCheckBox = QCheckBox(self.groupBox_9)
+        self.fixPopupLandscapeCheckBox.setObjectName(u"fixPopupLandscapeCheckBox")
+
+        self.gridLayout_19.addWidget(self.fixPopupLandscapeCheckBox, 0, 0, 1, 1)
+
+        self.label_20 = QLabel(self.groupBox_9)
+        self.label_20.setObjectName(u"label_20")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
+        self.label_20.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_19.addWidget(self.label_20, 1, 0, 1, 1)
+
+        self.PopupLandscaleScaleDSpinBox = QDoubleSpinBox(self.groupBox_9)
+        self.PopupLandscaleScaleDSpinBox.setObjectName(u"PopupLandscaleScaleDSpinBox")
+        self.PopupLandscaleScaleDSpinBox.setSingleStep(0.100000000000000)
+
+        self.gridLayout_19.addWidget(self.PopupLandscaleScaleDSpinBox, 1, 1, 1, 1)
+
+
+        self.gridLayout_16.addWidget(self.groupBox_9, 3, 0, 1, 1)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
@@ -436,7 +481,7 @@ class Ui_L4ToolMW(object):
 
         self.versionLabel = QLabel(self.groupBox_4)
         self.versionLabel.setObjectName(u"versionLabel")
-        self.versionLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.versionLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
         self.gridLayout_9.addWidget(self.versionLabel, 0, 1, 1, 1)
 
@@ -451,11 +496,11 @@ class Ui_L4ToolMW(object):
 
         self.groupBox_2 = QGroupBox(self.advancePage)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
-        self.groupBox_2.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
+        self.groupBox_2.setSizePolicy(sizePolicy4)
         self.gridLayout_10 = QGridLayout(self.groupBox_2)
         self.gridLayout_10.setObjectName(u"gridLayout_10")
         self.getResVersionsBtn = QPushButton(self.groupBox_2)
@@ -481,9 +526,9 @@ class Ui_L4ToolMW(object):
 
         self.resVersionTableView = QTableView(self.groupBox_2)
         self.resVersionTableView.setObjectName(u"resVersionTableView")
-        self.resVersionTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.resVersionTableView.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.resVersionTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.resVersionTableView.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.resVersionTableView.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.resVersionTableView.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
 
         self.gridLayout_10.addWidget(self.resVersionTableView, 1, 0, 1, 3)
 
@@ -692,6 +737,9 @@ class Ui_L4ToolMW(object):
         self.label_16.setText(QCoreApplication.translate("L4ToolMW", u"\u4e2d", None))
         self.label_15.setText(QCoreApplication.translate("L4ToolMW", u"\u9ad8", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.mainPage), QCoreApplication.translate("L4ToolMW", u"\u4e3b\u8981\u529f\u80fd", None))
+        self.groupBox_8.setTitle(QCoreApplication.translate("L4ToolMW", u"QuestLive\u6269\u5c55", None))
+        self.blockHeartShowCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u4e0d\u663e\u793aHeart\uff08\u6027\u80fd\u5f71\u54cd\u5927\uff09", None))
+        self.blockCharaCutInCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u7981\u7528\u53f3\u4fa7\u5c0f\u4eba\u5207\u5165", None))
         self.groupBox_6.setTitle(QCoreApplication.translate("L4ToolMW", u"\u6d3b\u52a8\u8bb0\u5f55\u6269\u5c55", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("L4ToolMW", u"\u89c6\u89c9\u5c0f\u8bf4\u6a21\u5f0f", None))
         self.textAnimationSpeedDSpinBox.setSuffix(QCoreApplication.translate("L4ToolMW", u"x", None))
@@ -704,7 +752,7 @@ class Ui_L4ToolMW(object):
 #if QT_CONFIG(tooltip)
         self.proxyGroup.setToolTip(QCoreApplication.translate("L4ToolMW", u"<html><head/><body><p><span style=\" font-weight:700;\">\u4e3aLLLL\u8bbe\u7f6e\u4ee3\u7406</span></p><p>\u5141\u8bb8macOS\u4e0d\u542f\u7528ClashX\u589e\u5f3a\u6a21\u5f0f\u4ee3\u7406\u8bbf\u95eeLLLL</p><p>iOS/Android\u672a\u6d4b\u8bd5</p><p><br/></p><p><span style=\" font-weight:700;\">\u5bf9TCP Socket\u76f4\u64ad\u65e0\u6548</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.proxyGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u8bbe\u7f6eLLLL\u4ee3\u7406\uff08\u4ec5HTTP/HTTPS\uff0c\u5bf9\u76f4\u64ad\u6d41\u65e0\u6548\uff09", None))
+        self.proxyGroup.setTitle(QCoreApplication.translate("L4ToolMW", u"\u8bbe\u7f6eLLLL\u4ee3\u7406\uff08\u4ec5HTTP/HTTPS\uff0c\u5bf9\u8d44\u6e90\u6587\u4ef6\u548c\u76f4\u64ad\u6d41\u65e0\u6548\uff09", None))
         self.proxyUserLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Username (\u6ca1\u6709\u53ef\u7a7a\uff09", None))
         self.httpProxyLineEdit.setInputMask("")
         self.httpProxyLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"http(s)://<host>:<port>", None))
@@ -713,6 +761,9 @@ class Ui_L4ToolMW(object):
         self.proxyPasswordLineEdit.setPlaceholderText(QCoreApplication.translate("L4ToolMW", u"Password\uff08\u6ca1\u6709\u53ef\u7a7a\uff09", None))
         self.label_13.setText(QCoreApplication.translate("L4ToolMW", u"\u4ee3\u7406\u7528\u6237\u540d", None))
         self.enableProxyCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u542f\u7528", None))
+        self.groupBox_9.setTitle(QCoreApplication.translate("L4ToolMW", u"\u6a2a\u5c4f\u6267\u884c\u6269\u5c55", None))
+        self.fixPopupLandscapeCheckBox.setText(QCoreApplication.translate("L4ToolMW", u"\u4fee\u590d\u6a2a\u5c4f\u65f6\u5f39\u7a97\u5c3a\u5bf8\u8fc7\u5927", None))
+        self.label_20.setText(QCoreApplication.translate("L4ToolMW", u"\u7f29\u653e\u6bd4\u4f8b\uff08<0.01\u81ea\u52a8\u914d\u7f6e\uff09", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.extendPage), QCoreApplication.translate("L4ToolMW", u"\u5176\u4ed6\u8c03\u6574", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("L4ToolMW", u"\u529f\u80fd\u9009\u9879", None))
 #if QT_CONFIG(tooltip)

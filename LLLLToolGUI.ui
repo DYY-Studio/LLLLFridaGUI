@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>513</width>
-    <height>429</height>
+    <width>569</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -608,11 +608,34 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>452</width>
-             <height>308</height>
+             <width>482</width>
+             <height>481</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_16">
+            <item row="2" column="0">
+             <widget class="QGroupBox" name="groupBox_8">
+              <property name="title">
+               <string>QuestLive扩展</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_18">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="blockHeartShowCheckBox">
+                 <property name="text">
+                  <string>不显示Heart（性能影响大）</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QCheckBox" name="blockCharaCutInCheckBox">
+                 <property name="text">
+                  <string>禁用右侧小人切入</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QGroupBox" name="groupBox_6">
               <property name="sizePolicy">
@@ -727,7 +750,7 @@
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;为LLLL设置代理&lt;/span&gt;&lt;/p&gt;&lt;p&gt;允许macOS不启用ClashX增强模式代理访问LLLL&lt;/p&gt;&lt;p&gt;iOS/Android未测试&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;对TCP Socket直播无效&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="title">
-               <string>设置LLLL代理（仅HTTP/HTTPS，对直播流无效）</string>
+               <string>设置LLLL代理（仅HTTP/HTTPS，对资源文件和直播流无效）</string>
               </property>
               <layout class="QGridLayout" name="gridLayout_17">
                <item row="2" column="1">
@@ -764,7 +787,7 @@
                <item row="2" column="3">
                 <widget class="QLineEdit" name="proxyPasswordLineEdit">
                  <property name="echoMode">
-                  <enum>QLineEdit::Password</enum>
+                  <enum>QLineEdit::EchoMode::Password</enum>
                  </property>
                  <property name="placeholderText">
                   <string>Password（没有可空）</string>
@@ -782,6 +805,42 @@
                 <widget class="QCheckBox" name="enableProxyCheckBox">
                  <property name="text">
                   <string>启用</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QGroupBox" name="groupBox_9">
+              <property name="title">
+               <string>横屏执行扩展</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_19">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="fixPopupLandscapeCheckBox">
+                 <property name="text">
+                  <string>修复横屏时弹窗尺寸过大</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_20">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>缩放比例（&lt;0.01自动配置）</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="PopupLandscaleScaleDSpinBox">
+                 <property name="singleStep">
+                  <double>0.100000000000000</double>
                  </property>
                 </widget>
                </item>
@@ -833,7 +892,7 @@
               <string/>
              </property>
              <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -905,13 +964,13 @@
            <item row="1" column="0" colspan="3">
             <widget class="QTableView" name="resVersionTableView">
              <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
+              <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
              </property>
              <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
+              <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
              </property>
              <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
+              <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
              </property>
             </widget>
            </item>

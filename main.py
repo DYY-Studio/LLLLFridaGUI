@@ -263,9 +263,9 @@ class FridaWorker(QtCore.QObject):
             if message.get("type") == "send":
                 payload = message.get("payload", {})
                 if isinstance(payload, dict):
-                    t = payload.get("type", "log")
+                    t = payload.pop("type", "log")
                     if t in ("log", "vm", "config", "action-ok", "action-error", "error"):
-                        self.log_sig.emit(t + json.dumps(payload, ensure_ascii=False))
+                        self.log_sig.emit(payload.get("message", t + json.dumps(payload, ensure_ascii=False)))
                     elif t == "archiveDataGet":
                         archive_id = payload.get("archive_id", "")
                         if archive_id and archive_id in ARCHIVE_DETAILS and archive_id in ARCHIVE_LIST and ARCHIVE_LIST[archive_id].get("external_link", ""):
@@ -393,7 +393,7 @@ def readCfg(cfgPath: str):
             ui.advStoryMediumSpinBox.setValue(cfg.get("MediumQualityAdvFactor", 1.5))
             ui.advStoryHighSpinBox.setValue(cfg.get("HighQualityAdvFactor", 2.0))
 
-            ui.textOnlyCharTimeDSpinBox.setValue(cfg.get("NovelSingleCharDisplayTime", 0.03))
+            ui.textOnlyCharTimeDSpinBox.setValue(cfg.get("NovelSingleCharDisplayTime", 0.06))
             ui.textAnimationSpeedDSpinBox.setValue(cfg.get("NovelTextAnimationSpeedFactor", 1.0))
 
             ui.autoModeEnterCheckbox.setChecked(cfg.get("AutoNovelAuto", False))
@@ -404,6 +404,12 @@ def readCfg(cfgPath: str):
             ui.proxyPasswordLineEdit.setText(cfg.get("ProxyPassword", ""))
 
             ui.enableProxyCheckBox.setChecked(cfg.get("EnableProxy", False))
+
+            ui.blockHeartShowCheckBox.setChecked(cfg.get("BlockHeartShow", False))
+            ui.blockCharaCutInCheckBox.setChecked(cfg.get("BlockCharaCutIn", False))
+
+            ui.fixPopupLandscapeCheckBox.setChecked(cfg.get("FixPopupLandscape", False))
+            ui.PopupLandscaleScaleDSpinBox.setValue(cfg.get("PopupLandscaleScale", 0.0))
 
     except Exception as e:
         warningMsgBox("Error", f"Failed to read config.json")
@@ -453,6 +459,10 @@ def generateCfg():
         "ProxyUrl": ui.httpProxyLineEdit.text().strip(),
         "ProxyUsername": ui.proxyUserLineEdit.text().strip() if ui.httpProxyLineEdit.text().strip() else "",
         "ProxyPassword": ui.proxyPasswordLineEdit.text().strip() if ui.httpProxyLineEdit.text().strip() else "",
+        "BlockHeartShow": ui.blockHeartShowCheckBox.isChecked(),
+        "BlockCharaCutIn": ui.blockCharaCutInCheckBox.isChecked(),
+        "FixPopupLandscape": ui.fixPopupLandscapeCheckBox.isChecked(),
+        "PopupLandscaleScale": ui.PopupLandscaleScaleDSpinBox.value(),
     })
 
 CONNECT_TEST_URL = 'https://www.gstatic.com/generate_204'
@@ -695,6 +705,7 @@ if __name__ == '__main__':
     mainWindow = QtWidgets.QMainWindow()
     ui = Ui_L4ToolMW()
     ui.setupUi(mainWindow)
+    ui.tabWidget.setCurrentIndex(0)
     toolBarLabel = QtWidgets.QLabel("Not connected")
     toolBarLabel.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
     ui.toolBar.addWidget(toolBarLabel)

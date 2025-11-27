@@ -1,5 +1,40 @@
 import "frida-il2cpp-bridge";
 import ObjC from "frida-objc-bridge";
+import Java from "frida-java-bridge";
+
+const originalConsoleLog = console.log;
+console.log = function (...args) {
+    originalConsoleLog.apply(console, args);
+    const message = args.map(arg => {
+        try {
+            return String(arg);
+        } catch (e) {
+            return "<Object conversion error>";
+        }
+    }).join(' ');
+
+    send({
+        type: 'log',
+        message: message
+    });
+};
+
+const originalConsoleError = console.error;
+console.error = function (...args) {
+    originalConsoleError.apply(console, args);
+    const message = args.map(arg => {
+        try {
+            return String(arg);
+        } catch (e) {
+            return "<Object conversion error>";
+        }
+    }).join(' ');
+
+    send({
+        type: 'error',
+        description: message
+    });
+};
 
 const IL2CPP_INIT_PATTERN: string = "F4 4F BE A9 FD 7B 01 A9 FD 43 00 91 F3 03 00 AA ?? ?? ?? ?? ?? ?? ?? ?? 00 00 80 52 ?? ?? ?? ?? E0 03 13 AA ?? ?? ?? ?? FD 7B 41 A9 F4 4F C2 A8 C0 03 5F D6"
 const IL2CPP_MODULE_NAME: string =  "UnityFramework"
@@ -32,7 +67,6 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
     "il2cpp_class_instance_size": 0xCC,
     "il2cpp_class_is_valuetype": 0xD0,
     "il2cpp_class_get_method_from_name": 0x6163C, // Internal function
-    // "il2cpp_class_get_property_from_name": 0x61878, // no equivalent function, offset of il2cpp_class_get_properties internal
     "il2cpp_class_get_interfaces": 0x61484, // Internal function
     "il2cpp_class_array_element_size": 0x128,
     "il2cpp_class_from_type": 0x12C,
@@ -49,7 +83,6 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
 
     "il2cpp_domain_get": 0x15C,
     "il2cpp_domain_assembly_open": 0x160,
-    // "il2cpp_domain_get_assemblies": 0x35E24, // no equivalent function, see System.AppDomain$$GetAssemblies_0
 
     "il2cpp_free": 0x68, // Mono.SafeStringMarshal$$GFree_0_0
 
@@ -88,12 +121,12 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
     "il2cpp_type_get_name": 0x3C0,
 
     "il2cpp_field_static_get_value": 0x5DA3C, // Internal function
-    // "il2cpp_field_static_set_value": -1,
+
     "il2cpp_array_class_get": 0x6C,
     "il2cpp_array_length": 0x70,
     "il2cpp_array_new": 0x74,
     "il2cpp_assembly_get_image": 0x84,
-    // "il2cpp_image_get_name": -1
+
     "il2cpp_runtime_class_init": 0x79C,
 
     "il2cpp_field_get_name": 0x26C,
@@ -127,17 +160,22 @@ function createIl2CppExports(
 }
 
 function findIl2cppInitInTextSection(): boolean {
-    console.log(`[+] 正在查找模块: ${IL2CPP_MODULE_NAME}`);
-    
-    // 尝试获取 IL2CPP 模块
-    const il2cppModule = Process.getModuleByName(IL2CPP_MODULE_NAME);
+    var il2cppModule: Module | null = null;
 
-    if (!il2cppModule) {
-        console.error(`[-] 错误：未能找到模块 ${IL2CPP_MODULE_NAME}。请检查名称是否正确。`);
+    if (Process.platform.valueOf() == "darwin") {
+        console.log(`[+] Try find module: ${IL2CPP_MODULE_NAME}`);
+        il2cppModule = Process.getModuleByName(IL2CPP_MODULE_NAME);
+    } else {
+        console.error(`[-] Unsupported platform: ${Process.platform}`);
         return false;
     }
 
-    console.log(`[+] 模块找到: ${IL2CPP_MODULE_NAME} (基地址: ${il2cppModule.base})`);
+    if (!il2cppModule) {
+        console.error(`[-] Cannot find module`);
+        return false;
+    }
+
+    console.log(`[+] Found: ${il2cppModule.name} (Base: ${il2cppModule.base})`);
 
     var scanStartAddress: NativePointer = il2cppModule.base;
     var scanSize: number = il2cppModule.size;
@@ -148,8 +186,7 @@ function findIl2cppInitInTextSection(): boolean {
             const startAddress: NativePointer = section.address;
             const size: number = section.size;
 
-            console.log(`[+] 目标区域: __text Section`);
-            console.log(`[+] 地址范围: ${startAddress} - ${startAddress.add(size)} (大小: ${ptr(size)})`);
+            console.log(`[+] Section: ${startAddress} - ${startAddress.add(size)} (Size: ${ptr(size)})`);
 
             scanStartAddress = startAddress; 
             scanSize = size;
@@ -161,13 +198,13 @@ function findIl2cppInitInTextSection(): boolean {
         return false;
     }
 
-    console.log(`[+] 正在开始内存扫描...`);
+    console.log(`[+] Start Scan...`);
     const scanResult = Memory.scanSync(scanStartAddress, scanSize, IL2CPP_INIT_PATTERN) 
     if (scanResult.length > 0) { 
         const result = scanResult[0];
-        console.log(`[!!!] 匹配成功!`);
-        console.log(`[!!!] 函数地址: ${result.address}`);
-        console.log(`[!!!] 模块偏移 (Offset): ${result.address.sub(il2cppModule.base)}`);
+        console.log(`[!!!] Matched!`);
+        console.log(`[!!!] Address: ${result.address}`);
+        console.log(`[!!!] Offset in Module: ${result.address.sub(il2cppModule.base)}`);
         Il2Cpp.$config.exports = createIl2CppExports(result.address, IL2CPP_RUNTIME_OFFSETS)
         return true;
     }
@@ -200,7 +237,11 @@ let globalConfig = {
     "ProxyUrl": "",
     "ProxyUsername": "",
     "ProxyPassword": "",
-    "EnableProxy": false
+    "EnableProxy": false,
+    "BlockHeartShow": false,
+    "BlockCharaCutIn": false,
+    "FixPopupLandscape": false,
+    "PopupLandscaleScale": 0.0,
 }
 
 var hasloaded = false
@@ -272,19 +313,48 @@ rpc.exports = {
 }
 
 var serverResVersion = ""
+
+function getClientVersion(): number[] | null {
+    if (Java.available) {
+        var context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
+        var packageName = context.getPackageName();
+        var pkgInfo = context.getPackageManager().getPackageInfo(packageName, 0);
+        return (pkgInfo.versionName.value as string).split(".").map(x => parseInt(x))
+    } else if (Process.platform.valueOf() == "darwin") {
+        const clientVersionString: string = ObjC.classes.NSBundle
+                                                .mainBundle()
+                                                .objectForInfoDictionaryKey_("CFBundleShortVersionString")
+                                                .toString()
+        return clientVersionString.split(".").map(x => parseInt(x))
+    } else {
+        send({
+            "type": "error",
+            "description": "Unsupported environment"
+        })
+    }
+    return null;
+}
+
 function main() {
 
-    const clientVersionString: string = ObjC.classes.NSBundle
-                                            .mainBundle()
-                                            .objectForInfoDictionaryKey_("CFBundleShortVersionString")
-                                            .toString()
-    const versionArray = clientVersionString.split(".").map(x => parseInt(x))
+    if (Process.platform.valueOf() == "darwin") {
+        const versionArray = getClientVersion();
 
-    if ((versionArray[0] == 4 || versionArray[1] >= 9) || versionArray[0] >= 5) {
-        if (!findIl2cppInitInTextSection()) {
+        if (!versionArray) {
             return;
         }
-        Il2Cpp.$config.unityVersion = '2022.3.62f2'
+
+        if ((versionArray[0] == 4 || versionArray[1] >= 9) || versionArray[0] >= 5) {
+            console.log(`LLLL ${versionArray.map(x => String(x)).join(".")} detected, please wait memory scan`)
+            if (!findIl2cppInitInTextSection()) {
+                send({
+                    "type": "error",
+                    "description": "Cannot find il2cpp_init function"
+                })
+                return;
+            }
+            Il2Cpp.$config.unityVersion = '2022.3.62f2'
+        }
     }
 
     Il2Cpp.perform(() => {
@@ -307,11 +377,11 @@ function main() {
 
         // 修改MagicaClothV2的模拟频率
         MagicaManager.method("SetSimulationFrequency").implementation = function (frequency) {
-            console.log(`【SetSimulationFrequency】${frequency}, modify to ${globalConfig["MagicaClothSimulationFrequency"]}`)
+            // console.log(`【SetSimulationFrequency】${frequency}, modify to ${globalConfig["MagicaClothSimulationFrequency"]}`)
             return this.method("SetSimulationFrequency").invoke(globalConfig["MagicaClothSimulationFrequency"])
         }
         MagicaManager.method("SetMaxSimulationCountPerFrame").implementation = function (count) {
-            console.log(`【SetMaxSimulationCountPerFrame】${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`)
+            // console.log(`【SetMaxSimulationCountPerFrame】${count}, modify to ${globalConfig.MagicaClothSimulationCountPerFrame}`)
             return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame)
         }
 
@@ -358,7 +428,7 @@ function main() {
                             downloadStatus.method("set_Item").invoke(file, 2)
                             result = true
                         }
-                        console.log(`IsDownloadedReCheck(${name}) ${result}`)
+                        // console.log(`IsDownloadedReCheck(${name}) ${result}`)
                     }
                     return result
                 }
@@ -428,7 +498,7 @@ function main() {
                 }
 
                 const result = this.method("GetResolution").invoke(quality, orientation)
-                console.log("GetResolution", result)
+                // console.log("GetResolution", result)
                 return result
             }
         }
@@ -469,7 +539,7 @@ function main() {
             const focusAreaMinValue = this.field("focusAreaMinValue").value as Il2Cpp.Object
             focusAreaMaxValue.handle.add(0x00).writeFloat(focusAreaMaxValue.handle.add(0x00).readFloat() + 0.50)
             focusAreaMinValue.handle.add(0x00).writeFloat(focusAreaMinValue.handle.add(0x00).readFloat() - 0.50)
-            console.log(`【IsFocusableChecker.SetFocusArea】${this.field("focusAreaMinValue").value} ${this.field("focusAreaMaxValue").value}`)
+            // console.log(`【IsFocusableChecker.SetFocusArea】${this.field("focusAreaMinValue").value} ${this.field("focusAreaMaxValue").value}`)
         }
 
         /**
@@ -478,7 +548,7 @@ function main() {
         AssemblyCSharp.image.class("School.LiveMain.FesLiveFixedCamera").method(".ctor").implementation = function ( camera, targetTexture, setting, cameraType) {
             const objCameraSetting = setting as Il2Cpp.Object
             const CameraType = cameraType as Il2Cpp.Object
-            console.log(`【FixedCamera.ctor】${objCameraSetting} ${setting} ${CameraType.toString()}`)
+            // console.log(`【FixedCamera.ctor】${objCameraSetting} ${setting} ${CameraType.toString()}`)
             objCameraSetting.handle.add(0x1C).writeFloat(1000000.0) // moveRadiusLimit
             objCameraSetting.handle.add(0x2C).writeFloat(360.0) // rotateAngleLimit
 
@@ -550,7 +620,7 @@ function main() {
             objCameraSetting.handle.add(0x44).writeFloat(0.1) // followSpeed
             objCameraSetting.handle.add(0x4C).writeFloat(0.0) // boundSizeRange: min
             objCameraSetting.handle.add(0x50).writeFloat(500.0) // boundSizeRange: max
-            console.log(`【IdolTargetingCamera.ctor】${setting}`)
+            // console.log(`【IdolTargetingCamera.ctor】${setting}`)
             // objCameraSetting.handle.add(0x48).writeFloat(200.0) // boundSize
             // objCameraSetting.handle.add(0x4C).writeFloat(0.0) // boundSizeRange: min
             // objCameraSetting.handle.add(0x50).writeFloat(500.0) // boundSizeRange: max
@@ -625,18 +695,18 @@ function main() {
 
         // 对于无法正确旋转的macOS系统，禁用旋转相关函数
         AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetPortraitImpl").implementation = function () {
-            if (globalConfig["OrientationModify"]) console.log(`【REQUEST_ORIENTATION】DO NOTHING`)
-                else return this.method("SetPortraitImpl").invoke()
+            if (!globalConfig["OrientationModify"]) // console.log(`【REQUEST_ORIENTATION】DO NOTHING`)
+                return this.method("SetPortraitImpl").invoke()
         }
 
         AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function () {
-            if (globalConfig["OrientationModify"]) console.log(`【REQUEST_ORIENTATION】DO NOTHING`)
-                else return this.method("SetLandscapeImpl").invoke()
+            if (!globalConfig["OrientationModify"]) //console.log(`【REQUEST_ORIENTATION】DO NOTHING`)
+                return this.method("SetLandscapeImpl").invoke()
         }
 
         AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("CurrentOrientationIsImpl").implementation = function () {
             if (globalConfig["OrientationModify"]) {
-                console.log(`【CURRENT_ORIENTATION_IS】modify to true`)
+                // console.log(`【CURRENT_ORIENTATION_IS】modify to true`)
                 return true
             } else {
                 return this.method("CurrentOrientationIsImpl").invoke()
@@ -648,7 +718,7 @@ function main() {
 
             const targetFPS = Math.min(getMaxRefreshRate490(), globalConfig["MaximumFPS"])
 
-            console.log(`【SET_TARGET_FRAME_RATE】request: ${fps}, modify to ${targetFPS}`)
+            // console.log(`【SET_TARGET_FRAME_RATE】request: ${fps}, modify to ${targetFPS}`)
             return this.method("set_targetFrameRate").invoke(targetFPS)
         }
 
@@ -996,11 +1066,9 @@ function main() {
         AssemblyCSharp.image.class("Tecotec.StoryUIWindow").method("Setup").implementation = function (skipReturn, skipLine, timesec, seekbar) {
             this.method("Setup").invoke(skipReturn, skipLine, timesec, seekbar)
             if (globalConfig.AutoNovelAuto) {
-                if (this.tryMethod("NovelAutoSpeed")) {
-                    this.method("NovelAutoSpeed").invoke(1)
-                } else if (this.tryMethod("SetNovelWaitInterval")) {
-                    this.method("SetNovelWaitInterval").invoke(1)
-                }
+                this.tryMethod("NovelAutoSpeed")?.invoke(1)
+                this.tryMethod("SetNovelWaitInterval")?.invoke(1)
+                this.tryMethod("SetNovelTextSpeedMove")?.invoke(1)
             }
             if (globalConfig.AutoCloseSubtitle) {
                 const isSubtitle = this.field<Il2Cpp.Object>("menu").value.field<boolean>("isSubtitle").value
@@ -1012,21 +1080,53 @@ function main() {
             text, rubis, durationSec, shouldTapWait, addNewLine
         ) {
             const result = this.method("AddTextAsync").invoke(text, rubis, durationSec, shouldTapWait, addNewLine)
-            this.field<Il2Cpp.Object>("textAnimation").value.handle.add(0x28).writeFloat(
-                globalConfig.NovelTextAnimationSpeedFactor
-            )
+            this.method("ChangeSpeed").invoke(globalConfig.NovelTextAnimationSpeedFactor)
             return result
         }
 
         AssemblyCSharp.image.class("Tecotec.AddNovelTextCommand").method("GetDisplayTime").implementation = function (mnemonic) {
-            var result = this.method<number>("GetDisplayTime").invoke(mnemonic) 
             if (!this.method<boolean>("HasVoice").invoke(mnemonic)) {
-                return result * (globalConfig.NovelSingleCharDisplayTime / 0.03)
+                const result = this.method<Il2Cpp.Object>("GetText").invoke(mnemonic)
+                const strLength = result.field<Il2Cpp.String>("Item1").value.length
+                return strLength * globalConfig.NovelSingleCharDisplayTime
+            } else {
+                return this.method<number>("GetDisplayTime").invoke(mnemonic)
             }
-            return result
         }
 
-        console.log("successfully hook")
+        // Tecotec.QuestLive.Live.QuestLiveHeartObject.ShowHeart(bool show)
+        AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveHeartObject").method("ShowHeart").implementation = function (show) {
+            if (globalConfig.BlockHeartShow) {
+                return this.method("ShowHeart").invoke(false)
+            }
+            return this.method("ShowHeart").invoke(show)
+        }
+
+        // Tecotec.QuestLive.Live.QuestLiveCutinCharacter.PlaySkillAnimation()
+        AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveCutinCharacter").method("PlaySkillAnimation").implementation = function () {
+            if (globalConfig.BlockCharaCutIn) {
+                return;
+            }
+            return this.method("PlaySkillAnimation").invoke()
+        }
+
+        // UniTask Inspix.LiveMain.BasePopup.OpenAsync()
+        AssemblyCSharp.image.class("Inspix.LiveMain.BasePopup").method("OpenAsync").implementation = function () {
+            if (globalConfig.FixPopupLandscape) {
+                const width = UnityScreen.method<number>("get_width").invoke()
+                const height = UnityScreen.method<number>("get_height").invoke()
+                if (width > height) {
+                    if (globalConfig.PopupLandscaleScale < 0.01) {
+                        this.method("SetLandscapeScaleIfNeed").invoke(height / width)
+                    } else {
+                        this.method("SetLandscapeScaleIfNeed").invoke(globalConfig.PopupLandscaleScale)
+                    }
+                }
+            }
+            return this.method("OpenAsync").invoke()
+        }
+
+        console.log("Successfully hooked")
     });
 }
 
