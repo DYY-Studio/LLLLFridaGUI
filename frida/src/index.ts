@@ -121,6 +121,7 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
     "il2cpp_type_get_name": 0x3C0,
 
     "il2cpp_field_static_get_value": 0x5DA3C, // Internal function
+    "il2cpp_field_static_set_value": 0x5DAEC, // Internal function
 
     "il2cpp_array_class_get": 0x6C,
     "il2cpp_array_length": 0x70,
@@ -136,6 +137,8 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
     "il2cpp_field_get_type": 0x27C,
     "il2cpp_field_get_value": 0x280,
     "il2cpp_field_has_attribute": 0x284,
+
+    "il2cpp_value_box": 0x7A4,
 };
 
 function createIl2CppExports(
@@ -258,7 +261,7 @@ function getMaxRefreshRate490(): number {
                         .method<Il2Cpp.Object>("get_refreshRateRatio").invoke()
                         .method<number>("get_value").invoke()
     }
-    return refreshRate;
+    return Math.ceil(refreshRate);
 }
 
 rpc.exports = {
@@ -436,6 +439,9 @@ function main() {
             }
         }
 
+        var alphaModified: boolean = false
+        var alphaResolutionLongSide: number = 0
+
         /**
          * 按照设置的质量档位，获取对应的渲染分辨率
          * - 低 1080p
@@ -444,20 +450,24 @@ function main() {
          * @param isLongSide 是否是长边
          */
         function getSize(quality: number = -1, isLongSide: number = 1) {
-            if (quality == -1) {
-                quality = get_SaveData().method<Il2Cpp.ValueType>("get_RenderTextureQuality").invoke().field<number>("value__").value
-            }
-            
             var size = 0
-            switch (quality) {
-                case 1:
-                    size = globalConfig["MediumQualityLongSide"]
-                    break
-                case 2:
-                    size = globalConfig["HighQualityLongSide"]
-                    break
-                default:
-                    size = globalConfig["LowQualityLongSide"]
+
+            if (alphaModified) {
+                size = alphaResolutionLongSide
+            } else {
+                if (quality == -1) {
+                    quality = get_SaveData().method<Il2Cpp.ValueType>("get_RenderTextureQuality").invoke().field<number>("value__").value
+                }
+                switch (quality) {
+                    case 1:
+                        size = globalConfig["MediumQualityLongSide"]
+                        break
+                    case 2:
+                        size = globalConfig["HighQualityLongSide"]
+                        break
+                    default:
+                        size = globalConfig["LowQualityLongSide"]
+                }
             }
             
             if (!isLongSide) {
@@ -469,19 +479,6 @@ function main() {
 
         if (AssemblyCSharp.image.tryClass("School.LiveMain.SchoolResolution")) {
             const SchoolResolution = AssemblyCSharp.image.class("School.LiveMain.SchoolResolution")
-            SchoolResolution.initialize()
-
-            /**
-             * 替换内置的质量档位到分辨率词典
-             * @param _liveAreaResolutions School.LiveMain.SchoolResolution._liveAreaResolutions
-             */
-            function setResolutions(_liveAreaResolutions: Il2Cpp.Object) {
-                for (let i = 0; i < 3; i++) {
-                    const LiveResolution = _liveAreaResolutions.method("get_Item").invoke(i) as Il2Cpp.Object
-                    LiveResolution.field("_longSide").value = getSize(i, 1)
-                    LiveResolution.field("_shortSide").value = getSize(i, 0)
-                }
-            }
 
             /**
              * 检查是否已经套用自定义的分辨率，没有套用则套用
@@ -489,23 +486,29 @@ function main() {
              * @param orientation School.LiveMain.SchoolResolution.LiveResolution
              */
             SchoolResolution.method("GetResolution").implementation = function (quality, orientation) {
-                const _liveAreaResolutions = SchoolResolution.field("_liveAreaResolutions").value as Il2Cpp.Object
-                const numQuality = (quality as Il2Cpp.ValueType).field<number>("value__").value
-                const longSide = _liveAreaResolutions.method<Il2Cpp.Object>("get_Item").invoke(numQuality).field<number>("_longSide").value
-
-                if (getSize(numQuality, 1) != longSide) {
-                    setResolutions(_liveAreaResolutions)
-                }
-
-                const result = this.method("GetResolution").invoke(quality, orientation)
+                const result = this.method<Il2Cpp.Object>("GetResolution").invoke(quality, orientation)
                 // console.log("GetResolution", result)
+                const numQuality = (quality as Il2Cpp.ValueType).field<number>("value__").value;
+                const numOrientation = (orientation as Il2Cpp.ValueType).field<number>("value__").value;
+                result.field<number>("m_Width").value = getSize(numQuality, numOrientation ^ 1)
+                result.field<number>("m_Height").value = getSize(numQuality, numOrientation)
+
                 return result
             }
         }
 
         const AlphaBlendCamera = Core.image.class("Inspix.AlphaBlendCamera")
 
-        var alphaModified: boolean = false
+        function forceRefreshRenderTexture(quality: number) {
+            if (quality > 0) {
+                get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1)
+                get_SaveData().method("set_RenderTextureQuality").invoke(quality)
+            } else if (quality < 2) {
+                get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1)
+                get_SaveData().method("set_RenderTextureQuality").invoke(quality)
+            }
+        }
+
         /** Fes×LIVE进行AlphaBlend时降低分辨率至更低画质档位以保证帧率
          * 
          * 基于Apple M4平台进行测试，AlphaBlend应当在1080p才能保证稳定的60FPS
@@ -518,15 +521,17 @@ function main() {
             const quality = RenderTextureQuality.field<number>("value__").value
 
             if (alpha > 0 && alpha < 1) {
-                if (!alphaModified && quality > 0) {
+                if (!alphaModified) {
+                    alphaResolutionLongSide = Math.round(getSize(quality) * 2.0 / 3.0)
                     alphaModified = true
-                    get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1)
+                    forceRefreshRenderTexture(quality)
                 }
             }
             else if (alphaModified) {
                 alphaModified = false
-                if (quality < 2) get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1)
+                forceRefreshRenderTexture(quality)
             }
+            
             this.method("UpdateAlpha").invoke(newAlpha)
         }
 
@@ -978,10 +983,12 @@ function main() {
 
                         for (let i = 0; i < objChapters.method<number>("get_Count").invoke(); i++) {
                             const chapter = objChapters.method<Il2Cpp.Object>("get_Item").invoke(i)
-                            if (i < archiveData.chapters.length) {
-                                chapter.method("set_PlayTimeSecond").invoke(archiveData.chapters[i].play_time_second)
-                            } else {
-                                break
+                            if (archiveData.chapters) {
+                                if (i < archiveData.chapters.length) {
+                                    chapter.method("set_PlayTimeSecond").invoke(archiveData.chapters[i].play_time_second)
+                                } else {
+                                    break
+                                }
                             }
                         }
 

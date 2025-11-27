@@ -1,5 +1,5 @@
 📦
-691581 /src/index.js
+691796 /src/index.js
 ✄
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -19691,6 +19691,8 @@ var IL2CPP_RUNTIME_OFFSETS = {
   "il2cpp_type_get_name": 960,
   "il2cpp_field_static_get_value": 383548,
   // Internal function
+  "il2cpp_field_static_set_value": 383724,
+  // Internal function
   "il2cpp_array_class_get": 108,
   "il2cpp_array_length": 112,
   "il2cpp_array_new": 116,
@@ -19702,7 +19704,8 @@ var IL2CPP_RUNTIME_OFFSETS = {
   "il2cpp_field_get_offset": 632,
   "il2cpp_field_get_type": 636,
   "il2cpp_field_get_value": 640,
-  "il2cpp_field_has_attribute": 644
+  "il2cpp_field_has_attribute": 644,
+  "il2cpp_value_box": 1956
 };
 function createIl2CppExports(il2cppInitAddress, offsets) {
   const exports = {};
@@ -19801,7 +19804,7 @@ function getMaxRefreshRate490() {
   } else {
     refreshRate = currentResolution.method("get_refreshRateRatio").invoke().method("get_value").invoke();
   }
-  return refreshRate;
+  return Math.ceil(refreshRate);
 }
 rpc.exports = {
   setconfig: (cfg) => {
@@ -19915,20 +19918,26 @@ function main() {
         return this.method(".ctor").invoke(directoryManager, downloader, fileSystem);
       };
     }
+    var alphaModified = false;
+    var alphaResolutionLongSide = 0;
     function getSize(quality = -1, isLongSide = 1) {
-      if (quality == -1) {
-        quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
-      }
       var size = 0;
-      switch (quality) {
-        case 1:
-          size = globalConfig["MediumQualityLongSide"];
-          break;
-        case 2:
-          size = globalConfig["HighQualityLongSide"];
-          break;
-        default:
-          size = globalConfig["LowQualityLongSide"];
+      if (alphaModified) {
+        size = alphaResolutionLongSide;
+      } else {
+        if (quality == -1) {
+          quality = get_SaveData().method("get_RenderTextureQuality").invoke().field("value__").value;
+        }
+        switch (quality) {
+          case 1:
+            size = globalConfig["MediumQualityLongSide"];
+            break;
+          case 2:
+            size = globalConfig["HighQualityLongSide"];
+            break;
+          default:
+            size = globalConfig["LowQualityLongSide"];
+        }
       }
       if (!isLongSide) {
         return Math.floor(size / 16 * 9);
@@ -19937,42 +19946,39 @@ function main() {
       }
     }
     if (AssemblyCSharp.image.tryClass("School.LiveMain.SchoolResolution")) {
-      let setResolutions2 = function(_liveAreaResolutions) {
-        for (let i = 0; i < 3; i++) {
-          const LiveResolution = _liveAreaResolutions.method("get_Item").invoke(i);
-          LiveResolution.field("_longSide").value = getSize(i, 1);
-          LiveResolution.field("_shortSide").value = getSize(i, 0);
-        }
-      };
-      var setResolutions = setResolutions2;
       const SchoolResolution = AssemblyCSharp.image.class("School.LiveMain.SchoolResolution");
-      SchoolResolution.initialize();
       SchoolResolution.method("GetResolution").implementation = function(quality, orientation) {
-        const _liveAreaResolutions = SchoolResolution.field("_liveAreaResolutions").value;
-        const numQuality = quality.field("value__").value;
-        const longSide = _liveAreaResolutions.method("get_Item").invoke(numQuality).field("_longSide").value;
-        if (getSize(numQuality, 1) != longSide) {
-          setResolutions2(_liveAreaResolutions);
-        }
         const result = this.method("GetResolution").invoke(quality, orientation);
+        const numQuality = quality.field("value__").value;
+        const numOrientation = orientation.field("value__").value;
+        result.field("m_Width").value = getSize(numQuality, numOrientation ^ 1);
+        result.field("m_Height").value = getSize(numQuality, numOrientation);
         return result;
       };
     }
     const AlphaBlendCamera = Core.image.class("Inspix.AlphaBlendCamera");
-    var alphaModified = false;
+    function forceRefreshRenderTexture(quality) {
+      if (quality > 0) {
+        get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1);
+        get_SaveData().method("set_RenderTextureQuality").invoke(quality);
+      } else if (quality < 2) {
+        get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1);
+        get_SaveData().method("set_RenderTextureQuality").invoke(quality);
+      }
+    }
     AlphaBlendCamera.method("UpdateAlpha").implementation = function(newAlpha) {
       const alpha = newAlpha;
       const RenderTextureQuality = get_SaveData().method("get_RenderTextureQuality").invoke();
       const quality = RenderTextureQuality.field("value__").value;
       if (alpha > 0 && alpha < 1) {
-        if (!alphaModified && quality > 0) {
+        if (!alphaModified) {
+          alphaResolutionLongSide = Math.round(getSize(quality) * 2 / 3);
           alphaModified = true;
-          get_SaveData().method("set_RenderTextureQuality").invoke(quality - 1);
+          forceRefreshRenderTexture(quality);
         }
       } else if (alphaModified) {
         alphaModified = false;
-        if (quality < 2)
-          get_SaveData().method("set_RenderTextureQuality").invoke(quality + 1);
+        forceRefreshRenderTexture(quality);
       }
       this.method("UpdateAlpha").invoke(newAlpha);
     };
@@ -20262,10 +20268,12 @@ function main() {
             objData.method("set_ArchiveUrl").invoke(Il2Cpp.string(archiveData.archive_url));
             for (let i = 0; i < objChapters.method("get_Count").invoke(); i++) {
               const chapter = objChapters.method("get_Item").invoke(i);
-              if (i < archiveData.chapters.length) {
-                chapter.method("set_PlayTimeSecond").invoke(archiveData.chapters[i].play_time_second);
-              } else {
-                break;
+              if (archiveData.chapters) {
+                if (i < archiveData.chapters.length) {
+                  chapter.method("set_PlayTimeSecond").invoke(archiveData.chapters[i].play_time_second);
+                } else {
+                  break;
+                }
               }
             }
             if (objCostumeIds.method("get_Count").invoke() == 0) {
