@@ -1117,17 +1117,34 @@ function main() {
             return this.method("PlaySkillAnimation").invoke()
         }
 
+        const NeedMovePopups = new Map<string, number>([
+            ["TPopupLearningMusicSelect", 0.625],
+        ])
+
         // UniTask Inspix.LiveMain.BasePopup.OpenAsync()
         AssemblyCSharp.image.class("Inspix.LiveMain.BasePopup").method("OpenAsync").implementation = function () {
             if (globalConfig.FixPopupLandscape) {
                 const width = UnityScreen.method<number>("get_width").invoke()
                 const height = UnityScreen.method<number>("get_height").invoke()
+
+                const LANDSCAPE_SIZE = AssemblyCSharp.image.class("Inspix.LiveMain.BasePopup").field<Il2Cpp.Object>("PORTRAIT_SIZE").value
+                LANDSCAPE_SIZE.field<number>("x").value = width
+                LANDSCAPE_SIZE.field<number>("y").value = height
+
                 if (width > height) {
                     if (globalConfig.PopupLandscaleScale < 0.01) {
                         this.method("SetLandscapeScaleIfNeed").invoke(height / width)
                     } else {
                         this.method("SetLandscapeScaleIfNeed").invoke(globalConfig.PopupLandscaleScale)
                     }
+                }
+
+                const className = (this as Il2Cpp.Object).class.name
+                if (NeedMovePopups.has(className)) {
+                    const transform = this.method<Il2Cpp.Object>("get_transform").invoke()
+                    const newPosition = transform.method<Il2Cpp.Object>("get_position").invoke()
+                    newPosition.field<number>("y").value = height * (NeedMovePopups.get(className)??0.625)
+                    transform.method<Il2Cpp.Object>("set_position").invoke(newPosition)
                 }
             }
             return this.method("OpenAsync").invoke()
