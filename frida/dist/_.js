@@ -1,5 +1,5 @@
 📦
-692510 /src/index.js
+692294 /src/index.js
 ✄
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -20385,9 +20385,6 @@ function main() {
       if (globalConfig.FixPopupLandscape) {
         const width = UnityScreen.method("get_width").invoke();
         const height = UnityScreen.method("get_height").invoke();
-        const LANDSCAPE_SIZE = AssemblyCSharp.image.class("Inspix.LiveMain.BasePopup").field("PORTRAIT_SIZE").value;
-        LANDSCAPE_SIZE.field("x").value = width;
-        LANDSCAPE_SIZE.field("y").value = height;
         if (width > height) {
           if (globalConfig.PopupLandscaleScale < 0.01) {
             this.method("SetLandscapeScaleIfNeed").invoke(height / width);

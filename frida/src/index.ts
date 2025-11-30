@@ -1127,10 +1127,6 @@ function main() {
                 const width = UnityScreen.method<number>("get_width").invoke()
                 const height = UnityScreen.method<number>("get_height").invoke()
 
-                const LANDSCAPE_SIZE = AssemblyCSharp.image.class("Inspix.LiveMain.BasePopup").field<Il2Cpp.Object>("PORTRAIT_SIZE").value
-                LANDSCAPE_SIZE.field<number>("x").value = width
-                LANDSCAPE_SIZE.field<number>("y").value = height
-
                 if (width > height) {
                     if (globalConfig.PopupLandscaleScale < 0.01) {
                         this.method("SetLandscapeScaleIfNeed").invoke(height / width)
