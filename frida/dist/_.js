@@ -19862,7 +19862,7 @@ function main() {
     if (!versionArray) {
       return;
     }
-    if (versionArray[0] == 4 || versionArray[1] >= 9 || versionArray[0] >= 5) {
+    if (versionArray[0] == 4 && versionArray[1] >= 9 || versionArray[0] >= 5) {
       console.log(`LLLL ${versionArray.map((x) => String(x)).join(".")} detected, please wait memory scan`);
       if (!findIl2cppInitInTextSection()) {
         send({
