@@ -128,6 +128,9 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
     "il2cpp_array_new": 0x74,
     "il2cpp_assembly_get_image": 0x84,
 
+    "il2cpp_runtime_invoke": 0x388,
+    "il2cpp_runtime_object_init_exception": 0x38C,
+
     "il2cpp_runtime_class_init": 0x79C,
 
     "il2cpp_field_get_name": 0x26C,
@@ -575,8 +578,11 @@ function main() {
             }
             else {
                 objCameraSetting.handle.add(0x10).writeFloat(0.0) // defaultWorldPosition: x
-                objCameraSetting.handle.add(0x14).writeFloat(7.5) // defaultWorldPosition: y
-                objCameraSetting.handle.add(0x18).writeFloat(0.5) // defaultWorldPosition: z
+
+                // 对于第二音乐堂，应当使用y=7.5, z=0.5
+                objCameraSetting.handle.add(0x14).writeFloat(5.8) // defaultWorldPosition: y
+                
+                objCameraSetting.handle.add(0x18).writeFloat(0.0) // defaultWorldPosition: z
 
                 objCameraSetting.handle.add(0x20).writeFloat(90.0) // defaultWorldRotationEuler: x
                 objCameraSetting.handle.add(0x24).writeFloat(0.0) // defaultWorldRotationEuler: y
@@ -589,16 +595,14 @@ function main() {
         /**
          *  这是为了便于我录制全身Focus而将Focus向下旋转9.0
          */ 
-        // AssemblyCSharp.image.class("School.LiveMain.IdolFrontCraneCamera").method("CalculateDefaultLocalRotation").implementation = function () {
-        //     const result = this.method("CalculateDefaultLocalRotation").invoke() as Il2Cpp.Object
+        AssemblyCSharp.image.class("School.LiveMain.IdolFrontCraneCamera").method("CalculateDefaultLocalRotation").implementation = function () {
+            const result = this.method("CalculateDefaultLocalRotation").invoke() as Il2Cpp.Object
 
-        //     const current = result.handle.add(0x00).readFloat()
-        //     if (current > 9.0) {
-        //         result.handle.add(0x00).writeFloat(current - 9.0)
-        //     }
+            const current = result.handle.add(0x00).readFloat()
+            result.handle.add(0x00).writeFloat(current - 9.0)
 
-        //     return result
-        // }
+            return result
+        }
         
         /**
          * 调整Focus，解除其移动和旋转限制，扩展FOV可调范围，提高灵敏度
@@ -1097,7 +1101,7 @@ function main() {
                 const strLength = result.field<Il2Cpp.String>("Item1").value.length
                 return strLength * globalConfig.NovelSingleCharDisplayTime
             } else {
-                return this.method<number>("GetDisplayTime").invoke(mnemonic)
+                return this.method<number>("GetDisplayTime").invoke(mnemonic) + 0.5
             }
         }
 

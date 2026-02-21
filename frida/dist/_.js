@@ -1,5 +1,5 @@
 📦
-692294 /src/index.js
+692730 /src/index.js
 ✄
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -19697,6 +19697,8 @@ var IL2CPP_RUNTIME_OFFSETS = {
   "il2cpp_array_length": 112,
   "il2cpp_array_new": 116,
   "il2cpp_assembly_get_image": 132,
+  "il2cpp_runtime_invoke": 904,
+  "il2cpp_runtime_object_init_exception": 908,
   "il2cpp_runtime_class_init": 1948,
   "il2cpp_field_get_name": 620,
   "il2cpp_field_get_flags": 624,
@@ -20008,13 +20010,19 @@ function main() {
         objCameraSetting.handle.add(40).writeFloat(0);
       } else {
         objCameraSetting.handle.add(16).writeFloat(0);
-        objCameraSetting.handle.add(20).writeFloat(7.5);
-        objCameraSetting.handle.add(24).writeFloat(0.5);
+        objCameraSetting.handle.add(20).writeFloat(5.8);
+        objCameraSetting.handle.add(24).writeFloat(0);
         objCameraSetting.handle.add(32).writeFloat(90);
         objCameraSetting.handle.add(36).writeFloat(0);
         objCameraSetting.handle.add(40).writeFloat(0);
       }
       return this.method(".ctor").invoke(camera, targetTexture, setting, cameraType);
+    };
+    AssemblyCSharp.image.class("School.LiveMain.IdolFrontCraneCamera").method("CalculateDefaultLocalRotation").implementation = function() {
+      const result = this.method("CalculateDefaultLocalRotation").invoke();
+      const current = result.handle.add(0).readFloat();
+      result.handle.add(0).writeFloat(current - 9);
+      return result;
     };
     AssemblyCSharp.image.class("School.LiveMain.IdolTargetingCamera").method(".ctor").implementation = function(camera, targetTexture, setting) {
       const objCameraSetting = setting;
@@ -20363,7 +20371,7 @@ function main() {
         const strLength = result.field("Item1").value.length;
         return strLength * globalConfig.NovelSingleCharDisplayTime;
       } else {
-        return this.method("GetDisplayTime").invoke(mnemonic);
+        return this.method("GetDisplayTime").invoke(mnemonic) + 0.5;
       }
     };
     AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveHeartObject").method("ShowHeart").implementation = function(show) {
