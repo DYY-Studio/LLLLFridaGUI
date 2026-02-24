@@ -1,5 +1,5 @@
 📦
-696100 /src/index.js
+696275 /src/index.js
 ✄
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -20097,14 +20097,20 @@ function main() {
     UnityQualitySettings.method("set_antiAliasing").implementation = function(aa) {
       return this.method("set_antiAliasing").invoke(globalConfig["AntiAliasing"]);
     };
-    AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetPortraitImpl").implementation = function() {
-      if (!globalConfig["OrientationModify"])
-        return this.method("SetPortraitImpl").invoke();
-    };
-    AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function() {
-      if (!globalConfig["OrientationModify"])
-        return this.method("SetLandscapeImpl").invoke();
-    };
+    const SetPortraitImpl = AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").tryMethod("SetPortraitImpl");
+    if (SetPortraitImpl != null) {
+      SetPortraitImpl.implementation = function() {
+        if (!globalConfig["OrientationModify"])
+          return this.method("SetPortraitImpl").invoke();
+      };
+    }
+    const SetLandscapeImpl = AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").tryMethod("SetLandscapeImpl");
+    if (SetLandscapeImpl != null) {
+      AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function() {
+        if (!globalConfig["OrientationModify"])
+          return this.method("SetLandscapeImpl").invoke();
+      };
+    }
     AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("CurrentOrientationIsImpl").implementation = function() {
       if (globalConfig["OrientationModify"]) {
         return true;
@@ -20180,8 +20186,7 @@ function main() {
     };
     const GetWithArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetWithArchiveDataResponse");
     const GetFesArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetFesArchiveDataResponse");
-    const globalClass = AssemblyCSharp.image.class("Global").method("get_Instance").invoke();
-    globalClass.method("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function(serverResver) {
+    get_Global().method("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function(serverResver) {
       var result = true;
       if (globalConfig["TargetResVersion"]) {
         result = this.method("TryUpdatedRequestedResourceVersion").invoke(Il2Cpp.string(globalConfig["TargetResVersion"]));

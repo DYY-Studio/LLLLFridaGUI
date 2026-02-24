@@ -708,16 +708,22 @@ function main() {
         }
 
         // 对于无法正确旋转的macOS系统，禁用旋转相关函数
-        AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetPortraitImpl").implementation = function () {
+        const SetPortraitImpl = AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").tryMethod("SetPortraitImpl")
+        if (SetPortraitImpl != null) {
+            SetPortraitImpl.implementation = function () {
             if (!globalConfig["OrientationModify"]) // console.log(`【REQUEST_ORIENTATION】DO NOTHING`)
                 return this.method("SetPortraitImpl").invoke()
+            }
         }
-
-        AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function () {
+        
+        const SetLandscapeImpl = AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").tryMethod("SetLandscapeImpl")
+        if (SetLandscapeImpl != null) {
+            AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("SetLandscapeImpl").implementation = function () {
             if (!globalConfig["OrientationModify"]) //console.log(`【REQUEST_ORIENTATION】DO NOTHING`)
                 return this.method("SetLandscapeImpl").invoke()
+            }
         }
-
+    
         AssemblyCSharp.image.class("Inspix.PlayerGameViewUtilsImpl").method("CurrentOrientationIsImpl").implementation = function () {
             if (globalConfig["OrientationModify"]) {
                 // console.log(`【CURRENT_ORIENTATION_IS】modify to true`)
@@ -852,8 +858,7 @@ function main() {
         const GetFesArchiveDataResponse = AssemblyCSharp.image.class("Org.OpenAPITools.Model.GetFesArchiveDataResponse")
 
         // 修改资源版本数据
-        const globalClass = AssemblyCSharp.image.class("Global").method<Il2Cpp.Object>("get_Instance").invoke()  
-        globalClass.method<Il2Cpp.Object>("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function (serverResver) {
+        get_Global().method<Il2Cpp.Object>("get_Resources").invoke().method("TryUpdatedRequestedResourceVersion").implementation = function (serverResver) {
             // console.log("serverResver:", serverResver, globalConfig["TargetResVersion"])
             var result = true;
             if (globalConfig["TargetResVersion"]) {
