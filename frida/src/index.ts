@@ -128,6 +128,8 @@ const IL2CPP_RUNTIME_OFFSETS: Record<`il2cpp_${string}`, number> = {
     "il2cpp_array_new": 0x74,
     "il2cpp_assembly_get_image": 0x84,
 
+    "il2cpp_image_get_name": 0x84,
+
     "il2cpp_runtime_invoke": 0x388,
     "il2cpp_runtime_object_init_exception": 0x38C,
 
@@ -391,9 +393,12 @@ function main() {
             return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame)
         }
 
+        function get_Global() {
+            return AssemblyCSharp.image.class("Global").field<Il2Cpp.Object>("instance").value
+        }
         
         function get_SaveData() {
-            return AssemblyCSharp.image.class("Global").method<Il2Cpp.Object>("get_Instance").invoke().method<Il2Cpp.Object>("get_SaveData").invoke() 
+            return get_Global().field<Il2Cpp.Object>("<SaveData>k__BackingField").value
         }
 
         const EmptyString = Il2Cpp.corlib.class("System.String").field<Il2Cpp.String>("Empty").value
@@ -1105,14 +1110,6 @@ function main() {
             }
         }
 
-        // Tecotec.QuestLive.Live.QuestLiveHeartObject.ShowHeart(bool show)
-        AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveHeartObject").method("ShowHeart").implementation = function (show) {
-            if (globalConfig.BlockHeartShow) {
-                return this.method("ShowHeart").invoke(false)
-            }
-            return this.method("ShowHeart").invoke(show)
-        }
-
         // Tecotec.QuestLive.Live.QuestLiveCutinCharacter.PlaySkillAnimation()
         AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveCutinCharacter").method("PlaySkillAnimation").implementation = function () {
             if (globalConfig.BlockCharaCutIn) {
@@ -1148,6 +1145,83 @@ function main() {
                 }
             }
             return this.method("OpenAsync").invoke()
+        }
+
+        const SetHeartShowLimitValue = AssemblyCSharp.image.class("Tecotec.TPopupQuestLiveSettings").tryMethod("SetHeartShowLimitValue");
+        if (SetHeartShowLimitValue != null) {
+            SetHeartShowLimitValue.implementation = function (p_value, p_playSe) {
+                const playSe = p_playSe as boolean;
+                const value = p_value as number;
+                const globalInstance = get_Global();
+
+                if (playSe) {
+                    const soundManager = globalInstance.field<Il2Cpp.Object>("<SoundManager>k__BackingField").value;
+
+                    if (soundManager != null) {
+                        const isQuestScene = AssemblyCSharp.image.class("GameDefine").method<boolean>("IsQuestScene").invoke();
+                        const CriCueName = AssemblyCSharp.image.class("Tecotec.CriCueName");
+                        let cueName: Il2Cpp.String;
+
+                        if (isQuestScene) {
+                            cueName = CriCueName.method<Il2Cpp.String>("QuestTap").invoke(1);
+                        } else {
+                            cueName = CriCueName.method<Il2Cpp.String>("UiTap").invoke(3);
+                        }
+
+                        soundManager.method<void>("PlaySystemSe").invoke(cueName, 0);
+                    }
+                }
+
+                let clampedValue = Math.min(Math.max(value, 0), 100);
+
+                const saveData = globalInstance.field<Il2Cpp.Object>("<SaveData>k__BackingField").value;
+                
+                if (saveData != null) {
+                    const heartShowLimitCount = saveData.field<Il2Cpp.Object>("HeartShowLimitCount").value;
+                    
+                    if (heartShowLimitCount != null) {
+                        const currentValue = heartShowLimitCount.method<number>("get_Value").invoke();
+                        
+                        if (currentValue !== clampedValue) {
+                            heartShowLimitCount.method<void>("set_Value").invoke(clampedValue);
+                            saveData.method<void>("Save").invoke();
+                        }
+                    }
+                }
+
+                const heartLimitText = this.field<Il2Cpp.Object>("_heartLimitText").value;
+                if (heartLimitText != null) {
+                    heartLimitText.method<void>("set_text").invoke(Il2Cpp.string(clampedValue.toString()));
+                }
+
+                const btnMinus10 = this.field<Il2Cpp.Object>("_heartShowLimitbuttonMinus10").value;
+                const btnMin     = this.field<Il2Cpp.Object>("_heartShowLimitbuttonMin").value;
+                const imgMinus10Off = this.field<Il2Cpp.Object>("_heartShowLimitimageMinus10Off").value;
+                const imgMinOff     = this.field<Il2Cpp.Object>("_heartShowLimitimageMinOff").value;
+
+                const btnPlus10 = this.field<Il2Cpp.Object>("_heartShowLimitbuttonPlus10").value;
+                const btnMax    = this.field<Il2Cpp.Object>("_heartShowLimitbuttonMax").value;
+                const imgPlus10Off = this.field<Il2Cpp.Object>("_heartShowLimitimagePlus10Off").value;
+                const imgMaxOff    = this.field<Il2Cpp.Object>("_heartShowLimitimageMaxOff").value;
+
+                if (btnMinus10 != null) btnMinus10.method<void>("set_interactable").invoke(clampedValue > 0);
+                if (btnMin != null) btnMin.method<void>("set_interactable").invoke(clampedValue > 0);
+                if (imgMinus10Off != null) imgMinus10Off.method<void>("set_enabled").invoke(clampedValue < 1);
+                if (imgMinOff != null) imgMinOff.method<void>("set_enabled").invoke(clampedValue < 1);
+
+                if (btnPlus10 != null) btnPlus10.method<void>("set_interactable").invoke(clampedValue < 100);
+                if (btnMax != null) btnMax.method<void>("set_interactable").invoke(clampedValue < 100);
+                if (imgPlus10Off != null) imgPlus10Off.method<void>("set_enabled").invoke(clampedValue > 99);
+                if (imgMaxOff != null) imgMaxOff.method<void>("set_enabled").invoke(clampedValue > 99);
+            };
+        } else {
+            // Tecotec.QuestLive.Live.QuestLiveHeartObject.ShowHeart(bool show)
+            AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveHeartObject").method("ShowHeart").implementation = function (show) {
+                if (globalConfig.BlockHeartShow) {
+                    return this.method("ShowHeart").invoke(false)
+                }
+                return this.method("ShowHeart").invoke(show)
+            }
         }
 
         console.log("Successfully hooked")

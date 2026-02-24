@@ -1,5 +1,5 @@
 📦
-692730 /src/index.js
+696100 /src/index.js
 ✄
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -19697,6 +19697,7 @@ var IL2CPP_RUNTIME_OFFSETS = {
   "il2cpp_array_length": 112,
   "il2cpp_array_new": 116,
   "il2cpp_assembly_get_image": 132,
+  "il2cpp_image_get_name": 132,
   "il2cpp_runtime_invoke": 904,
   "il2cpp_runtime_object_init_exception": 908,
   "il2cpp_runtime_class_init": 1948,
@@ -19894,8 +19895,11 @@ function main() {
     MagicaManager.method("SetMaxSimulationCountPerFrame").implementation = function(count) {
       return this.method("SetMaxSimulationCountPerFrame").invoke(globalConfig.MagicaClothSimulationCountPerFrame);
     };
+    function get_Global() {
+      return AssemblyCSharp.image.class("Global").field("instance").value;
+    }
     function get_SaveData() {
-      return AssemblyCSharp.image.class("Global").method("get_Instance").invoke().method("get_SaveData").invoke();
+      return get_Global().field("<SaveData>k__BackingField").value;
     }
     const EmptyString = Il2Cpp.corlib.class("System.String").field("Empty").value;
     if (Core.image.tryClass("Alstromeria.ArchiveLiveDataStream") != null) {
@@ -20374,12 +20378,6 @@ function main() {
         return this.method("GetDisplayTime").invoke(mnemonic) + 0.5;
       }
     };
-    AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveHeartObject").method("ShowHeart").implementation = function(show) {
-      if (globalConfig.BlockHeartShow) {
-        return this.method("ShowHeart").invoke(false);
-      }
-      return this.method("ShowHeart").invoke(show);
-    };
     AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveCutinCharacter").method("PlaySkillAnimation").implementation = function() {
       if (globalConfig.BlockCharaCutIn) {
         return;
@@ -20410,6 +20408,75 @@ function main() {
       }
       return this.method("OpenAsync").invoke();
     };
+    const SetHeartShowLimitValue = AssemblyCSharp.image.class("Tecotec.TPopupQuestLiveSettings").tryMethod("SetHeartShowLimitValue");
+    if (SetHeartShowLimitValue != null) {
+      SetHeartShowLimitValue.implementation = function(p_value, p_playSe) {
+        const playSe = p_playSe;
+        const value = p_value;
+        const globalInstance = get_Global();
+        if (playSe) {
+          const soundManager = globalInstance.field("<SoundManager>k__BackingField").value;
+          if (soundManager != null) {
+            const isQuestScene = AssemblyCSharp.image.class("GameDefine").method("IsQuestScene").invoke();
+            const CriCueName = AssemblyCSharp.image.class("Tecotec.CriCueName");
+            let cueName;
+            if (isQuestScene) {
+              cueName = CriCueName.method("QuestTap").invoke(1);
+            } else {
+              cueName = CriCueName.method("UiTap").invoke(3);
+            }
+            soundManager.method("PlaySystemSe").invoke(cueName, 0);
+          }
+        }
+        let clampedValue = Math.min(Math.max(value, 0), 100);
+        const saveData = globalInstance.field("<SaveData>k__BackingField").value;
+        if (saveData != null) {
+          const heartShowLimitCount = saveData.field("HeartShowLimitCount").value;
+          if (heartShowLimitCount != null) {
+            const currentValue = heartShowLimitCount.method("get_Value").invoke();
+            if (currentValue !== clampedValue) {
+              heartShowLimitCount.method("set_Value").invoke(clampedValue);
+              saveData.method("Save").invoke();
+            }
+          }
+        }
+        const heartLimitText = this.field("_heartLimitText").value;
+        if (heartLimitText != null) {
+          heartLimitText.method("set_text").invoke(Il2Cpp.string(clampedValue.toString()));
+        }
+        const btnMinus10 = this.field("_heartShowLimitbuttonMinus10").value;
+        const btnMin = this.field("_heartShowLimitbuttonMin").value;
+        const imgMinus10Off = this.field("_heartShowLimitimageMinus10Off").value;
+        const imgMinOff = this.field("_heartShowLimitimageMinOff").value;
+        const btnPlus10 = this.field("_heartShowLimitbuttonPlus10").value;
+        const btnMax = this.field("_heartShowLimitbuttonMax").value;
+        const imgPlus10Off = this.field("_heartShowLimitimagePlus10Off").value;
+        const imgMaxOff = this.field("_heartShowLimitimageMaxOff").value;
+        if (btnMinus10 != null)
+          btnMinus10.method("set_interactable").invoke(clampedValue > 0);
+        if (btnMin != null)
+          btnMin.method("set_interactable").invoke(clampedValue > 0);
+        if (imgMinus10Off != null)
+          imgMinus10Off.method("set_enabled").invoke(clampedValue < 1);
+        if (imgMinOff != null)
+          imgMinOff.method("set_enabled").invoke(clampedValue < 1);
+        if (btnPlus10 != null)
+          btnPlus10.method("set_interactable").invoke(clampedValue < 100);
+        if (btnMax != null)
+          btnMax.method("set_interactable").invoke(clampedValue < 100);
+        if (imgPlus10Off != null)
+          imgPlus10Off.method("set_enabled").invoke(clampedValue > 99);
+        if (imgMaxOff != null)
+          imgMaxOff.method("set_enabled").invoke(clampedValue > 99);
+      };
+    } else {
+      AssemblyCSharp.image.class("Tecotec.QuestLive.Live.QuestLiveHeartObject").method("ShowHeart").implementation = function(show) {
+        if (globalConfig.BlockHeartShow) {
+          return this.method("ShowHeart").invoke(false);
+        }
+        return this.method("ShowHeart").invoke(show);
+      };
+    }
     console.log("Successfully hooked");
   });
 }
