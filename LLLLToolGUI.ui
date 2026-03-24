@@ -34,7 +34,7 @@
     <item row="0" column="0" colspan="4">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mainPage">
        <attribute name="title">
@@ -607,29 +607,42 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-250</y>
              <width>482</width>
-             <height>481</height>
+             <height>543</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_16">
-            <item row="2" column="0">
-             <widget class="QGroupBox" name="groupBox_8">
+            <item row="4" column="0">
+             <widget class="QGroupBox" name="groupBox_9">
               <property name="title">
-               <string>QuestLive扩展</string>
+               <string>横屏执行扩展</string>
               </property>
-              <layout class="QGridLayout" name="gridLayout_18">
+              <layout class="QGridLayout" name="gridLayout_19">
                <item row="0" column="0">
-                <widget class="QCheckBox" name="blockHeartShowCheckBox">
+                <widget class="QCheckBox" name="fixPopupLandscapeCheckBox">
                  <property name="text">
-                  <string>不显示Heart（性能影响大）</string>
+                  <string>修复横屏时弹窗尺寸过大</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
-                <widget class="QCheckBox" name="blockCharaCutInCheckBox">
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_20">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
-                  <string>禁用右侧小人切入</string>
+                  <string>缩放比例（&lt;0.01自动配置）</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="PopupLandscaleScaleDSpinBox">
+                 <property name="singleStep">
+                  <double>0.100000000000000</double>
                  </property>
                 </widget>
                </item>
@@ -744,6 +757,29 @@
               </layout>
              </widget>
             </item>
+            <item row="2" column="0">
+             <widget class="QGroupBox" name="groupBox_8">
+              <property name="title">
+               <string>QuestLive扩展</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_18">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="blockHeartShowCheckBox">
+                 <property name="text">
+                  <string>不显示Heart（性能影响大）</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QCheckBox" name="blockCharaCutInCheckBox">
+                 <property name="text">
+                  <string>禁用右侧小人切入</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item row="0" column="0">
              <widget class="QGroupBox" name="proxyGroup">
               <property name="toolTip">
@@ -812,35 +848,18 @@
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QGroupBox" name="groupBox_9">
+             <widget class="QGroupBox" name="groupBox_10">
               <property name="title">
-               <string>横屏执行扩展</string>
+               <string>LiveStream扩展</string>
               </property>
-              <layout class="QGridLayout" name="gridLayout_19">
+              <layout class="QGridLayout" name="gridLayout_20">
                <item row="0" column="0">
-                <widget class="QCheckBox" name="fixPopupLandscapeCheckBox">
-                 <property name="text">
-                  <string>修复横屏时弹窗尺寸过大</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_20">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
+                <widget class="QCheckBox" name="noDelayAdjustCheckBox">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通过禁用延迟校正&lt;/p&gt;&lt;p&gt;解决部分网络环境下的莫名其妙的频繁校准&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
-                  <string>缩放比例（&lt;0.01自动配置）</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QDoubleSpinBox" name="PopupLandscaleScaleDSpinBox">
-                 <property name="singleStep">
-                  <double>0.100000000000000</double>
+                  <string>禁用直播延迟校正</string>
                  </property>
                 </widget>
                </item>

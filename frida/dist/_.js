@@ -1,5 +1,5 @@
 📦
-696275 /src/index.js
+696915 /src/index.js
 ✄
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -20412,6 +20412,16 @@ function main() {
         }
       }
       return this.method("OpenAsync").invoke();
+    };
+    const System_Boolean = Il2Cpp.corlib.class("System.Boolean");
+    const System_Double = Il2Cpp.corlib.class("System.Double");
+    const System_ValueTuple2 = Il2Cpp.corlib.class("System.ValueTuple`2");
+    const System_ValueTuple2_Boolean_Double = System_ValueTuple2.inflate(System_Boolean, System_Double);
+    Core.image.class("Alstromeria.SyncTimeManager").field("DEFAULT_DELAY_SEC").value = 5;
+    Core.image.class("Alstromeria.DelayAdjuster").method("NeedAdjust").implementation = function() {
+      const result = System_ValueTuple2_Boolean_Double.alloc();
+      result.method(".ctor").invoke(false, 0);
+      return result;
     };
     const SetHeartShowLimitValue = AssemblyCSharp.image.class("Tecotec.TPopupQuestLiveSettings").tryMethod("SetHeartShowLimitValue");
     if (SetHeartShowLimitValue != null) {

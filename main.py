@@ -411,6 +411,8 @@ def readCfg(cfgPath: str):
             ui.fixPopupLandscapeCheckBox.setChecked(cfg.get("FixPopupLandscape", False))
             ui.PopupLandscaleScaleDSpinBox.setValue(cfg.get("PopupLandscaleScale", 0.0))
 
+            ui.noDelayAdjustCheckBox.setChecked(cfg.get("NoDelayAdjust", False))
+
     except Exception as e:
         warningMsgBox("Error", f"Failed to read config.json")
 
@@ -463,6 +465,7 @@ def generateCfg():
         "BlockCharaCutIn": ui.blockCharaCutInCheckBox.isChecked(),
         "FixPopupLandscape": ui.fixPopupLandscapeCheckBox.isChecked(),
         "PopupLandscaleScale": ui.PopupLandscaleScaleDSpinBox.value(),
+        "NoDelayAdjust": ui.noDelayAdjustCheckBox.isChecked(),
     })
 
 CONNECT_TEST_URL = 'https://www.gstatic.com/generate_204'

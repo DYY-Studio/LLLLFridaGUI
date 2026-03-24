@@ -250,6 +250,7 @@ let globalConfig = {
     "BlockCharaCutIn": false,
     "FixPopupLandscape": false,
     "PopupLandscaleScale": 0.0,
+    'NoDelayAdjust': false,
 }
 
 var hasloaded = false
@@ -1151,6 +1152,28 @@ function main() {
             }
             return this.method("OpenAsync").invoke()
         }
+
+        const System_Boolean = Il2Cpp.corlib.class("System.Boolean")
+        const System_Double = Il2Cpp.corlib.class("System.Double")
+        const System_ValueTuple2 = Il2Cpp.corlib.class("System.ValueTuple`2")
+        const System_ValueTuple2_Boolean_Double = System_ValueTuple2.inflate(System_Boolean, System_Double)
+
+        // Core.image.class("Alstromeria.SyncTimeManager").field<number>("DEFAULT_DELAY_SEC").value = 5.0
+
+        // (bool, double) Alstromeria.DelayAdjuster.NeedAdjust
+        Core.image.class("Alstromeria.DelayAdjuster").method("NeedAdjust").implementation = function () {
+            if (globalConfig.NoDelayAdjust) {
+                const result = System_ValueTuple2_Boolean_Double.alloc()
+                result.method(".ctor").invoke(false, 0.0)
+                return result
+            } else {
+                return this.method("NeedAdjust").invoke()
+            }
+        }
+
+        // Core.image.class("Alstromeria.DelayAdjuster").method("set_EnterTakenTimeMS").implementation = function (value) {
+        //     this.method("set_EnterTakenTimeMS").invoke(0)
+        // }
 
         const SetHeartShowLimitValue = AssemblyCSharp.image.class("Tecotec.TPopupQuestLiveSettings").tryMethod("SetHeartShowLimitValue");
         if (SetHeartShowLimitValue != null) {
