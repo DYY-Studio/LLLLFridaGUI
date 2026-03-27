@@ -1161,13 +1161,16 @@ function main() {
         // Core.image.class("Alstromeria.SyncTimeManager").field<number>("DEFAULT_DELAY_SEC").value = 5.0
 
         // (bool, double) Alstromeria.DelayAdjuster.NeedAdjust
-        Core.image.class("Alstromeria.DelayAdjuster").method("NeedAdjust").implementation = function () {
-            if (globalConfig.NoDelayAdjust) {
-                const result = System_ValueTuple2_Boolean_Double.alloc()
-                result.method(".ctor").invoke(false, 0.0)
-                return result
-            } else {
-                return this.method("NeedAdjust").invoke()
+        const DelayAdjuster_NeedAdjust = Core.image.tryClass("Alstromeria.DelayAdjuster")?.method("NeedAdjust")
+        if (DelayAdjuster_NeedAdjust) {
+            DelayAdjuster_NeedAdjust.implementation = function () {
+                if (globalConfig.NoDelayAdjust) {
+                    const result = System_ValueTuple2_Boolean_Double.alloc()
+                    result.method(".ctor").invoke(false, 0.0)
+                    return result
+                } else {
+                    return this.method("NeedAdjust").invoke()
+                }
             }
         }
 
